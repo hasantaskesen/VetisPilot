@@ -1,0 +1,74 @@
+[
+  {
+    "key": "BEV",
+    "name": "Water & Beverages",
+    "name_de": "Wasser & Getränke",
+    "name_tr": "Su & İçecekler"
+  },
+  {
+    "key": "PRD",
+    "name": "Fruit & Vegetables",
+    "name_de": "Obst & Gemüse",
+    "name_tr": "Meyve & Sebze"
+  },
+  {
+    "key": "DRY",
+    "name": "Dairy & Eggs",
+    "name_de": "Milchprodukte & Eier",
+    "name_tr": "Süt Ürünleri & Yumurta"
+  },
+  {
+    "key": "BAK",
+    "name": "Bakery",
+    "name_de": "Backwaren",
+    "name_tr": "Fırın Ürünleri"
+  },
+  {
+    "key": "SWT",
+    "name": "Chocolate & Sweets",
+    "name_de": "Schokolade & Süßwaren",
+    "name_tr": "Çikolata & Şekerleme"
+  },
+  {
+    "key": "SNK",
+    "name": "Snacks",
+    "name_de": "Snacks",
+    "name_tr": "Atıştırmalıklar"
+  },
+  {
+    "key": "BRK",
+    "name": "Coffee, Tea & Breakfast",
+    "name_de": "Kaffee, Tee & Frühstück",
+    "name_tr": "Kahve, Çay & Kahvaltılık"
+  },
+  {
+    "key": "PAN",
+    "name": "Pantry",
+    "name_de": "Grundnahrungsmittel",
+    "name_tr": "Temel Gıda"
+  },
+  {
+    "key": "FRZ",
+    "name": "Meat & Frozen",
+    "name_de": "Fleisch & Tiefkühlkost",
+    "name_tr": "Et & Dondurulmuş Gıda"
+  },
+  {
+    "key": "PCR",
+    "name": "Personal Care",
+    "name_de": "Körperpflege",
+    "name_tr": "Kişisel Bakım"
+  },
+  {
+    "key": "HSH",
+    "name": "Household & Cleaning",
+    "name_de": "Haushalt & Reinigung",
+    "name_tr": "Ev & Temizlik"
+  },
+  {
+    "key": "BBY",
+    "name": "Baby Care",
+    "name_de": "Babypflege",
+    "name_tr": "Bebek Bakımı"
+  }
+]

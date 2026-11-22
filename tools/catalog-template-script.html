@@ -1,0 +1,145 @@
+<script>
+(function () {
+  // Fixed screen texts in three languages. Product names, sizes, categories and logos
+  // carry their own translations in data-en / data-de / data-tr attributes.
+  var TEXT = {
+    en: {
+      locale: "en-IE",
+      pageTitle: "VetisPilot demo catalog — 100 products",
+      title: "VetisPilot demo catalog",
+      intro: "100 fictional products across 12 categories, sold under 22 fictional brands. All brand names and logos were created for this portfolio project and do not represent real companies.",
+      products: "products", brands: "brands", categories: "categories",
+      outOfStock: "out of stock", lowStock: "low stock", brandsTitle: "Brands",
+      footer: "Barcodes use the 200–299 in-store prefix range, so they never match a real retail product. Prices in EUR are illustrative.",
+      inStockTag: "In stock", lowStockTag: "Low stock", outTag: "Out of stock",
+      byWeight: "Sold by weight", showAll: "Show all", filterText: "Products of {brand} ({n})",
+      chooseChannel: "Choose a channel", enter: "Enter", switchChannel: "Switch channel",
+      chooseHint: "Both channels sell the same products at the same prices – only the look changes."
+    },
+    de: {
+      locale: "de-DE",
+      pageTitle: "VetisPilot Demo-Katalog — 100 Produkte",
+      title: "VetisPilot Demo-Katalog",
+      intro: "100 fiktive Produkte in 12 Kategorien unter 22 fiktiven Marken. Alle Markennamen und Logos wurden für dieses Portfolio-Projekt erstellt und stehen für keine echten Unternehmen.",
+      products: "Produkte", brands: "Marken", categories: "Kategorien",
+      outOfStock: "nicht vorrätig", lowStock: "geringer Bestand", brandsTitle: "Marken",
+      footer: "Die Barcodes nutzen den internen Präfixbereich 200–299 und entsprechen daher nie einem echten Handelsprodukt. Die Preise in EUR dienen nur zur Veranschaulichung.",
+      inStockTag: "Auf Lager", lowStockTag: "Geringer Bestand", outTag: "Nicht vorrätig",
+      byWeight: "Nach Gewicht", showAll: "Alle anzeigen", filterText: "Produkte von {brand} ({n})",
+      chooseChannel: "Kanal wählen", enter: "Öffnen", switchChannel: "Kanal wechseln",
+      chooseHint: "Beide Kanäle verkaufen dieselben Produkte zu denselben Preisen – nur das Aussehen ändert sich."
+    },
+    tr: {
+      locale: "tr-TR",
+      pageTitle: "VetisPilot Demo Kataloğu — 100 ürün",
+      title: "VetisPilot Demo Kataloğu",
+      intro: "12 kategoride, 22 kurgusal marka altında satılan 100 kurgusal ürün. Tüm marka isimleri ve logolar bu portfolyo projesi için oluşturuldu, gerçek şirketleri temsil etmez.",
+      products: "ürün", brands: "marka", categories: "kategori",
+      outOfStock: "stokta yok", lowStock: "az stok", brandsTitle: "Markalar",
+      footer: "Barkodlar mağaza içi kullanıma ayrılmış 200–299 önek aralığını kullanır, bu yüzden hiçbir gerçek ürünle çakışmaz. EUR fiyatları temsilidir.",
+      inStockTag: "Stokta", lowStockTag: "Az stok", outTag: "Stokta yok",
+      byWeight: "Tartılarak satılır", showAll: "Tümünü göster", filterText: "{brand} ürünleri ({n})",
+      chooseChannel: "Kanal seçin", enter: "Gir", switchChannel: "Kanal değiştir",
+      chooseHint: "İki kanal da aynı ürünleri aynı fiyatlarla satar – sadece görünüm değişir."
+    }
+  };
+  var LOW_STOCK_LIMIT = 10;
+
+  // Remember the English logo of every brand so we can switch back to it.
+  document.querySelectorAll("img[data-src-en]").forEach(function (img) { img.dataset.srcEn = img.getAttribute("src"); });
+
+  function setLanguage(lang) {
+    var t = TEXT[lang];
+    var money = new Intl.NumberFormat(t.locale, { style: "currency", currency: "EUR" });
+    document.documentElement.lang = lang;
+    document.title = t.pageTitle;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) { el.textContent = t[el.dataset.i18n]; });
+    document.querySelectorAll("[data-en]").forEach(function (el) { el.textContent = el.dataset[lang]; });
+    document.querySelectorAll("img[data-src-en]").forEach(function (img) {
+      img.src = img.dataset["src" + lang.charAt(0).toUpperCase() + lang.slice(1)];
+    });
+    document.querySelectorAll("[data-price]").forEach(function (el) { el.textContent = money.format(Number(el.dataset.price)); });
+    document.querySelectorAll("[data-price-kg]").forEach(function (el) { el.textContent = money.format(Number(el.dataset.priceKg)) + " / kg"; });
+    currentLang = lang;
+    updateFilterText();
+    document.querySelectorAll("[data-stock]").forEach(function (el) {
+      var qty = Number(el.dataset.stock);
+      el.textContent = qty === 0 ? t.outTag : (qty < LOW_STOCK_LIMIT ? t.lowStockTag : t.inStockTag) + " · " + qty;
+    });
+    document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === lang)); });
+    try { localStorage.setItem("vp-lang", lang); } catch (e) {}
+  }
+
+  document.querySelectorAll("[data-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { setLanguage(b.dataset.lang); });
+  });
+
+  // ---------- Brand filter: click a brand to see only its products ----------
+  var currentLang = "en", activeBrand = null;
+  var bar = document.getElementById("brand-filter"), barText = document.getElementById("brand-filter-text");
+
+  function updateFilterText() {
+    if (!activeBrand) return;
+    barText.textContent = TEXT[currentLang].filterText
+      .replace("{brand}", activeBrand.dataset.brandName).replace("{n}", activeBrand.dataset.count);
+  }
+
+  function filterBrand(btn) {
+    activeBrand = btn;
+    var key = btn ? btn.dataset.brand : null;
+    document.querySelectorAll(".card").forEach(function (c) { c.hidden = key !== null && c.dataset.brand !== key; });
+    document.querySelectorAll("main section").forEach(function (s) {
+      s.hidden = key !== null && !s.querySelector(".card:not([hidden])");
+    });
+    document.querySelectorAll("button.brand").forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+    bar.hidden = !btn;
+    updateFilterText();
+    if (btn) bar.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  document.querySelectorAll("button.brand").forEach(function (b) {
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", function () { filterBrand(activeBrand === b ? null : b); });
+  });
+  document.getElementById("brand-filter-clear").addEventListener("click", function () {
+    var brands = document.querySelector(".brands");
+    filterBrand(null);
+    brands.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  // ---------- Channel chooser (US-39): pick HTGO Market or GK Market first ----------
+  var chooser = document.getElementById("channel-chooser");
+  var pill = document.querySelector(".channel-pill");
+  var cards = document.querySelectorAll(".channel-card");
+
+  function openChooser() {
+    chooser.hidden = false;
+    var last = null;
+    try { last = localStorage.getItem("vp-channel"); } catch (e) {}
+    var target = document.querySelector('.channel-card[data-channel="' + last + '"]') || cards[0];
+    target.focus();
+  }
+
+  function chooseChannel(card) {
+    document.body.dataset.channel = card.dataset.channel;
+    document.getElementById("channel-name").textContent = card.dataset.name;
+    document.getElementById("channel-icon").src = card.dataset.icon;
+    pill.hidden = false;
+    chooser.hidden = true;
+    try { localStorage.setItem("vp-channel", card.dataset.channel); } catch (e) {}
+    window.scrollTo(0, 0);
+  }
+
+  cards.forEach(function (c) { c.addEventListener("click", function () { chooseChannel(c); }); });
+  document.getElementById("switch-channel").addEventListener("click", openChooser);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !chooser.hidden && document.body.dataset.channel) chooser.hidden = true;
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem("vp-lang"); } catch (e) {}
+  setLanguage(TEXT[saved] ? saved : "en");
+  openChooser();
+})();
+</script>
+</body></html>
