@@ -18,7 +18,7 @@ services:
       - "127.0.0.1:5432:5432"          # only reachable from this computer
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./database/init:/docker-entrypoint-initdb.d:ro   # runs *.sql once, on the first start
+      # The tables are created by the backend with Flyway (backend/src/main/resources/db/migration)
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s

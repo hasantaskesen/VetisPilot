@@ -1,0 +1,37 @@
+# VetisPilot backend configuration.
+# Secrets are never written here – they come from the .env file in the project root
+# (or from real environment variables, e.g. in Docker).
+spring:
+  application:
+    name: vetispilot
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${POSTGRES_DB:vetispilot}
+    username: ${POSTGRES_USER:vetispilot}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate          # Hibernate only checks the tables; Flyway creates them
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+vetispilot:
+  version: 0.1.0

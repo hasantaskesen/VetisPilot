@@ -2,7 +2,7 @@
 
 🇬🇧 [English](01-er-model.md) · 🇩🇪 [Deutsch](01-er-model.de.md) · 🇹🇷 **Türkçe**
 
-Bu belge, VetisPilot'un verilerini PostgreSQL'de nasıl sakladığını anlatır. Analizi ([docs/analysis](../analysis/01-scope.tr.md)) tablolara dönüştürür. Çalıştırılabilir hali [database/init/01_schema.sql](../../database/init/01_schema.sql) dosyasıdır.
+Bu belge, VetisPilot'un verilerini PostgreSQL'de nasıl sakladığını anlatır. Analizi ([docs/analysis](../analysis/01-scope.tr.md)) tablolara dönüştürür. Çalıştırılabilir hali, backend'in açılışta çalıştırdığı Flyway migration dosyası [V1__initial_schema.sql](../../backend/src/main/resources/db/migration/V1__initial_schema.sql)'dir.
 
 ## 1. Kurallar
 | Konu | Kural |
@@ -232,6 +232,7 @@ Veritabanının tek başına kontrol edemediği kurallar (ör. bir çalışanın
 ## 5. Veritabanını yerelde çalıştırma
 ```powershell
 copy .env.example .env      # bir kez; sonra .env içinde kendi şifreni belirle
-docker compose up -d        # PostgreSQL'i başlatır, ilk açılışta tüm tabloları oluşturur
+docker compose up -d        # PostgreSQL'i başlatır (boş veritabanı)
+# sonra backend'i başlat (IntelliJ ya da mvn spring-boot:run): tabloları Flyway oluşturur
 docker compose down -v      # veritabanını tamamen siler (sıfırdan başlamak için)
 ```

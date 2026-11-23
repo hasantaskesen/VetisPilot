@@ -2,7 +2,7 @@
 
 🇬🇧 **English** · 🇩🇪 [Deutsch](01-er-model.de.md) · 🇹🇷 [Türkçe](01-er-model.tr.md)
 
-This document describes how VetisPilot stores its data in PostgreSQL. It turns the analysis ([docs/analysis](../analysis/01-scope.md)) into tables. The executable version is [database/init/01_schema.sql](../../database/init/01_schema.sql).
+This document describes how VetisPilot stores its data in PostgreSQL. It turns the analysis ([docs/analysis](../analysis/01-scope.md)) into tables. The executable version is [V1__initial_schema.sql](../../backend/src/main/resources/db/migration/V1__initial_schema.sql) – a Flyway migration that the backend runs on start.
 
 ## 1. Conventions
 | Topic | Rule |
@@ -232,6 +232,7 @@ Rules that the database cannot check alone (e.g. an employee's branch must belon
 ## 5. Run the database locally
 ```powershell
 copy .env.example .env      # once; then set your own password in .env
-docker compose up -d        # starts PostgreSQL and creates all tables on the first start
+docker compose up -d        # starts PostgreSQL (empty database)
+# then start the backend (IntelliJ or mvn spring-boot:run): Flyway creates all tables
 docker compose down -v      # deletes the database completely (for a fresh start)
 ```

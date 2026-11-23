@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VetisPilot Panel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one-column app shell – sticky ink top bar, content column, quiet footer. Single light look on purpose (brand colors of the panel). */
+:root{--ink:#0E0B2B;--accent:#5B3DF5;--mint:#34D399;--page:#F4F5F7;--line:#E5E7EB;--muted:#4B5563;
+  --htgo:#1D4ED8;--htgo-dark:#0B2A6F;--htgo-light:#DBE6FF;--gk:#7C4A21;--gk-dark:#3E2410;--gk-light:#F3E6D3}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--page);color:#111827;display:flex;flex-direction:column;min-height:100%;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--ink)}
+.gutter{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;cursor:pointer}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--ink);color:#fff;padding-block:10px;min-height:60px}
+.iconbtn{background:none;border:0;color:#fff;width:42px;height:42px;border-radius:12px;display:grid;place-items:center}
+.iconbtn:hover{background:rgba(255,255,255,.1)} .iconbtn:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.branch{justify-self:center;display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.01em}
+.branch small{display:block;font-weight:600;font-size:12px;color:#C7C2F0;letter-spacing:.02em}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:2px solid rgba(255,255,255,.4);display:grid;place-items:center;font-weight:800;font-size:14px}
+.profile{position:relative}
+.dropdown{position:absolute;right:0;top:50px;width:260px;background:#fff;color:#111827;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25);padding:14px;display:flex;flex-direction:column;gap:12px}
+.dropdown[hidden]{display:none}
+.dropdown .who b{display:block} .dropdown .who span{font-size:13px;color:var(--muted)}
+.langs{display:flex;gap:6px}
+.langs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 4px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px}
+.langs button[aria-pressed="true"]{border-color:var(--accent);background:#EEEBFF}
+.flag{display:inline-block;width:18px;height:12px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.12)} .flag svg{display:block;width:100%;height:100%}
+.btn-logout{display:flex;align-items:center;justify-content:center;gap:8px;background:#FEE2E2;color:#991B1B;border:0;border-radius:10px;padding:10px;font-weight:700}
+/* ---------- side menu ---------- */
+.scrim{position:fixed;inset:0;background:rgba(14,11,43,.45);z-index:40}
+.scrim[hidden]{display:none}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:290px;max-width:85vw;background:#fff;z-index:50;padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:8px 0 30px rgba(0,0,0,.2);display:flex;flex-direction:column;transform:translateX(-105%);transition:transform .2s}
+.drawer.open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--ink);color:#fff;font-weight:800;font-size:18px}
+.drawer nav{padding:10px;overflow:auto;flex:1}
+.nav-item{width:100%;display:flex;align-items:center;gap:12px;background:none;border:0;border-radius:12px;padding:11px 12px;color:#111827;font-weight:600;text-align:left}
+.nav-item:hover,.nav-item.active{background:#EEEBFF;color:var(--accent)}
+.nav-item .chev{margin-left:auto;transition:transform .15s} .nav-item[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.sub{padding:2px 0 6px 46px;display:flex;flex-direction:column;gap:2px}
+.sub[hidden]{display:none}
+.sub button{background:none;border:0;border-radius:10px;padding:8px 10px;text-align:left;display:flex;align-items:center;gap:8px;font-weight:600;color:#374151}
+.sub button:hover{background:#F3F4F6}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.nav-label{font-size:11px;font-weight:800;letter-spacing:.1em;color:#9CA3AF;padding:14px 12px 4px}
+.nav-sep{border:0;border-top:1px solid var(--line);margin:10px 4px}
+.nav-item.logout{color:#991B1B} .nav-item.logout:hover{background:#FEE2E2}
+/* ---------- main ---------- */
+main{flex:1;width:100%;max-width:1100px;margin:0 auto;padding-block:22px 30px}
+h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
+.ch-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ch-card{border:0;text-align:left;border-radius:18px;padding:18px;background:#fff;border-top:8px solid var(--c);box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:14px;transition:transform .15s,box-shadow .15s}
+.ch-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.12)} .ch-card:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+.ch-card.htgo{--c:var(--htgo);background:linear-gradient(180deg,var(--htgo-light),#fff 70%)}
+.ch-card.gk{--c:var(--gk);background:linear-gradient(180deg,var(--gk-light),#fff 70%)}
+.ch-title{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;color:var(--c)}
+.ch-title svg{width:46px;height:46px}
+.kv{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-top:1px solid rgba(0,0,0,.06);padding-top:10px;font-weight:600}
+.kv b{font-size:26px;color:var(--c)}
+.ch-card .kv-active,.ch-card .kv-returns{border-top:0;border-radius:10px;padding:7px 10px 7px 12px;color:#fff;font-size:13px;align-items:center}
+.kv .lbl{display:inline-flex;align-items:center;gap:7px;line-height:1.2} .kv .lbl svg{width:17px;height:17px}
+.kvs{display:grid;grid-auto-rows:1fr;gap:8px} /* both rows always the same height */
+.kv-active{background:#15803D} .kv-returns{background:#B91C1C} .ch-card .kv-returns.zero{background:#E5E7EB;color:#4B5563}
+.ch-card .kv-active b,.ch-card .kv-returns b{color:inherit;font-size:20px}
+.daily{margin-top:26px}
+.daily h2{font-size:15px;letter-spacing:.14em;margin:0 0 10px;color:var(--muted)}
+.daily-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.daily-col{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:6px solid var(--c)}
+.daily-col.htgo{--c:var(--htgo)} .daily-col.gk{--c:var(--gk)}
+.daily-col h3{margin:0 0 6px;color:var(--c);font-size:16px}
+.drow{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);color:var(--c);font-weight:600}
+.drow:last-child{border-bottom:0} .drow b{font-size:18px}
+/* channel pages */
+.ch-head{display:flex;align-items:center;gap:12px;border-radius:16px;padding:12px 16px;color:#fff;margin-bottom:16px}
+.ch-head.htgo{background:var(--htgo-dark)} .ch-head.gk{background:var(--gk-dark)}
+.ch-head svg{width:40px;height:40px} .ch-head h1{margin:0;font-size:22px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;color:#374151;display:flex;gap:8px;align-items:center}
+.tab .n{background:#F3F4F6;border-radius:999px;padding:1px 9px;font-size:13px}
+.tab[aria-selected="true"]{background:var(--c);border-color:var(--c);color:#fff} .tab[aria-selected="true"] .n{background:rgba(255,255,255,.25)}
+.theme-htgo{--c:var(--htgo)} .theme-gk{--c:var(--gk)}
+.list{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);overflow:hidden}
+.row{display:grid;grid-template-columns:1.2fr .8fr .6fr 1fr 1fr;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);width:100%;background:#fff;border-left:0;border-right:0;border-top:0;text-align:left}
+.row:last-child{border-bottom:0} button.row:hover{background:#FAFAFB}
+.row.head{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;background:#F9FAFB}
+.row .no{font-weight:800}
+.pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.s-PENDING{background:#FEF3C7;color:#78350F} .s-PICKING{background:#DBEAFE;color:#1E3A8A} .s-READY{background:#DCFCE7;color:#14532D}
+.s-ON_THE_WAY{background:#EDE9FE;color:#4C1D95} .s-DELIVERED{background:#F3F4F6;color:#374151} .s-CANCELLED{background:#FEE2E2;color:#7F1D1D}
+.s-REQUESTED{background:#FEF3C7;color:#78350F} .s-APPROVED{background:#DCFCE7;color:#14532D} .s-REJECTED{background:#FEE2E2;color:#7F1D1D}
+.late{color:#B91C1C;font-weight:800}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+/* order detail */
+.modal-wrap{position:fixed;inset:0;background:rgba(14,11,43,.5);z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:calc(24px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));overflow:auto}
+.modal-wrap[hidden]{display:none}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:720px;box-shadow:0 20px 50px rgba(0,0,0,.3);overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;color:#fff}
+.modal-head.htgo{background:var(--htgo-dark)} .modal-head.gk{background:var(--gk-dark)}
+.modal-body{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.items .it{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.it .nm b{display:block} .it .nm span{font-size:12px;color:var(--muted)}
+.it.done .nm b{color:#15803D}
+.counter{display:flex;align-items:center;gap:6px}
+.counter button{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:#fff;font-weight:800;font-size:16px}
+.counter .val{min-width:52px;text-align:center;font-weight:800}
+.weight-in{width:80px;padding:6px 8px;border:1px solid var(--line);border-radius:9px;font:inherit}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;background:var(--c,var(--accent));color:#fff}
+.btn.ghost{background:#fff;color:#111827;border:1px solid var(--line)}
+.btn.danger{background:#B91C1C} .btn:disabled{opacity:.45;cursor:not-allowed}
+.note{font-size:13px;color:var(--muted)}
+.sum{display:flex;justify-content:space-between;font-weight:800;font-size:17px}
+.calllog{font-size:13px;background:#F9FAFB;border-radius:10px;padding:8px 12px}
+/* products */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar input{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:inherit}
+.prow{display:grid;grid-template-columns:52px 2.2fr .7fr .8fr .6fr .9fr auto;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line)}
+.prow img.ph{width:48px;height:48px;border-radius:10px;object-fit:cover;background:#F3F4F6;display:block}
+.prow .nm > span{display:block} .prow .code{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)} .prow .code svg{width:14px;height:14px}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.page-head h1{margin:0}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn.icon{display:inline-flex;align-items:center;gap:8px} .btn.icon svg{width:18px;height:18px}
+.counts{display:flex;gap:18px;flex-wrap:wrap;font-weight:600;color:#374151;margin-bottom:12px}
+.counts b{color:var(--accent);font-size:17px}
+.search{position:relative;flex:1;min-width:220px} .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#6B7280;width:20px;height:20px}
+.search input{width:100%;padding:11px 12px 11px 42px;border:1px solid var(--line);border-radius:12px;font:inherit}
+.editbtn{border:1px solid var(--line);background:#fff;border-radius:10px;width:38px;height:38px;display:grid;place-items:center;color:#374151}
+.editbtn:hover{border-color:var(--accent);color:var(--accent)} .editbtn svg{width:18px;height:18px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:#374151}
+.form label.full{grid-column:1 / -1}
+.form input,.form select{padding:9px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:500}
+.form input.bad{border-color:#DC2626;background:#FEF2F2}
+.field-icon{position:relative} .field-icon svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#6B7280}
+.field-icon input{padding-left:36px;width:100%}
+.hint{font-size:12px;font-weight:600} .hint.ok{color:#15803D} .hint.err{color:#B91C1C}
+.imgbox{display:flex;align-items:center;gap:14px}
+.imgbox img{width:84px;height:84px;border-radius:14px;object-fit:cover;background:#F3F4F6;border:1px solid var(--line)}
+.errbox{background:#FEF2F2;color:#991B1B;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600}
+.okbox{background:#ECFDF5;color:#065F46;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600}
+.it.missing{background:#FEF2F2;border-radius:10px;padding-left:8px;padding-right:8px}
+.it .miss{display:block;font-size:12px;color:#B91C1C;font-weight:700}
+.picker{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:14px;min-width:0;white-space:nowrap}
+.list.with-picker .row{grid-template-columns:1fr .6fr 1.6fr .8fr 1fr}
+.picker i{width:24px;height:24px;border-radius:50%;color:#fff;font-style:normal;font-size:10px;font-weight:800;display:grid;place-items:center;flex-shrink:0}
+.row[data-order]{cursor:pointer} .row[data-order]:hover{background:#FAFAFB}
+.accept{border:0;border-radius:9px;padding:6px 12px;font-weight:700;font-size:12px;background:#15803D;color:#fff;margin-left:8px}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:18px;text-align:center;color:var(--muted)}
+.drop svg{width:34px;height:34px;color:var(--accent)}
+code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;font-size:12px;overflow-x:auto}
+.prow.head{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;background:#F9FAFB}
+.prow .nm b{display:block} .prow .nm span{font-size:12px;color:var(--muted)}
+.switch{border:0;border-radius:999px;padding:5px 12px;font-weight:700;font-size:12px}
+.switch.on{background:#DCFCE7;color:#14532D} .switch.off{background:#FEE2E2;color:#7F1D1D}
+/* reports */
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-top:4px solid var(--c)}
+.kpi span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em} .kpi b{display:block;font-size:22px;margin-top:4px;color:var(--c)}
+.chart{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.chart h2{margin:0 0 12px;font-size:16px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:180px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar i{display:block;width:100%;max-width:46px;border-radius:8px 8px 0 0;background:var(--c)}
+.bar small{font-size:12px;color:var(--muted)} .bar em{font-style:normal;font-size:12px;font-weight:700}
+/* returns */
+.rrow{display:grid;grid-template-columns:.9fr 1.6fr 1.4fr .7fr .8fr 1.3fr;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.rrow.head{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;background:#F9FAFB}
+.rrow input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13px}
+.mini{border:0;border-radius:9px;padding:6px 10px;font-weight:700;font-size:12px}
+.mini.ok{background:#DCFCE7;color:#14532D} .mini.no{background:#FEE2E2;color:#7F1D1D}
+/* bottom bar */
+.bottombar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;background:#fff;border-top:1px solid var(--line);padding-block:10px;font-size:13px;color:var(--muted)}
+.bottombar .brandmark{font-weight:800;color:var(--ink);display:flex;align-items:center;gap:6px;font-size:15px}
+.bottombar .brandmark i{width:9px;height:9px;border-radius:50%;background:var(--mint);display:inline-block}
+.bottombar .user{justify-self:end;font-weight:700;color:#111827}
+/* ---------- login page (shown first) ---------- */
+.login{position:fixed;inset:0;z-index:80;background:radial-gradient(120% 80% at 50% 0%,#1E1950 0%,var(--ink) 60%);overflow:auto;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.login[hidden]{display:none}
+.login-wrap{width:100%;max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-height:100%;justify-content:center}
+.login-top{display:flex;justify-content:flex-end}
+.login-top .langs{background:rgba(255,255,255,.08);border-radius:12px;padding:4px}
+.login-top .langs button{background:transparent;border-color:transparent;color:#E5E3FA}
+.login-top .langs button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.market-box{display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.market-box .mk{width:52px;height:52px;border-radius:14px;background:#2F6B3A;color:#fff;display:grid;place-items:center;flex-shrink:0}
+.market-box .mk svg{width:30px;height:30px}
+.market-box b{display:block;font-size:22px;letter-spacing:-.01em;color:#1F2937} .market-box span{font-size:13px;color:var(--muted);font-weight:600}
+.login-card{background:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.login-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.login-head h2{margin:0;font-size:34px;letter-spacing:-.02em;color:var(--ink)}
+.update-box{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:700;font-size:13px;padding:9px 12px}
+.update-box svg{width:18px;height:18px} .update-box.busy svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.update-box.busy svg{animation:none}}
+.login-card > label{font-size:13px;font-weight:800;color:#374151;margin-top:4px}
+.login-card input[type=email],.login-card input[type=password]{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:16px}
+.login-card input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.email-wrap{position:relative}
+.demo-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 30px rgba(0,0,0,.18);padding:6px;z-index:5}
+.demo-list p{margin:4px 8px 6px;font-size:12px;font-weight:800;color:#6B7280;letter-spacing:.04em}
+.demo-opt{width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;border-radius:10px;padding:8px;text-align:left}
+.demo-opt:hover,.demo-opt:focus-visible{background:#EEEBFF;outline:none}
+.demo-opt .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+.demo-opt b{display:block;font-size:14px} .demo-opt span{font-size:12px;color:var(--muted)}
+.remember{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;color:#374151;margin:4px 0}
+.remember input{width:20px;height:20px;accent-color:var(--accent)}
+.login-btn{width:100%;padding:13px;font-size:16px;background:var(--accent)}
+.platforms{border-top:1px solid var(--line);margin-top:8px;padding-top:12px}
+.platforms p{margin:0 0 8px;font-size:12px;font-weight:800;color:#6B7280;text-align:center;letter-spacing:.04em}
+.plat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.plat{display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--line);background:#F9FAFB;border-radius:12px;padding:9px 4px;font-size:12px;font-weight:700;color:#374151}
+.plat svg{width:22px;height:22px} .plat:hover{border-color:var(--accent);color:var(--accent)}
+.login-foot{margin:0;text-align:center;color:#A5A1D6;font-size:12px}
+.toast{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 32px);text-align:center;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:600;z-index:90;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.toast[hidden]{display:none}
+@media (max-width:640px){
+  .row,.list.with-picker .row{grid-template-columns:1fr 1fr;} .row .hide-s{display:none}
+  .prow{grid-template-columns:48px 1fr auto auto} .prow .hide-s{display:none}
+  .form{grid-template-columns:1fr}
+  .rrow{grid-template-columns:1fr 1fr} .rrow .hide-s{display:none}
+  .branch{font-size:14px} h1.page{font-size:20px}
+  /* iPhone: 16px text in fields stops Safari from zooming in */
+  input,select,textarea{font-size:16px !important}
+  .show-s{display:block !important}
+  .ch-cards,.daily-grid{gap:10px}
+  .ch-card{padding:14px;gap:10px} .ch-title{font-size:16px;gap:8px} .ch-title svg{width:34px;height:34px}
+  .kv{font-size:13px} .kv b{font-size:22px}
+  .ch-card .kv-active,.ch-card .kv-returns{font-size:12px;padding:6px 8px 6px 9px;gap:6px} .kv .lbl{gap:5px} .kv .lbl svg{width:15px;height:15px}
+  .ch-card .kv-active b,.ch-card .kv-returns b{font-size:18px}
+  .daily-col{padding:12px} .drow{font-size:13px} .drow b{font-size:15px}
+  .it{grid-template-columns:1fr auto} .it .nm{grid-column:1;grid-row:1}
+  .it .counter,.it > .val{grid-column:2;grid-row:1} .it .wslot{display:none}
+  .it .weight-in{grid-column:1 / -1;grid-row:2;width:100%}
+  .actions .btn{flex:1 1 auto}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch} .tab{flex-shrink:0}
+  .bottombar{font-size:12px}
+}
+.show-s{display:none}
+</style>
+</head>
+<body>
+
+<!-- ============ Login page – everyone starts here ============ -->
+<div id="login" class="login">
+  <div class="login-wrap">
+    <div class="login-top"><div class="langs" role="group" aria-label="Language"></div></div>
+
+    <div class="market-box">
+      <span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10a4 4 0 0 1 8 0"/><path d="M3 10h18l-2 9a2 2 0 0 1-2 1.6H7A2 2 0 0 1 5 19z"/><path d="M8 14v3M12 14v3M16 14v3"/></svg></span>
+      <div><b>Lindenkorb</b><span data-t="marketSub"></span></div>
+    </div>
+
+    <form id="loginForm" class="login-card" novalidate autocomplete="off">
+      <div class="login-head">
+        <h2 data-t="loginTitle"></h2>
+        <button type="button" class="update-box" data-action="update">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>
+          <span data-t="updateApp"></span>
+        </button>
+      </div>
+
+      <label for="loginEmail" data-t="email"></label>
+      <div class="email-wrap">
+        <input id="loginEmail" type="email" inputmode="email" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="demoList" aria-autocomplete="list">
+        <div id="demoList" class="demo-list" role="listbox" hidden></div>
+      </div>
+
+      <label for="loginPass" data-t="password"></label>
+      <input id="loginPass" type="password" autocomplete="off">
+
+      <label class="remember"><input type="checkbox" id="rememberMe"><span data-t="rememberMe"></span></label>
+      <p id="loginError" class="errbox" hidden></p>
+      <button class="btn login-btn" type="submit" data-t="login"></button>
+
+      <div class="platforms">
+        <p data-t="availableOn"></p>
+        <div class="plat-row">
+          <button type="button" class="plat" data-action="store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>Apple</button>
+          <button type="button" class="plat" data-action="store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6.5" y="2.5" width="11" height="19" rx="2"/><path d="M6.5 6h11M6.5 18h11"/></svg>Android</button>
+          <button type="button" class="plat" data-action="store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg>Windows</button>
+        </div>
+      </div>
+    </form>
+    <p class="login-foot">v1.0.0 · VetisPilot</p>
+  </div>
+</div>
+
+<!-- ============ Top bar ============ -->
+<header class="topbar gutter">
+  <button id="menuBtn" class="iconbtn" aria-label="Menu" aria-expanded="false" aria-controls="drawer">
+    <svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <div class="branch">
+    <svg class="i" viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-11a7 7 0 0 0-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+    <div><small data-t="branch"></small>Berlin-Spandau</div>
+  </div>
+  <div class="profile">
+    <button id="profileBtn" class="avatar" aria-haspopup="true" aria-expanded="false" aria-label="Profile"><span id="userInitials">NB</span></button>
+    <div id="dropdown" class="dropdown" hidden>
+      <div class="who"><b id="userName">Nadia Brenner</b><span id="userRole"></span></div>
+      <div class="langs" role="group" aria-label="Language"></div>
+      <button class="btn-logout" data-action="logout">
+        <svg class="i" viewBox="0 0 24 24"><path d="M15 4h3a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3M10 8l-4 4 4 4M6 12h10"/></svg>
+        <span data-t="logout"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ Side menu ============ -->
+<div id="scrim" class="scrim" hidden></div>
+<aside id="drawer" class="drawer" aria-label="Menu">
+  <div class="drawer-head">
+    <span>VetisPilot</span>
+    <button class="iconbtn" data-action="closeMenu" aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <nav>
+    <button class="nav-item" data-go="#home">
+      <svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span data-t="home"></span>
+    </button>
+    <button class="nav-item" data-toggle="subOrders" aria-expanded="true">
+      <svg class="i" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg><span data-t="orders"></span>
+      <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="sub" id="subOrders">
+      <button data-go="#orders-htgo"><i class="dot" style="background:var(--htgo)"></i>HTGO Market</button>
+      <button data-go="#orders-gk"><i class="dot" style="background:var(--gk)"></i>GK Market</button>
+    </div>
+
+    <div class="nav-label" data-t="management"></div>
+    <button class="nav-item" data-go="#products">
+      <svg class="i" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg><span data-t="productList"></span>
+    </button>
+    <button class="nav-item" data-toggle="subReturns" aria-expanded="false">
+      <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21c.8-4.2 3.6-6.5 7-6.5s6.2 2.3 7 6.5"/><path d="M12 14.5l-1.3 2.2 1.3 3.3 1.3-3.3z"/></svg><span data-t="returns"></span>
+      <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="sub" id="subReturns" hidden>
+      <button data-go="#returns-htgo"><i class="dot" style="background:var(--htgo)"></i>HTGO Market</button>
+      <button data-go="#returns-gk"><i class="dot" style="background:var(--gk)"></i>GK Market</button>
+    </div>
+
+    <button class="nav-item" data-toggle="subReports" aria-expanded="false">
+      <svg class="i" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg><span data-t="reports"></span>
+      <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="sub" id="subReports" hidden>
+      <button data-go="#reports-htgo"><i class="dot" style="background:var(--htgo)"></i><span data-t="salesReportHtgo"></span></button>
+      <button data-go="#reports-gk"><i class="dot" style="background:var(--gk)"></i><span data-t="salesReportGk"></span></button>
+    </div>
+
+    <hr class="nav-sep">
+    <button class="nav-item logout" data-action="logout">
+      <svg class="i" viewBox="0 0 24 24"><path d="M15 4h3a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-3M10 8l-4 4 4 4M6 12h10"/></svg><span data-t="logout"></span>
+    </button>
+  </nav>
+</aside>
+
+<main id="view" class="gutter" tabindex="-1"></main>
+
+<!-- ============ Bottom bar ============ -->
+<footer class="bottombar gutter">
+  <span>v1.0.0</span>
+  <span class="brandmark"><i></i>VetisPilot</span>
+  <span class="user" id="footerUser">Nadia Brenner</span>
+</footer>
+
+<!-- ============ Order detail ============ -->
+<div id="modal" class="modal-wrap" hidden></div>
+<div id="toast" class="toast" hidden role="status"></div>
+
+<script>
+(function () {
+  // ======================= Texts in three languages =======================
+  var T = {
+    tr: {locale:"tr-TR", branch:"Lindenkorb Süpermarket", role:"Şube çalışanı", logout:"Çıkış yap", login:"Giriş yap",
+      loginTitle:"Giriş", marketSub:"Süpermarket · Berlin-Spandau", updateApp:"Uygulamayı güncelle", updating:"Kontrol ediliyor…", upToDate:"Uygulamanız güncel (v1.0.0)", email:"E-posta", password:"Şifre", rememberMe:"Beni hatırla", availableOn:"UYGULAMA ŞU CİHAZLARDA", storeSoon:"Prototip: mağaza bağlantısı henüz yok.", demoAccounts:"DEMO HESABI SEÇ", roleManager:"Şube müdürü", loginEmpty:"E-posta ve şifreyi gir.", loginWrong:"E-posta veya şifre hatalı.", welcome:"Hoş geldin, {name}!", home:"Ana Sayfa", orders:"Siparişler",
+      management:"YÖNETİM", productList:"Ürün Listesi", returns:"İadeler", reports:"Raporlar",
+      salesReportHtgo:"HTGO Market Satış Raporu", salesReportGk:"GK Market Satış Raporu",
+      activeOrders:"Aktif Siparişler", pendingReturns:"Bekleyen İadeler", daily:"GÜNLÜK",
+      orderCount:"Sipariş miktarı", orderAmount:"Sipariş tutarı", cancelledCount:"İptal edilen sipariş",
+      PENDING:"Bekliyor", PICKING:"Toplanıyor", READY:"Hazır", ON_THE_WAY:"Yolda", DELIVERED:"Teslim edildi", CANCELLED:"İptal", ALL:"Tümü",
+      REQUESTED:"Talep edildi", APPROVED:"Onaylandı", REJECTED:"Reddedildi",
+      colOrder:"Sipariş no.", colPicker:"Hazırlayan personel", pickedBy:"Hazırlayan", colTime:"Saat", colItems:"Ürün", colTotal:"Tutar", colStatus:"Durum", colWait:"Bekleme",
+      minutes:"dk", noOrders:"Bu sekmede sipariş yok.", startPicking:"Toplamaya başla", markReady:"Hazır olarak işaretle",
+      waitingCourier:"Kurye bekleniyor – sonraki durumu kanal belirler.", picked:"toplandı", weight:"Ağırlık (kg)",
+      bags:"Poşet sayısı", bagFee:"Poşet ücreti", orderedTotal:"Sipariş tutarı", finalTotal:"Son tutar",
+      allLinesFirst:"Önce tüm satırları say (toplanan = sipariş edilen).", callCustomer:"Müşteriyi ara", callNoAnswer:"Cevap yok",
+      callAttempt:"Arama", cancelOrder:"Siparişi iptal et", cancelRule:"İptal için önce 2 cevapsız arama ya da müşteri onayı gerekir.",
+      cancelledUnreachable:"İptal: müşteriye ulaşılamadı (mağaza puanı etkilenmez).", close:"Kapat",
+      searchProducts:"Ürün, marka ya da SKU ara…", colProduct:"Ürün", colSize:"Boyut", colPrice:"Fiyat", colStock:"Stok", colAvail:"Satış durumu",
+      inStock:"Stokta", outOfStock:"Stokta yok", colReturnOrder:"Sipariş", colReason:"Müşteri sebebi", colAmount:"Tutar",
+      approve:"Onayla", reject:"Reddet", rejectReason:"Ret sebebi…", confirm:"Kaydet", reasonRequired:"Ret için sebep zorunlu.",
+      todayKpi:"Bugün", revenue:"Ciro", avgBasket:"Ortalama sepet", cancellations:"İptaller", returnsKpi:"İadeler",
+      last7:"Son 7 gün – sipariş sayısı", topProducts:"En çok satanlar (bugün)", prototype:"Prototip – örnek verilerle çalışır",
+      readyToast:"Sipariş hazır, kanala gönderildi.", pickingToast:"Toplama başladı.", returnSaved:"İade kararı kaydedildi.",
+      acceptOrder:"Siparişi kabul et", accept:"Kabul et", acceptedToast:"Sipariş kabul edildi, toplama başladı.",
+      missingQty:"Eksik", weightMissing:"Ağırlık girilmedi", readyBlocked:"Hazır yapılamıyor – şu satırlar eksik:",
+      readyHelp:"Eksik ürünleri + ile say, tartılı ürünlere ağırlık gir (ör. 1,10). Ürün yoksa müşteriyi ara.",
+      listedCount:"Listelenen ürün sayısı", totalCount:"Toplam ürün sayısı", searchHint:"Ürün adı, marka, SKU ya da barkod ara…",
+      newProduct:"Yeni ürün", importProducts:"İçe aktar", edit:"Düzenle", editProduct:"Ürünü düzenle", photo:"Resim",
+      uploadImage:"Resim yükle", imageRule:"JPG, PNG ya da WebP, en fazla 2 MB.", imageTooBig:"Resim 2 MB'tan büyük ya da türü desteklenmiyor.",
+      nameTr:"Ad (Türkçe)", nameDe:"Ad (Almanca)", nameEn:"Ad (İngilizce)", brandF:"Marka", category:"Kategori", sizeF:"Boyut (ör. 1 L)",
+      priceF:"Fiyat (€)", stockF:"Stok adedi", barcode:"Barkod (EAN-13)", barcodeOk:"Geçerli barkod", barcodeBad:"Geçersiz barkod (13 rakam, son hane kontrol hanesi)",
+      barcodeDup:"Bu barkod başka bir üründe kullanılıyor", save:"Kaydet", cancel:"Vazgeç", required:"Zorunlu alanları doldur.",
+      savedToast:"Ürün kaydedildi.", importTitle:"Ürünleri içe aktar", importInfo:"Başlık satırlı bir CSV dosyası seç. Sütunlar (virgül ya da noktalı virgülle):",
+      chooseFile:"Dosya seç", sampleFile:"Örnek dosya", copySample:"Örneği kopyala", copied:"Kopyalandı.", selectToCopy:"Metin seçildi, kopyalamak için Kopyala'ya bas.", importResult:"{ok} ürün eklendi, {bad} satır hatalı.", noFile:"Henüz dosya seçilmedi.", rowErr:"Satır {n}: {reason}", errColumns:"sütun sayısı eksik (9 sütun olmalı)", errBarcodeExcel:"barkod Excel'de bilimsel sayıya dönüşmüş (ör. 2,00E+12) – barkod sütununu Metin olarak biçimlendir", errBarcodeLength:"barkod 13 rakam olmalı", errBarcodeCheck:"barkodun son hanesi (kontrol hanesi) yanlış", errBarcodeTwice:"bu barkod dosyada iki kez var", errBarcodeDup:"bu barkod zaten bir üründe kullanılıyor", errName:"ürün adı (TR/DE/EN) eksik", errBrand:"marka bulunamadı", errCategory:"kategori kodu geçersiz (ör. DRY, SNK)", errSize:"boyut eksik", errPrice:"fiyat pozitif bir sayı olmalı", errStock:"stok tam sayı olmalı"},
+    de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", logout:"Abmelden", login:"Anmelden",
+      loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
+      management:"VERWALTUNG", productList:"Produktliste", returns:"Retouren", reports:"Berichte",
+      salesReportHtgo:"HTGO Market Umsatzbericht", salesReportGk:"GK Market Umsatzbericht",
+      activeOrders:"Aktive Bestellungen", pendingReturns:"Offene Retouren", daily:"HEUTE",
+      orderCount:"Anzahl Bestellungen", orderAmount:"Bestellwert", cancelledCount:"Stornierte Bestellungen",
+      PENDING:"Offen", PICKING:"In Kommissionierung", READY:"Bereit", ON_THE_WAY:"Unterwegs", DELIVERED:"Zugestellt", CANCELLED:"Storniert", ALL:"Alle",
+      REQUESTED:"Beantragt", APPROVED:"Genehmigt", REJECTED:"Abgelehnt",
+      colOrder:"Best.-Nr.", colPicker:"Kommissioniert von", pickedBy:"Kommissioniert von", colTime:"Zeit", colItems:"Artikel", colTotal:"Summe", colStatus:"Status", colWait:"Wartezeit",
+      minutes:"Min.", noOrders:"Keine Bestellungen in diesem Reiter.", startPicking:"Kommissionierung starten", markReady:"Als bereit markieren",
+      waitingCourier:"Wartet auf den Kurier – den nächsten Status setzt der Kanal.", picked:"kommissioniert", weight:"Gewicht (kg)",
+      bags:"Anzahl Tüten", bagFee:"Tütengebühr", orderedTotal:"Bestellter Betrag", finalTotal:"Endbetrag",
+      allLinesFirst:"Zuerst alle Zeilen zählen (kommissioniert = bestellt).", callCustomer:"Kunden anrufen", callNoAnswer:"Keine Antwort",
+      callAttempt:"Anruf", cancelOrder:"Bestellung stornieren", cancelRule:"Zum Stornieren sind 2 unbeantwortete Anrufe oder die Zustimmung des Kunden nötig.",
+      cancelledUnreachable:"Storniert: Kunde nicht erreichbar (Filialbewertung nicht betroffen).", close:"Schließen",
+      searchProducts:"Produkt, Marke oder SKU suchen …", colProduct:"Produkt", colSize:"Größe", colPrice:"Preis", colStock:"Bestand", colAvail:"Verkaufsstatus",
+      inStock:"Vorrätig", outOfStock:"Nicht vorrätig", colReturnOrder:"Bestellung", colReason:"Grund des Kunden", colAmount:"Betrag",
+      approve:"Genehmigen", reject:"Ablehnen", rejectReason:"Ablehnungsgrund …", confirm:"Speichern", reasonRequired:"Für eine Ablehnung ist ein Grund Pflicht.",
+      todayKpi:"Heute", revenue:"Umsatz", avgBasket:"Ø Warenkorb", cancellations:"Stornierungen", returnsKpi:"Retouren",
+      last7:"Letzte 7 Tage – Anzahl Bestellungen", topProducts:"Meistverkauft (heute)", prototype:"Prototyp – arbeitet mit Beispieldaten",
+      readyToast:"Bestellung bereit, an den Kanal gesendet.", pickingToast:"Kommissionierung gestartet.", returnSaved:"Retourenentscheidung gespeichert.",
+      acceptOrder:"Bestellung annehmen", accept:"Annehmen", acceptedToast:"Bestellung angenommen, Kommissionierung gestartet.",
+      missingQty:"Fehlt", weightMissing:"Kein Gewicht eingegeben", readyBlocked:"Nicht bereit – diese Zeilen fehlen:",
+      readyHelp:"Fehlende Artikel mit + zählen, bei Gewichtsartikeln das Gewicht eingeben (z. B. 1,10). Fehlt ein Artikel, den Kunden anrufen.",
+      listedCount:"Angezeigte Produkte", totalCount:"Produkte gesamt", searchHint:"Produktname, Marke, SKU oder Barcode suchen …",
+      newProduct:"Neues Produkt", importProducts:"Importieren", edit:"Bearbeiten", editProduct:"Produkt bearbeiten", photo:"Bild",
+      uploadImage:"Bild hochladen", imageRule:"JPG, PNG oder WebP, höchstens 2 MB.", imageTooBig:"Bild größer als 2 MB oder Format nicht unterstützt.",
+      nameTr:"Name (Türkisch)", nameDe:"Name (Deutsch)", nameEn:"Name (Englisch)", brandF:"Marke", category:"Kategorie", sizeF:"Größe (z. B. 1 L)",
+      priceF:"Preis (€)", stockF:"Bestand", barcode:"Barcode (EAN-13)", barcodeOk:"Gültiger Barcode", barcodeBad:"Ungültiger Barcode (13 Ziffern, letzte Ziffer ist die Prüfziffer)",
+      barcodeDup:"Dieser Barcode wird schon bei einem anderen Produkt verwendet", save:"Speichern", cancel:"Abbrechen", required:"Bitte Pflichtfelder ausfüllen.",
+      savedToast:"Produkt gespeichert.", importTitle:"Produkte importieren", importInfo:"Wähle eine CSV-Datei mit Kopfzeile. Spalten (Komma oder Semikolon):",
+      chooseFile:"Datei wählen", sampleFile:"Beispieldatei", copySample:"Beispiel kopieren", copied:"Kopiert.", selectToCopy:"Text markiert, zum Kopieren auf Kopieren tippen.", importResult:"{ok} Produkte hinzugefügt, {bad} Zeilen fehlerhaft.", noFile:"Noch keine Datei gewählt.", rowErr:"Zeile {n}: {reason}", errColumns:"zu wenige Spalten (9 erforderlich)", errBarcodeExcel:"Excel hat den Barcode in eine wissenschaftliche Zahl umgewandelt (z. B. 2,00E+12) – Barcode-Spalte als Text formatieren", errBarcodeLength:"Barcode muss 13 Ziffern haben", errBarcodeCheck:"letzte Ziffer (Prüfziffer) des Barcodes ist falsch", errBarcodeTwice:"dieser Barcode steht zweimal in der Datei", errBarcodeDup:"dieser Barcode wird schon bei einem Produkt verwendet", errName:"Produktname (TR/DE/EN) fehlt", errBrand:"Marke nicht gefunden", errCategory:"Kategoriecode ungültig (z. B. DRY, SNK)", errSize:"Größe fehlt", errPrice:"Preis muss eine positive Zahl sein", errStock:"Bestand muss eine ganze Zahl sein"},
+    en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", logout:"Log out", login:"Log in",
+      loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
+      management:"MANAGEMENT", productList:"Product list", returns:"Returns", reports:"Reports",
+      salesReportHtgo:"HTGO Market sales report", salesReportGk:"GK Market sales report",
+      activeOrders:"Active orders", pendingReturns:"Pending returns", daily:"TODAY",
+      orderCount:"Number of orders", orderAmount:"Order value", cancelledCount:"Cancelled orders",
+      PENDING:"Pending", PICKING:"Picking", READY:"Ready", ON_THE_WAY:"On the way", DELIVERED:"Delivered", CANCELLED:"Cancelled", ALL:"All",
+      REQUESTED:"Requested", APPROVED:"Approved", REJECTED:"Rejected",
+      colOrder:"Order no.", colPicker:"Picked by", pickedBy:"Picked by", colTime:"Time", colItems:"Items", colTotal:"Total", colStatus:"Status", colWait:"Waiting",
+      minutes:"min", noOrders:"No orders in this tab.", startPicking:"Start picking", markReady:"Mark as ready",
+      waitingCourier:"Waiting for the courier – the channel sets the next status.", picked:"picked", weight:"Weight (kg)",
+      bags:"Number of bags", bagFee:"Bag fee", orderedTotal:"Ordered amount", finalTotal:"Final amount",
+      allLinesFirst:"Count every line first (picked = ordered).", callCustomer:"Call customer", callNoAnswer:"No answer",
+      callAttempt:"Call", cancelOrder:"Cancel order", cancelRule:"Cancelling needs 2 unanswered calls or the customer's approval.",
+      cancelledUnreachable:"Cancelled: customer unreachable (store score not affected).", close:"Close",
+      searchProducts:"Search product, brand or SKU…", colProduct:"Product", colSize:"Size", colPrice:"Price", colStock:"Stock", colAvail:"Sales status",
+      inStock:"In stock", outOfStock:"Out of stock", colReturnOrder:"Order", colReason:"Customer reason", colAmount:"Amount",
+      approve:"Approve", reject:"Reject", rejectReason:"Reason for rejection…", confirm:"Save", reasonRequired:"A rejection needs a reason.",
+      todayKpi:"Today", revenue:"Revenue", avgBasket:"Average basket", cancellations:"Cancellations", returnsKpi:"Returns",
+      last7:"Last 7 days – number of orders", topProducts:"Best sellers (today)", prototype:"Prototype – works with sample data",
+      readyToast:"Order ready, sent to the channel.", pickingToast:"Picking started.", returnSaved:"Return decision saved.",
+      acceptOrder:"Accept order", accept:"Accept", acceptedToast:"Order accepted, picking started.",
+      missingQty:"Missing", weightMissing:"No weight entered", readyBlocked:"Cannot mark as ready – these lines are missing:",
+      readyHelp:"Count missing items with +, enter the weight of products sold by weight (e.g. 1.10). If an item is missing, call the customer.",
+      listedCount:"Products listed", totalCount:"Products in total", searchHint:"Search product name, brand, SKU or barcode…",
+      newProduct:"New product", importProducts:"Import", edit:"Edit", editProduct:"Edit product", photo:"Image",
+      uploadImage:"Upload image", imageRule:"JPG, PNG or WebP, at most 2 MB.", imageTooBig:"Image larger than 2 MB or format not supported.",
+      nameTr:"Name (Turkish)", nameDe:"Name (German)", nameEn:"Name (English)", brandF:"Brand", category:"Category", sizeF:"Size (e.g. 1 L)",
+      priceF:"Price (€)", stockF:"Stock", barcode:"Barcode (EAN-13)", barcodeOk:"Valid barcode", barcodeBad:"Invalid barcode (13 digits, the last one is the check digit)",
+      barcodeDup:"This barcode is already used by another product", save:"Save", cancel:"Cancel", required:"Please fill in the required fields.",
+      savedToast:"Product saved.", importTitle:"Import products", importInfo:"Choose a CSV file with a header row. Columns (comma or semicolon):",
+      chooseFile:"Choose file", sampleFile:"Sample file", copySample:"Copy sample", copied:"Copied.", selectToCopy:"Text selected, tap Copy to copy it.", importResult:"{ok} products added, {bad} rows with errors.", noFile:"No file chosen yet.", rowErr:"Row {n}: {reason}", errColumns:"too few columns (9 needed)", errBarcodeExcel:"Excel turned the barcode into a scientific number (e.g. 2.00E+12) – format the barcode column as text", errBarcodeLength:"barcode must have 13 digits", errBarcodeCheck:"the barcode's last digit (check digit) is wrong", errBarcodeTwice:"this barcode appears twice in the file", errBarcodeDup:"this barcode is already used by a product", errName:"product name (TR/DE/EN) missing", errBrand:"brand not found", errCategory:"invalid category code (e.g. DRY, SNK)", errSize:"size missing", errPrice:"price must be a positive number", errStock:"stock must be a whole number"}
+  };
+  var lang = "tr";
+  try { var savedLang = localStorage.getItem("vp-proto-lang"); if (T[savedLang]) lang = savedLang; } catch (e) {}
+  function t(k) { return T[lang][k] || k; }
+  function money(v) { return new Intl.NumberFormat(t("locale"), {style:"currency", currency:"EUR"}).format(v); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+  // ======================= Sample data (from the demo catalog) =======================
+  var P = {
+    "BEV-001":{bk:"alpenrill",ean:"2000000000015",brand:"Alpenrill",en:"Still Spring Water",de:"Stilles Quellwasser",tr:"Doğal Kaynak Suyu",size:{en:"0.5 L",de:"0,5 L",tr:"0,5 L"},price:0.49,stock:16},
+    "BEV-003":{bk:"alpenrill",ean:"2000000000039",brand:"Alpenrill",en:"Still Spring Water",de:"Stilles Quellwasser",tr:"Doğal Kaynak Suyu",size:{en:"5 L",de:"5 L",tr:"5 L"},price:1.99,stock:23},
+    "BEV-006":{bk:"fizzbay",ean:"2000000000060",brand:"Fizzbay",en:"Classic Cola",de:"Cola Classic",tr:"Klasik Kola",size:{en:"1 L",de:"1 L",tr:"1 L"},price:1.89,stock:41},
+    "BEV-009":{bk:"juvora",ean:"2000000000091",brand:"Juvora",en:"Orange Juice 100%",de:"Orangensaft 100 %",tr:"%100 Portakal Suyu",size:{en:"1 L",de:"1 L",tr:"1 L"},price:2.49,stock:15},
+    "PRD-001":{bk:"greenfold",ean:"2000000000138",brand:"Greenfold Farms",en:"Bananas",de:"Bananen",tr:"Muz",size:{en:"1 kg",de:"1 kg",tr:"1 kg"},price:1.69,stock:4,kg:1},
+    "PRD-008":{bk:"greenfold",ean:"2000000000206",brand:"Greenfold Farms",en:"Tomatoes",de:"Tomaten",tr:"Domates",size:{en:"1 kg",de:"1 kg",tr:"1 kg"},price:2.99,stock:1,kg:1},
+    "DRY-001":{bk:"milvara",ean:"2000000000299",brand:"Milvara",en:"Whole Milk 3.5%",de:"Vollmilch 3,5 %",tr:"Tam Yağlı Süt %3,5",size:{en:"1 L",de:"1 L",tr:"1 L"},price:1.29,stock:39},
+    "DRY-002":{bk:"milvara",ean:"2000000000305",brand:"Milvara",en:"Semi-Skimmed Milk 1.5%",de:"Fettarme Milch 1,5 %",tr:"Yarım Yağlı Süt %1,5",size:{en:"1 L",de:"1 L",tr:"1 L"},price:1.19,stock:109},
+    "DRY-003":{bk:"milvara",ean:"2000000000312",brand:"Milvara",en:"Natural Yogurt",de:"Naturjoghurt",tr:"Sade Yoğurt",size:{en:"500 g",de:"500 g",tr:"500 g"},price:1.29,stock:3},
+    "BAK-003":{bk:"crumbwell",ean:"2000000000404",brand:"Crumbwell",en:"Butter Croissants",de:"Buttercroissants",tr:"Tereyağlı Kruvasan",size:{en:"4 pcs",de:"4 Stk.",tr:"4 adet"},price:2.49,stock:56},
+    "SWT-001":{bk:"cacaova",ean:"2000000000442",brand:"Cacaova",en:"Milk Chocolate",de:"Vollmilchschokolade",tr:"Sütlü Çikolata",size:{en:"100 g",de:"100 g",tr:"100 g"},price:1.29,stock:17},
+    "SNK-001":{bk:"krispel",ean:"2000000000527",brand:"Krispel",en:"Sea Salt Potato Chips",de:"Kartoffelchips Meersalz",tr:"Deniz Tuzlu Patates Cipsi",size:{en:"150 g",de:"150 g",tr:"150 g"},price:1.79,stock:49},
+    "BRK-001":{bk:"brewmont",ean:"2000000000572",brand:"Brewmont",en:"Ground Coffee Medium Roast",de:"Kaffee gemahlen, mittlere Röstung",tr:"Öğütülmüş Kahve, Orta Kavrulmuş",size:{en:"500 g",de:"500 g",tr:"500 g"},price:5.99,stock:85},
+    "PCR-005":{bk:"brightmint",ean:"2000000000862",brand:"Brightmint",en:"Whitening Toothpaste",de:"Whitening-Zahnpasta",tr:"Beyazlatıcı Diş Macunu",size:{en:"75 ml",de:"75 ml",tr:"75 ml"},price:2.29,stock:105},
+    "HSH-006":{bk:"softwren",ean:"2000000000978",brand:"Softwren",en:"Toilet Paper 3-Ply",de:"Toilettenpapier 3-lagig",tr:"3 Katlı Tuvalet Kağıdı",size:{en:"8 rolls",de:"8 Rollen",tr:"8 rulo"},price:3.99,stock:110},
+    "FRZ-004":{bk:"frostvale",ean:"2000000000794",brand:"Frostvale",en:"Frozen Pizza Margherita",de:"Tiefkühlpizza Margherita",tr:"Dondurulmuş Margarita Pizza",size:{en:"350 g",de:"350 g",tr:"350 g"},price:2.79,stock:46}
+  };
+  var CATS = {
+    BEV:{tr:"Su & İçecekler",de:"Wasser & Getränke",en:"Water & Beverages"}, PRD:{tr:"Meyve & Sebze",de:"Obst & Gemüse",en:"Fruit & Vegetables"},
+    DRY:{tr:"Süt Ürünleri & Yumurta",de:"Milchprodukte & Eier",en:"Dairy & Eggs"}, BAK:{tr:"Fırın Ürünleri",de:"Backwaren",en:"Bakery"},
+    SWT:{tr:"Çikolata & Şekerleme",de:"Schokolade & Süßwaren",en:"Chocolate & Sweets"}, SNK:{tr:"Atıştırmalıklar",de:"Snacks",en:"Snacks"},
+    BRK:{tr:"Kahve, Çay & Kahvaltılık",de:"Kaffee, Tee & Frühstück",en:"Coffee, Tea & Breakfast"}, PAN:{tr:"Temel Gıda",de:"Grundnahrungsmittel",en:"Pantry"},
+    FRZ:{tr:"Et & Dondurulmuş Gıda",de:"Fleisch & Tiefkühlkost",en:"Meat & Frozen"}, PCR:{tr:"Kişisel Bakım",de:"Körperpflege",en:"Personal Care"},
+    HSH:{tr:"Ev & Temizlik",de:"Haushalt & Reinigung",en:"Household & Cleaning"}, BBY:{tr:"Bebek Bakımı",de:"Babypflege",en:"Baby Care"}
+  };
+  Object.keys(P).forEach(function (sku) { P[sku].cat = sku.split("-")[0]; });
+  var BRANDS = {
+    "alpenrill":{name:"Alpenrill",color:"#0E7490",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkFscGVucmlsbCBpY29uIj48dGl0bGU+QWxwZW5yaWxsIGljb24g4oCUIGZpY3Rpb25hbCBicmFuZDwvdGl0bGU+PHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiMwRTc0OTAiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNCAxNCkgc2NhbGUoMS4zKSI+PHBhdGggZD0iTTIwIDNDMjAgMyA4IDE2LjUgOCAyNC41YTEyIDEyIDAgMCAwIDI0IDBDMzIgMTYuNSAyMCAzIDIwIDNaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTEyLjUgMjZjMi41LTIuMiA1LTIuMiA3LjUgMHM1IDIuMiA3LjUgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMEU3NDkwIiBzdHJva2Utd2lkdGg9IjIuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE0LjUgMzFjMS44LTEuNiAzLjctMS42IDUuNSAwczMuNyAxLjYgNS41IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBFNzQ5MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTMuNSAyMC41YTcgNyAwIDAgMSAzLTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBFNzQ5MCIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iLjU1Ii8+PC9nPjwvc3ZnPg=="},
+    "fizzbay":{name:"Fizzbay",color:"#C2410C",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkZpenpiYXkgaWNvbiI+PHRpdGxlPkZpenpiYXkgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIyMiIgZmlsbD0iI0MyNDEwQyIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48cGF0aCBkPSJNMjMgMTNMMjguNSAyLjUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMSAxMGgxOGwtMi4yIDI1YTIgMiAwIDAgMS0yIDEuOGgtOS42YTIgMiAwIDAgMS0yLTEuOFoiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTIgMTZoMTYiIHN0cm9rZT0iI0MyNDEwQyIgc3Ryb2tlLXdpZHRoPSIxLjYiLz48Y2lyY2xlIGN4PSIxNyIgY3k9IjMwIiByPSIxLjgiIGZpbGw9IiNDMjQxMEMiLz48Y2lyY2xlIGN4PSIyMi41IiBjeT0iMjUiIHI9IjEuNCIgZmlsbD0iI0MyNDEwQyIvPjxjaXJjbGUgY3g9IjE4IiBjeT0iMjEiIHI9IjEuMSIgZmlsbD0iI0MyNDEwQyIvPjxjaXJjbGUgY3g9IjIzIiBjeT0iMzEuNSIgcj0iMSIgZmlsbD0iI0MyNDEwQyIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iOSIgcj0iMS43IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMzQiIGN5PSI0IiByPSIxLjEiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSI3LjUiIGN5PSI2IiByPSIxLjQiIGZpbGw9IiNGRkZGRkYiLz48L2c+PC9zdmc+"},
+    "juvora":{name:"Juvora",color:"#EA8A00",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Ikp1dm9yYSBpY29uIj48dGl0bGU+SnV2b3JhIGljb24g4oCUIGZpY3Rpb25hbCBicmFuZDwvdGl0bGU+PGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMzIiIGZpbGw9IiNFQThBMDAiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNCAxNCkgc2NhbGUoMS4zKSI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iNyIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iMTAiIHI9IjQuOSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRUE4QTAwIiBzdHJva2Utd2lkdGg9IjEuMSIvPjxwYXRoIGQ9Ik0xMCA1LjF2OS44TTUuOCA3LjVsOC40IDQuOU01LjggMTIuNWw4LjQtNC45IiBzdHJva2U9IiNFQThBMDAiIHN0cm9rZS13aWR0aD0iMS4xIi8+PHBhdGggZD0iTTMwIDUuNWMtMS44LTEuNi02LjgtMS4xLTYuOCA0LjcgMCA0IDIuOSA3LjYgNC45IDcuNiAxIDAgMS4yLS42IDEuOS0uNnMuOS42IDEuOS42YzIgMCA0LjktMy42IDQuOS03LjYgMC01LjgtNC45LTYuMy02LjgtNC43WiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0zMCA1LjVjMC0xLjguNy0zIDEuOC0zLjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxlbGxpcHNlIGN4PSIzNCIgY3k9IjIuNiIgcng9IjIuMyIgcnk9IjEuMSIgdHJhbnNmb3JtPSJyb3RhdGUoLTIwIDM0IDIuNikiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTcuOCAxMi41Yy41LTQgMi02LjUgMy42LThNMjIuNiAxMy41Yy0uMi00LS40LTYuNi0xLjItOS41IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIxNy42IiBjeT0iMTQiIHI9IjIuNyIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjIyLjgiIGN5PSIxNSIgcj0iMi43IiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTIwIDE4LjVzLTIuMyAzLjEtMi4zIDQuNmEyLjMgMi4zIDAgMCAwIDQuNiAwYzAtMS41LTIuMy00LjYtMi4zLTQuNloiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTEgMjYuNWgxOGwtMS44IDEwYTEuNiAxLjYgMCAwIDEtMS42IDEuM0gxNC40YTEuNiAxLjYgMCAwIDEtMS42LTEuM1oiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTIuMiAzMGgxNS42IiBzdHJva2U9IiNFQThBMDAiIHN0cm9rZS13aWR0aD0iMS41Ii8+PC9nPjwvc3ZnPg=="},
+    "greenfold":{name:"Greenfold Farms",color:"#2F7D32",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkdyZWVuZm9sZCBGYXJtcyBpY29uIj48dGl0bGU+R3JlZW5mb2xkIEZhcm1zIGljb24g4oCUIGZpY3Rpb25hbCBicmFuZDwvdGl0bGU+PHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiMyRjdEMzIiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNCAxNCkgc2NhbGUoMS4zKSI+PHBhdGggZD0iTTI0IDguNWM2LjUtLjUgMTEuNSA0IDEyLjMgMTEtMy0zLjYtNy01LjYtMTEuNi01LjZaIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMyRjdEMzIiIHN0cm9rZS13aWR0aD0iMS4xIi8+PHBhdGggZD0iTTE1LjggMjNMMTcuNiA5LjVhMi41IDIuNSAwIDAgMSA0LjguNEwyMS42IDIzWiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMkY3RDMyIiBzdHJva2Utd2lkdGg9IjEuMSIvPjxwYXRoIGQ9Ik0xNy4zIDE0aDIuNE0xNyAxOGgyLjYiIHN0cm9rZT0iIzJGN0QzMiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjAgOGwtMi40LTUuMk0yMCA4bC40LTUuOE0yMCA4bDMuMi00LjYiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEgLTEwLjUpIj48cGF0aCBkPSJNMTEgMjIuNWMtMS44LTEuNi03LTEuMS03IDQuOCAwIDQuMiAzIDcuOCA1IDcuOCAxIDAgMS4zLS42IDItLjZzMSAuNiAyIC42YzIgMCA1LTMuNiA1LTcuOCAwLTUuOS01LjItNi40LTctNC44WiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMkY3RDMyIiBzdHJva2Utd2lkdGg9IjEuMiIvPjxwYXRoIGQ9Ik0xMSAyMi41YzAtMS42LjUtMi43IDEuNC0zLjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMS41IC05LjUpIj48cGF0aCBkPSJNMzAgMTkuNWMtMS42IDAtMi42IDEuNi0yLjYgMy42IDAgMS40LS43IDIuMy0xLjggMy42LTEgMS4yLTEuNiAyLjYtMS42IDQuMiAwIDMuMyAyLjcgNS42IDYgNS42czYtMi4zIDYtNS42YzAtMS42LS42LTMtMS42LTQuMi0xLjEtMS4zLTEuOC0yLjItMS44LTMuNiAwLTItMS0zLjYtMi42LTMuNloiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzJGN0QzMiIgc3Ryb2tlLXdpZHRoPSIxLjIiLz48L2c+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMSIgcj0iNS42IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiMyRjdEMzIiIHN0cm9rZS13aWR0aD0iMS4yIi8+PHBhdGggZD0iTTE3LjYgMTYuNGwyLjQgMS4yIDIuNC0xLjItMSAyLjEtMS40LS41LTEuNC41WiIgZmlsbD0iIzJGN0QzMiIvPjxwYXRoIGQ9Ik0zIDIzaDM0YzAgNy44LTcuNiAxMy42LTE3IDEzLjZTMyAzMC44IDMgMjNaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTMgMjNoMzQiIHN0cm9rZT0iIzJGN0QzMiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz48cGF0aCBkPSJNOCAyNy41aDI0TTExLjUgMzJoMTciIHN0cm9rZT0iIzJGN0QzMiIgc3Ryb2tlLXdpZHRoPSIxLjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iLjYiLz48L2c+PC9zdmc+"},
+    "milvara":{name:"Milvara",color:"#1F5FA8",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Ik1pbHZhcmEgaWNvbiI+PHRpdGxlPk1pbHZhcmEgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSIzMiIgZmlsbD0iIzFGNUZBOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48cGF0aCBkPSJNOSA5QzYgOCA0LjUgNSA1IDIuNWMxLjUgMiAzLjUgMyA2IDMuMloiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMzEgOWMzLTEgNC41LTQgNC02LjUtMS41IDItMy41IDMtNiAzLjJaIiBmaWxsPSIjRkZGRkZGIi8+PGVsbGlwc2UgY3g9IjYuNSIgY3k9IjE1IiByeD0iNSIgcnk9IjIuOCIgdHJhbnNmb3JtPSJyb3RhdGUoLTIwIDYuNSAxNSkiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMzMuNSIgY3k9IjE1IiByeD0iNSIgcnk9IjIuOCIgdHJhbnNmb3JtPSJyb3RhdGUoMjAgMzMuNSAxNSkiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTEgOGgxOGMyIDAgMy41IDEuNSAzLjUgMy41VjIyYzAgMi0xIDMuNS0yIDVoLTIxYy0xLTEuNS0yLTMtMi01VjExLjVDNy41IDkuNSA5IDggMTEgOFoiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMjUuNSIgY3k9IjEyIiByeD0iMy40IiByeT0iMi41IiBmaWxsPSIjMUY1RkE4Ii8+PGNpcmNsZSBjeD0iMTQuNSIgY3k9IjE4IiByPSIxLjgiIGZpbGw9IiMxRjVGQTgiLz48Y2lyY2xlIGN4PSIyNS41IiBjeT0iMTgiIHI9IjEuOCIgZmlsbD0iIzFGNUZBOCIvPjxlbGxpcHNlIGN4PSIyMCIgY3k9IjMwIiByeD0iMTAiIHJ5PSI2LjUiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzFGNUZBOCIgc3Ryb2tlLXdpZHRoPSIxLjQiLz48ZWxsaXBzZSBjeD0iMTYuNSIgY3k9IjMwIiByeD0iMS40IiByeT0iMiIgZmlsbD0iIzFGNUZBOCIvPjxlbGxpcHNlIGN4PSIyMy41IiBjeT0iMzAiIHJ4PSIxLjQiIHJ5PSIyIiBmaWxsPSIjMUY1RkE4Ii8+PC9nPjwvc3ZnPg=="},
+    "hearthfield":{name:"Hearthfield",color:"#9F2A2A",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkhlYXJ0aGZpZWxkIGljb24iPjx0aXRsZT5IZWFydGhmaWVsZCBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxwYXRoIGQ9Ik00MCA4IEw3MCAxOCBWNDAgQzcwIDU4IDU2IDY5IDQwIDc0IEMyNCA2OSAxMCA1OCAxMCA0MCBWMThaIiBmaWxsPSIjOUYyQTJBIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0xMyA4Yy01IDAtOC41IDgtOC41IDE0LjVTOCAzMyAxMyAzM3M4LjUtNCA4LjUtMTAuNVMxOCA4IDEzIDhaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTguNSAxOWE2IDYgMCAwIDEgMi42LTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlGMkEyQSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iLjUiLz48cGF0aCBkPSJNMjkgMjAuNWw0LjIgOS41IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSIzMi4zIiBjeT0iMzIuOCIgcj0iMi4zIiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMzUuMyIgY3k9IjMwLjYiIHI9IjIuMyIgZmlsbD0iI0ZGRkZGRiIvPjxlbGxpcHNlIGN4PSIyNiIgY3k9IjEzLjUiIHJ4PSI4LjUiIHJ5PSI2LjYiIHRyYW5zZm9ybT0icm90YXRlKDU1IDI2IDEzLjUpIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiM5RjJBMkEiIHN0cm9rZS13aWR0aD0iMS40Ii8+PHBhdGggZD0iTTI0IDkuNWMyLjUuNSA0LjUgMi41IDUgNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUYyQTJBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIuNiIvPjwvZz48L3N2Zz4="},
+    "crumbwell":{name:"Crumbwell",color:"#8A5A2B",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkNydW1id2VsbCBpY29uIj48dGl0bGU+Q3J1bWJ3ZWxsIGljb24g4oCUIGZpY3Rpb25hbCBicmFuZDwvdGl0bGU+PHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiM4QTVBMkIiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNCAxNCkgc2NhbGUoMS4zKSI+PHBhdGggZD0iTTQgMjJjMC03IDctMTIgMTYtMTJzMTYgNSAxNiAxMnYzYzAgMS40LTEuMSAyLjUtMi41IDIuNWgtMjdDNS4xIDI3LjUgNCAyNi40IDQgMjVaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTEyIDEzLjVsMyA1TTE5IDEybDMgNU0yNiAxMy41bDMgNSIgc3Ryb2tlPSIjOEE1QTJCIiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMuNSAzN2MwLTQuNiAzLTcuNCA2LjgtNy40czYuOCAyLjggNi44IDcuNFoiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzhBNUEyQiIgc3Ryb2tlLXdpZHRoPSIxLjQiLz48cGF0aCBkPSJNOC4zIDMyLjVsNCAyLjZNMTIuMyAzMi41bC00IDIuNiIgc3Ryb2tlPSIjOEE1QTJCIiBzdHJva2Utd2lkdGg9IjEuMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTE4LjUgMzdjMC02IDQtOS42IDguOC05LjZzOC44IDMuNiA4LjggOS42WiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjOEE1QTJCIiBzdHJva2Utd2lkdGg9IjEuNCIvPjxlbGxpcHNlIGN4PSIyNC41IiBjeT0iMzEuNSIgcng9Ii42IiByeT0iLjkiIGZpbGw9IiM4QTVBMkIiLz48ZWxsaXBzZSBjeD0iMjgiIGN5PSIzMC4zIiByeD0iLjYiIHJ5PSIuOSIgZmlsbD0iIzhBNUEyQiIvPjxlbGxpcHNlIGN4PSIzMS4yIiBjeT0iMzIiIHJ4PSIuNiIgcnk9Ii45IiBmaWxsPSIjOEE1QTJCIi8+PGVsbGlwc2UgY3g9IjI3IiBjeT0iMzMuOCIgcng9Ii42IiByeT0iLjkiIGZpbGw9IiM4QTVBMkIiLz48L2c+PC9zdmc+"},
+    "cacaova":{name:"Cacaova",color:"#4A2511",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkNhY2FvdmEgaWNvbiI+PHRpdGxlPkNhY2FvdmEgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSIzMiIgZmlsbD0iIzRBMjUxMSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMTIgMjAgMjApIj48cmVjdCB4PSIxMCIgeT0iNCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjMxIiByeD0iMiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0xNi43IDR2MjBNMjMuMyA0djIwTTEwIDExLjVoMjBNMTAgMTloMjAiIHN0cm9rZT0iIzRBMjUxMSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz48Y2lyY2xlIGN4PSIzMC41IiBjeT0iMy41IiByPSIzLjgiIGZpbGw9IiM0QTI1MTEiLz48Y2lyY2xlIGN4PSIyNyIgY3k9IjIuNiIgcj0iMi4yIiBmaWxsPSIjNEEyNTExIi8+PHJlY3QgeD0iOC4zIiB5PSIyMyIgd2lkdGg9IjIzLjQiIGhlaWdodD0iMTMuNSIgcng9IjEuNiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjNEEyNTExIiBzdHJva2Utd2lkdGg9IjEuNCIvPjxwYXRoIGQ9Ik04LjMgMjYuNWgyMy40IiBzdHJva2U9IiM0QTI1MTEiIHN0cm9rZS13aWR0aD0iMSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMzEuMyIgcj0iMi42IiBmaWxsPSIjNEEyNTExIi8+PC9nPjwvZz48L3N2Zz4="},
+    "nibbins":{name:"Nibbins",color:"#B45309",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Ik5pYmJpbnMgaWNvbiI+PHRpdGxlPk5pYmJpbnMgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIyMiIgZmlsbD0iI0I0NTMwOSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48cmVjdCB4PSI0IiB5PSI1IiB3aWR0aD0iMjEiIGhlaWdodD0iMTYiIHJ4PSIyIiB0cmFuc2Zvcm09InJvdGF0ZSgtMTAgMTQuNSAxMykiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIzLjIiIHN0cm9rZS1kYXNoYXJyYXk9Ii4xIDMuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGcgZmlsbD0iI0I0NTMwOSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIDE0LjUgMTMpIj48Y2lyY2xlIGN4PSI5IiBjeT0iMTAiIHI9Ii45Ii8+PGNpcmNsZSBjeD0iMTQuNSIgY3k9IjEwIiByPSIuOSIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMTAiIHI9Ii45Ii8+PGNpcmNsZSBjeD0iOSIgY3k9IjE2IiByPSIuOSIvPjxjaXJjbGUgY3g9IjE0LjUiIGN5PSIxNiIgcj0iLjkiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjE2IiByPSIuOSIvPjwvZz48Y2lyY2xlIGN4PSIyNSIgY3k9IjI2IiByPSIxMSIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQjQ1MzA5IiBzdHJva2Utd2lkdGg9IjEuNCIvPjxjaXJjbGUgY3g9IjM0LjUiIGN5PSIzMyIgcj0iMy40IiBmaWxsPSIjQjQ1MzA5Ii8+PGNpcmNsZSBjeD0iMzEuOCIgY3k9IjM2IiByPSIyLjQiIGZpbGw9IiNCNDUzMDkiLz48cGF0aCBkPSJNMjAgMjAuNWwyLjItLjUuNSAyLTIuMi42Wk0yOCAxOWwyLS4yLjMgMi4xLTIuMS4yWk0yNS41IDI2LjVsMi4zLjItLjIgMi4yLTIuMi0uM1pNMTguOCAyOGwxLjkuNS0uNSAxLjktMS45LS40Wk0zMSAyNWwxLjguNi0uNiAxLjgtMS43LS41Wk0yMi41IDMzbDEuNy4yLS4yIDEuNy0xLjctLjJaIiBmaWxsPSIjQjQ1MzA5Ii8+PC9nPjwvc3ZnPg=="},
+    "krispel":{name:"Krispel",color:"#B91C1C",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IktyaXNwZWwgaWNvbiI+PHRpdGxlPktyaXNwZWwgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIyMiIgZmlsbD0iI0I5MUMxQyIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48ZWxsaXBzZSBjeD0iMzMuNSIgY3k9IjcuNSIgcng9IjQiIHJ5PSIyLjYiIHRyYW5zZm9ybT0icm90YXRlKC0yNSAzMy41IDcuNSkiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iNi41IiBjeT0iNS41IiByeD0iMy4yIiByeT0iMi4xIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCA2LjUgNS41KSIgZmlsbD0iI0ZGRkZGRiIvPjxlbGxpcHNlIGN4PSIyNyIgY3k9IjMiIHJ4PSIyLjQiIHJ5PSIxLjUiIHRyYW5zZm9ybT0icm90YXRlKDEwIDI3IDMpIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTEwIDEwbDIuNS0yIDIuNSAyIDIuNS0yIDIuNSAyIDIuNS0yIDIuNSAyIDIuNS0yIDIuNSAyQzMxLjUgMTcgMzEuNSAyNiAzMCAzM2wtMi41IDItMi41LTItMi41IDItMi41LTItMi41IDItMi41LTItMi41IDItMi41LTJDOC41IDI2IDguNSAxNyAxMCAxMFoiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjIxLjUiIHI9IjYiIGZpbGw9IiNCOTFDMUMiLz48cGF0aCBkPSJNMTYuMiAyMmMxLjItMi42IDMuNi0zLjggNy42LTIuNi0xIDIuNi0zLjYgNC03LjYgMi42WiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0xMSAxMy41aDE4TTExIDI5LjVoMTgiIHN0cm9rZT0iI0I5MUMxQyIgc3Ryb2tlLXdpZHRoPSIxIiBvcGFjaXR5PSIuNSIvPjwvZz48L3N2Zz4="},
+    "brewmont":{name:"Brewmont",color:"#3F3A36",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJyZXdtb250IGljb24iPjx0aXRsZT5CcmV3bW9udCBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE2IiBmaWxsPSIjM0YzQTM2Ii8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik04IDE0IEgyOCBWMjUgYTggOCAwIDAgMSAtOCA4IEgxNiBhOCA4IDAgMCAxIC04IC04WiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0yOCAxNyBoMi41IGE0IDQgMCAwIDEgMCA4IEgyOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuNiIvPjxwYXRoIGQ9Ik0xNCA1IGMtMiAzIDIgNCAwIDcgTTIwIDUgYy0yIDMgMiA0IDAgNyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4="},
+    "morningrove":{name:"Morningrove",color:"#C77700",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Ik1vcm5pbmdyb3ZlIGljb24iPjx0aXRsZT5Nb3JuaW5ncm92ZSBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE2IiBmaWxsPSIjQzc3NzAwIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0yNiAxMC41YzMtMyA3LTQuMiAxMS00LjIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIxLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxlbGxpcHNlIGN4PSIzMCIgY3k9IjYuMyIgcng9IjIuNyIgcnk9IjEuMiIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDMwIDYuMykiIGZpbGw9IiNGRkZGRkYiLz48ZWxsaXBzZSBjeD0iMzMuOCIgY3k9IjguOCIgcng9IjIuNyIgcnk9IjEuMiIgdHJhbnNmb3JtPSJyb3RhdGUoMjAgMzMuOCA4LjgpIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTMuNSAxOEwyMiA5LjVWMjNIMy41WiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQzc3NzAwIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjkiIGN5PSIxOSIgcj0iMS42IiBmaWxsPSIjQzc3NzAwIi8+PGNpcmNsZSBjeD0iMTUuNSIgY3k9IjE1IiByPSIxLjMiIGZpbGw9IiNDNzc3MDAiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjE5LjgiIHI9IjEuOCIgZmlsbD0iI0M3NzcwMCIvPjxwYXRoIGQ9Ik0xOSAyMmw0LTRoMTRsLTQgNFoiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0M3NzcwMCIgc3Ryb2tlLXdpZHRoPSIxLjMiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMzMgMjJsNC00djEybC00IDRaIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNDNzc3MDAiIHN0cm9rZS13aWR0aD0iMS4zIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHJlY3QgeD0iMTkiIHk9IjIyIiB3aWR0aD0iMTQiIGhlaWdodD0iMTIiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0M3NzcwMCIgc3Ryb2tlLXdpZHRoPSIxLjMiLz48ZWxsaXBzZSBjeD0iOCIgY3k9IjMxIiByeD0iMy44IiByeT0iMi45IiB0cmFuc2Zvcm09InJvdGF0ZSgtMjAgOCAzMSkiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0M3NzcwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz48ZWxsaXBzZSBjeD0iMTQuNSIgY3k9IjM0IiByeD0iMy44IiByeT0iMi45IiB0cmFuc2Zvcm09InJvdGF0ZSgxNSAxNC41IDM0KSIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQzc3NzAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPjxlbGxpcHNlIGN4PSI5IiBjeT0iMzAuNSIgcng9IjEuMSIgcnk9Ii43IiBmaWxsPSIjQzc3NzAwIi8+PGVsbGlwc2UgY3g9IjE1LjMiIGN5PSIzMy42IiByeD0iMS4xIiByeT0iLjciIGZpbGw9IiNDNzc3MDAiLz48L2c+PC9zdmc+"},
+    "granello":{name:"Granello",color:"#A16207",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkdyYW5lbGxvIGljb24iPjx0aXRsZT5HcmFuZWxsbyBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxjaXJjbGUgY3g9IjQwIiBjeT0iNDAiIHI9IjMyIiBmaWxsPSIjQTE2MjA3Ii8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0xMyAxMC41Yy0xLTIgMC00LjUgMi00LjVoMTBjMiAwIDMgMi41IDIgNC41bC0xIDEuNWM1IDMgOC41IDEwIDcuNSAxOC0uNSA0LTMuNSA2LjUtNy41IDYuNUgxMy41Yy00IDAtNy0yLjUtNy41LTYuNS0xLTggMi41LTE1IDcuNS0xOFoiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTMuNSAxMmgxMyIgc3Ryb2tlPSIjQTE2MjA3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMCAzM1YxNy41IiBzdHJva2U9IiNBMTYyMDciIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48ZyBmaWxsPSIjQTE2MjA3Ij48ZWxsaXBzZSBjeD0iMTcuOCIgY3k9IjIyIiByeD0iMS4zIiByeT0iMi41IiB0cmFuc2Zvcm09InJvdGF0ZSgtMzAgMTcuOCAyMikiLz48ZWxsaXBzZSBjeD0iMjIuMiIgY3k9IjIyIiByeD0iMS4zIiByeT0iMi41IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAyMi4yIDIyKSIvPjxlbGxpcHNlIGN4PSIxNy44IiBjeT0iMjYuOCIgcng9IjEuMyIgcnk9IjIuNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTMwIDE3LjggMjYuOCkiLz48ZWxsaXBzZSBjeD0iMjIuMiIgY3k9IjI2LjgiIHJ4PSIxLjMiIHJ5PSIyLjUiIHRyYW5zZm9ybT0icm90YXRlKDMwIDIyLjIgMjYuOCkiLz48ZWxsaXBzZSBjeD0iMjAiIGN5PSIxNy41IiByeD0iMS4yIiByeT0iMi4zIi8+PC9nPjwvZz48L3N2Zz4="},
+    "verdolea":{name:"Verdolea",color:"#4D6B1F",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlZlcmRvbGVhIGljb24iPjx0aXRsZT5WZXJkb2xlYSBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE2IiBmaWxsPSIjNEQ2QjFGIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxyZWN0IHg9IjEwLjUiIHk9IjEuOCIgd2lkdGg9IjUiIGhlaWdodD0iMy40IiByeD0iLjgiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMTEgNS41aDR2M2MwIDEgMyAzIDMgN3YxOGMwIDEuNC0xLjEgMi41LTIuNSAyLjVoLTVDOS4xIDM2IDggMzQuOSA4IDMzLjV2LTE4YzAtNCAzLTYgMy03WiIgZmlsbD0iI0ZGRkZGRiIvPjxlbGxpcHNlIGN4PSIxMyIgY3k9IjI0IiByeD0iMi40IiByeT0iMy4zIiBmaWxsPSIjNEQ2QjFGIi8+PHBhdGggZD0iTTEzIDIwLjdjLjgtMS41IDIuMi0yLjIgMy40LTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRENkIxRiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjYuOCA4bC42LTQuNWguOWwuNiA0LjVaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTI0LjMgMTJsMS41LTQuMmg0LjFsMS41IDQuMloiIGZpbGw9IiNGRkZGRkYiLz48cmVjdCB4PSIyMSIgeT0iMTIiIHdpZHRoPSIxMy42IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI3LjgiIGN5PSIyNC41IiByPSIzLjgiIGZpbGw9IiM0RDZCMUYiLz48cGF0aCBkPSJNMjYuMyAyMS4ybDEuNS45IDEuNS0uOS0uNiAxLjNoLTEuOFoiIGZpbGw9IiNGRkZGRkYiLz48L2c+PC9zdmc+"},
+    "frostvale":{name:"Frostvale",color:"#2563EB",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkZyb3N0dmFsZSBpY29uIj48dGl0bGU+RnJvc3R2YWxlIGljb24g4oCUIGZpY3Rpb25hbCBicmFuZDwvdGl0bGU+PHBhdGggZD0iTTQwIDggTDcwIDE4IFY0MCBDNzAgNTggNTYgNjkgNDAgNzQgQzI0IDY5IDEwIDU4IDEwIDQwIFYxOFoiIGZpbGw9IiMyNTYzRUIiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNCAxNCkgc2NhbGUoMS4zKSI+PGcgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48Zz48cGF0aCBkPSJNMjAgMjBWM00yMCA5LjVsLTMuOC0zLjRNMjAgOS41bDMuOC0zLjRNMjAgMTQuNWwtMi42LTIuM00yMCAxNC41bDIuNi0yLjMiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoNjAgMjAgMjApIj48cGF0aCBkPSJNMjAgMjBWM00yMCA5LjVsLTMuOC0zLjRNMjAgOS41bDMuOC0zLjRNMjAgMTQuNWwtMi42LTIuM00yMCAxNC41bDIuNi0yLjMiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDIwIDIwKSI+PHBhdGggZD0iTTIwIDIwVjNNMjAgOS41bC0zLjgtMy40TTIwIDkuNWwzLjgtMy40TTIwIDE0LjVsLTIuNi0yLjNNMjAgMTQuNWwyLjYtMi4zIi8+PC9nPjxnIHRyYW5zZm9ybT0icm90YXRlKDE4MCAyMCAyMCkiPjxwYXRoIGQ9Ik0yMCAyMFYzTTIwIDkuNWwtMy44LTMuNE0yMCA5LjVsMy44LTMuNE0yMCAxNC41bC0yLjYtMi4zTTIwIDE0LjVsMi42LTIuMyIvPjwvZz48ZyB0cmFuc2Zvcm09InJvdGF0ZSgyNDAgMjAgMjApIj48cGF0aCBkPSJNMjAgMjBWM00yMCA5LjVsLTMuOC0zLjRNMjAgOS41bDMuOC0zLjRNMjAgMTQuNWwtMi42LTIuM00yMCAxNC41bDIuNi0yLjMiLz48L2c+PGcgdHJhbnNmb3JtPSJyb3RhdGUoMzAwIDIwIDIwKSI+PHBhdGggZD0iTTIwIDIwVjNNMjAgOS41bC0zLjgtMy40TTIwIDkuNWwzLjgtMy40TTIwIDE0LjVsLTIuNi0yLjNNMjAgMTQuNWwyLjYtMi4zIi8+PC9nPjwvZz48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIzIiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMS4zIiBmaWxsPSIjMjU2M0VCIi8+PC9nPjwvc3ZnPg=="},
+    "lumora":{name:"Lumora",color:"#7E3AA8",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9Ikx1bW9yYSBpY29uIj48dGl0bGU+THVtb3JhIGljb24g4oCUIGZpY3Rpb25hbCBicmFuZDwvdGl0bGU+PGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iMzIiIGZpbGw9IiM3RTNBQTgiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNCAxNCkgc2NhbGUoMS4zKSI+PHBhdGggZD0iTTE4IDUuNUMyMy41IDUuNSAyNyA5IDI3LjUgMTMuNUwyOS44IDE4bC0yLjIuOC4zIDIuNC0xLjEuNC40IDEuOGMtLjIgMS44LTEuNiAzLTMuOCAzLjJsLS42IDcuOUgxNFYzMGMxLjUtMi41IDEtNi41IDEtMTBaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTE4IDVDMTEgNSA2LjUgMTAgNi41IDE3YzAgNyAyLjUgMTEtLjUgMTguNSA1LS41IDktMy41IDEwLjUtOCAxLTMgMC03IDEtMTFzMy41LTYuNSA2LjUtNy4yQzIyLjUgNi4zIDIwLjUgNSAxOCA1WiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjN0UzQUE4IiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMSAxM2MyIDQuNSAxLjUgMTAtMS41IDE1LjVNMTQuNSA5LjVjLTEuNSAzLTEgNiAwIDkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzdFM0FBOCIgc3Ryb2tlLXdpZHRoPSIxLjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMyAzLjhRMzMgNyAzNi4yIDdRMzMgNyAzMyAxMC4yUTMzIDcgMjkuOCA3UTMzIDcgMzMgMy44WiIgZmlsbD0iI0ZGRkZGRiIvPjwvZz48L3N2Zz4="},
+    "brightmint":{name:"Brightmint",color:"#0F8A6B",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJyaWdodG1pbnQgaWNvbiI+PHRpdGxlPkJyaWdodG1pbnQgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIyMiIgZmlsbD0iIzBGOEE2QiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48cGF0aCBkPSJNMTIgNkM4IDYgNiA5LjUgNi41IDE0Yy41IDUgMi41IDcgMy41IDExIDEgNSAxLjUgMTAgNCAxMHMzLTYgNC04LjVjLjYtMS41IDEuMi0yIDItMnMxLjQuNSAyIDJjMSAyLjUgMS41IDguNSA0IDguNXMzLTUgNC0xMGMxLTQgMy02IDMuNS0xMSAuNS00LjUtMS41LTgtNS41LTgtMyAwLTQuNSAxLjUtOCAxLjVTMTUgNiAxMiA2WiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik0xMC44IDEyLjVjMC0xLjggMS4zLTMgMy0zIiBmaWxsPSJub25lIiBzdHJva2U9IiMwRjhBNkIiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMzUgMS41UTM1IDUgMzguNSA1UTM1IDUgMzUgOC41UTM1IDUgMzEuNSA1UTM1IDUgMzUgMS41WiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik00IDIuNlE0IDUgNi40IDVRNCA1IDQgNy40UTQgNSAxLjYgNVE0IDUgNCAyLjZaIiBmaWxsPSIjRkZGRkZGIi8+PC9nPjwvc3ZnPg=="},
+    "sorelune":{name:"Sorelune",color:"#0B6E8A",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNvcmVsdW5lIGljb24iPjx0aXRsZT5Tb3JlbHVuZSBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE2IiBmaWxsPSIjMEI2RThBIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxlbGxpcHNlIGN4PSIxOSIgY3k9IjIxLjUiIHJ4PSIxMSIgcnk9IjEzLjUiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNNy41IDE4LjVDNyA5LjUgMTMgNC41IDIwIDQuNWM2IDAgMTEgNCAxMSAxMC41LTQtNS0xMC01LjUtMTYtMy41LTMgMS01LjUgMy41LTcuNSA3WiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjMEI2RThBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMi41IDIwcTIuNSAyIDUgME0yMSAyMHEyLjUgMiA1IDBNMTYuNSAyOHEyLjcgMiA1LjQgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMEI2RThBIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iMTIuNSIgY3k9IjI0LjUiIHI9IjEuOCIgZmlsbD0iIzBCNkU4QSIgb3BhY2l0eT0iLjI1Ii8+PGNpcmNsZSBjeD0iMjYiIGN5PSIyNC41IiByPSIxLjgiIGZpbGw9IiMwQjZFOEEiIG9wYWNpdHk9Ii4yNSIvPjxwYXRoIGQ9Ik0zNCA0UTM0IDggMzggOFEzNCA4IDM0IDEyUTM0IDggMzAgOFEzNCA4IDM0IDRaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTM2IDE1LjhRMzYgMTggMzguMiAxOFEzNiAxOCAzNiAyMC4yUTM2IDE4IDMzLjggMThRMzYgMTggMzYgMTUuOFoiIGZpbGw9IiNGRkZGRkYiLz48L2c+PC9zdmc+"},
+    "softwren":{name:"Softwren",color:"#5B6B8C",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNvZnR3cmVuIGljb24iPjx0aXRsZT5Tb2Z0d3JlbiBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxjaXJjbGUgY3g9IjQwIiBjeT0iNDAiIHI9IjMyIiBmaWxsPSIjNUI2QjhDIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0yMCA4djI2YTcgMi44IDAgMCAwIDE0IDBWOFoiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzVCNkI4QyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz48ZWxsaXBzZSBjeD0iMjciIGN5PSI4IiByeD0iNyIgcnk9IjIuOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjNUI2QjhDIiBzdHJva2Utd2lkdGg9IjEuMyIvPjxlbGxpcHNlIGN4PSIyNyIgY3k9IjgiIHJ4PSIyLjIiIHJ5PSIuOSIgZmlsbD0iIzVCNkI4QyIvPjxwYXRoIGQ9Ik01IDEzdjIwYTkuNSAzLjYgMCAwIDAgMTkgMFYxM1oiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzVCNkI4QyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz48ZWxsaXBzZSBjeD0iMTQuNSIgY3k9IjEzIiByeD0iOS41IiByeT0iMy42IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiM1QjZCOEMiIHN0cm9rZS13aWR0aD0iMS4zIi8+PGVsbGlwc2UgY3g9IjE0LjUiIGN5PSIxMyIgcng9IjMiIHJ5PSIxLjIiIGZpbGw9IiM1QjZCOEMiLz48cGF0aCBkPSJNNSAyMy41aDE5IiBzdHJva2U9IiM1QjZCOEMiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iMS42IDEuNiIvPjwvZz48L3N2Zz4="},
+    "shinora":{name:"Shinora",color:"#0D7C8C",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNoaW5vcmEgaWNvbiI+PHRpdGxlPlNoaW5vcmEgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48cmVjdCB4PSI4IiB5PSI4IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIyMiIgZmlsbD0iIzBEN0M4QyIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48cGF0aCBkPSJNMjAgNkwzNSAxOGgtMy41djE2aC0yM1YxOEg1WiIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxyZWN0IHg9IjE3IiB5PSIyNSIgd2lkdGg9IjYiIGhlaWdodD0iOSIgcng9IjEiIGZpbGw9IiMwRDdDOEMiLz48cmVjdCB4PSIxMS41IiB5PSIyMC41IiB3aWR0aD0iNC41IiBoZWlnaHQ9IjQuNSIgcng9Ii42IiBmaWxsPSIjMEQ3QzhDIi8+PHJlY3QgeD0iMjQiIHk9IjIwLjUiIHdpZHRoPSI0LjUiIGhlaWdodD0iNC41IiByeD0iLjYiIGZpbGw9IiMwRDdDOEMiLz48cGF0aCBkPSJNMzMuNSAyLjVRMzMuNSA2LjUgMzcuNSA2LjVRMzMuNSA2LjUgMzMuNSAxMC41UTMzLjUgNi41IDI5LjUgNi41UTMzLjUgNi41IDMzLjUgMi41WiIgZmlsbD0iI0ZGRkZGRiIvPjxwYXRoIGQ9Ik02IDQuNFE2IDcgOC42IDdRNiA3IDYgOS42UTYgNyAzLjQgN1E2IDcgNiA0LjRaIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTM2IDIyLjhRMzYgMjUgMzguMiAyNVEzNiAyNSAzNiAyNy4yUTM2IDI1IDMzLjggMjVRMzYgMjUgMzYgMjIuOFoiIGZpbGw9IiNGRkZGRkYiLz48L2c+PC9zdmc+"},
+    "linenova":{name:"Linenova",color:"#3730A3",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkxpbmVub3ZhIGljb24iPjx0aXRsZT5MaW5lbm92YSBpY29uIOKAlCBmaWN0aW9uYWwgYnJhbmQ8L3RpdGxlPjxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE2IiBmaWxsPSIjMzczMEEzIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTQgMTQpIHNjYWxlKDEuMykiPjxwYXRoIGQ9Ik0xMyA2IEw2IDExIEw5IDE4IEwxMiAxNi41IFYzNCBIMjggVjE2LjUgTDMxIDE4IEwzNCAxMSBMMjcgNiBDMjYgOSAyMyAxMSAyMCAxMSBDMTcgMTEgMTQgOSAxMyA2WiIgZmlsbD0iI0ZGRkZGRiIvPjwvZz48L3N2Zz4="},
+    "cuddlemoss":{name:"Cuddlemoss",color:"#C2416E",icon:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDgwIDgwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkN1ZGRsZW1vc3MgaWNvbiI+PHRpdGxlPkN1ZGRsZW1vc3MgaWNvbiDigJQgZmljdGlvbmFsIGJyYW5kPC90aXRsZT48Y2lyY2xlIGN4PSI0MCIgY3k9IjQwIiByPSIzMiIgZmlsbD0iI0MyNDE2RSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0IDE0KSBzY2FsZSgxLjMpIj48Y2lyY2xlIGN4PSI3IiBjeT0iMjIiIHI9IjIuOCIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjMzIiBjeT0iMjIiIHI9IjIuOCIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjIwIiBjeT0iMjIiIHI9IjEzIiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTIwIDkuM2MtMS42LTMuMiAxLTUuOCAzLjYtNC42LTIuMS4zLTIuOSAyLjEtMS41IDMuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTEzLjUgMjFxMiAxLjggNCAwTTIyLjUgMjFxMiAxLjggNCAwTTE3LjMgMjhxMi43IDIgNS40IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0MyNDE2RSIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjEyLjUiIGN5PSIyNS41IiByPSIyIiBmaWxsPSIjQzI0MTZFIiBvcGFjaXR5PSIuMjUiLz48Y2lyY2xlIGN4PSIyNy41IiBjeT0iMjUuNSIgcj0iMiIgZmlsbD0iI0MyNDE2RSIgb3BhY2l0eT0iLjI1Ii8+PC9nPjwvc3ZnPg=="}
+  };
+  var newCounter = 1;
+  function eanValid(code) {
+    if (!/^\d{13}$/.test(code)) return false;
+    var sum = 0;
+    for (var i = 0; i < 12; i++) sum += (+code[i]) * (i % 2 ? 3 : 1);
+    return (10 - sum % 10) % 10 === +code[12];
+  }
+  function parseNum(v) { var n = parseFloat(String(v).replace(",", ".")); return isNaN(n) ? null : n; }
+  function photoOf(p) { return p.img || (BRANDS[p.bk] ? BRANDS[p.bk].icon : ""); }
+  var NOW = 14 * 60 + 9; // demo clock: 14:09
+  function O(no, ch, status, time, items, extra) {
+    var o = {no:no, ch:ch, status:status, time:time, items:items.map(function (x) { return {sku:x[0], qty:x[1], price:P[x[0]].price, picked:status === "PENDING" ? 0 : (x[2] == null ? x[1] : x[2]), kg:null}; }), calls:0};
+    for (var k in extra || {}) o[k] = extra[k];
+    return o;
+  }
+  var orders = [
+    O("HT-10481","htgo","PENDING","13:58",[["DRY-001",2],["BAK-003",1],["PRD-001",1]]),
+    O("HT-10482","htgo","PENDING","14:04",[["BEV-006",3],["SNK-001",2]]),
+    O("HT-10480","htgo","PICKING","13:52",[["SNK-001",2,1],["BEV-009",1,0]],{picker:"nadia"}),
+    O("HT-10479","htgo","PICKING","13:41",[["BEV-003",2,1],["DRY-003",1,0],["SWT-001",2,2]],{picker:"nadia"}),
+    O("HT-10478","htgo","PICKING","13:36",[["DRY-002",2,2],["BRK-001",1,0],["PRD-008",1,0]],{picker:"lukas"}),
+    O("HT-10477","htgo","READY","13:30",[["BRK-001",1],["DRY-002",1]],{bags:1,picker:"lukas"}),
+    O("HT-10470","htgo","ON_THE_WAY","12:55",[["FRZ-004",2],["BEV-009",1]],{bags:1}),
+    O("HT-10466","htgo","CANCELLED","12:20",[["PCR-005",1]],{reason:"unreachable"}),
+    O("HT-10463","htgo","DELIVERED","11:48",[["DRY-001",3],["BAK-003",2]],{bags:1}),
+    O("HT-10459","htgo","DELIVERED","11:15",[["BRK-001",2],["SWT-001",3]],{bags:1}),
+    O("HT-10455","htgo","DELIVERED","10:40",[["DRY-003",2],["BEV-009",2]],{bags:1}),
+    O("HT-10451","htgo","DELIVERED","10:02",[["HSH-006",1],["PCR-005",2]],{bags:1}),
+    O("HT-10447","htgo","DELIVERED","09:31",[["BEV-006",2],["SNK-001",3]],{bags:1}),
+    O("HT-10442","htgo","DELIVERED","08:57",[["FRZ-004",3],["BEV-001",6]],{bags:2}),
+    O("GK-55121","gk","PENDING","14:05",[["BEV-001",6],["PRD-008",1]]),
+    O("GK-55120","gk","PICKING","13:58",[["BEV-006",2,0],["SWT-001",1,1],["PRD-001",1,0]],{picker:"lukas"}),
+    O("GK-55118","gk","PICKING","13:50",[["HSH-006",1,1],["PCR-005",2,1]],{picker:"lukas"}),
+    O("GK-55117","gk","PICKING","13:47",[["DRY-001",1,1],["BAK-003",2,0]],{picker:"nadia"}),
+    O("GK-55112","gk","ON_THE_WAY","13:10",[["SNK-001",3]],{bags:1}),
+    O("GK-55108","gk","DELIVERED","12:31",[["BRK-001",1],["DRY-001",2]],{bags:1}),
+    O("GK-55103","gk","DELIVERED","11:20",[["BEV-009",2],["BAK-003",1]],{bags:1}),
+    O("GK-55097","gk","DELIVERED","10:12",[["FRZ-004",2],["SWT-001",2]],{bags:1}),
+    O("GK-55091","gk","DELIVERED","09:05",[["BEV-003",2],["DRY-002",2]],{bags:2})
+  ];
+  var returns = [
+    {id:"R-301",ch:"htgo",order:"HT-10455",sku:"DRY-003",reason:{tr:"Ürün bozuk çıktı",de:"Produkt war verdorben",en:"Product was spoiled"},amount:1.29,status:"REQUESTED"},
+    {id:"R-298",ch:"htgo",order:"HT-10447",sku:"SNK-001",reason:{tr:"Paket yırtık geldi",de:"Packung kam beschädigt an",en:"Package arrived torn"},amount:1.79,status:"APPROVED"},
+    {id:"R-412",ch:"gk",order:"GK-55103",sku:"BAK-003",reason:{tr:"Kruvasanlar ezilmiş",de:"Croissants waren zerdrückt",en:"Croissants were squashed"},amount:2.49,status:"REQUESTED"},
+    {id:"R-410",ch:"gk",order:"GK-55097",sku:"FRZ-004",reason:{tr:"Pizza erimiş geldi",de:"Pizza kam aufgetaut an",en:"Pizza arrived thawed"},amount:2.79,status:"REQUESTED"}
+  ];
+  var BAG_FEE = 0.25;
+  var CH = {htgo:{name:"HTGO Market"}, gk:{name:"GK Market"}};
+  var ICON = {
+    htgo:'<svg viewBox="0 0 80 80" aria-hidden="true"><rect x="8" y="8" width="64" height="64" rx="16" fill="#1D4ED8"/><g transform="translate(14 14) scale(1.3)"><path d="M1.5 18.5h8M3.5 24h7M1.5 29.5h8" stroke="#DBE6FF" stroke-width="2.4" stroke-linecap="round"/><g transform="skewX(-10) translate(5 0)"><path d="M18 13.5v-2.5a5 5 0 0 1 10 0v2.5" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"/><path d="M13 13.5h20l-1.4 21a2 2 0 0 1-2 1.8H16.4a2 2 0 0 1-2-1.8Z" fill="#FFFFFF"/><path d="M15.5 20.5h15" stroke="#1D4ED8" stroke-width="1.6" stroke-linecap="round"/></g></g></svg>',
+    gk:'<svg viewBox="0 0 80 80" aria-hidden="true"><rect x="8" y="8" width="64" height="64" rx="16" fill="#7C4A21"/><g transform="translate(14 14) scale(1.3)"><path d="M10 17.5a10 9.5 0 0 1 20 0" fill="none" stroke="#F3E6D3" stroke-width="2.6" stroke-linecap="round"/><path d="M5 17.5h30l-3.4 16.4a2 2 0 0 1-2 1.6H10.4a2 2 0 0 1-2-1.6Z" fill="#F3E6D3"/><path d="M6.4 23h27.2M7.6 29h24.8" stroke="#7C4A21" stroke-width="1.4"/><path d="M13 17.5v18M20 17.5v18M27 17.5v18" stroke="#7C4A21" stroke-width="1.2" opacity=".75"/><path d="M3.5 17.5h33" stroke="#F3E6D3" stroke-width="3.2" stroke-linecap="round"/></g></svg>'
+  };
+  var FLAGS = {
+    en:'<svg viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice"><clipPath id="pgb"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#pgb)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>',
+    de:'<svg viewBox="0 0 5 3" preserveAspectRatio="xMidYMid slice"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>',
+    tr:'<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice"><rect width="1200" height="800" fill="#E30A17"/><circle cx="425" cy="400" r="200" fill="#fff"/><circle cx="475" cy="400" r="160" fill="#E30A17"/><polygon fill="#fff" points="583.3,400 652.4,377.5 652.4,304.9 695.1,363.7 764.2,341.2 721.5,400 764.2,458.8 695.1,436.3 652.4,495.1 652.4,422.5"/></svg>'
+  };
+
+  // ======================= Calculations =======================
+  function lineAmount(it, useFinal) {
+    // it.price is the price at order time (US-14): later price changes do not touch existing orders
+    var p = P[it.sku];
+    if (p.kg && useFinal && it.kg) return Math.round(it.price / p.kg * it.kg * 100) / 100;
+    return Math.round(it.price * (useFinal ? it.picked : it.qty) * 100) / 100;
+  }
+  function orderedTotal(o) { return o.items.reduce(function (s, it) { return s + lineAmount(it, false); }, 0); }
+  function finalTotal(o) {
+    return o.items.reduce(function (s, it) { return s + lineAmount(it, true); }, 0) + (o.bags || 0) * BAG_FEE;
+  }
+  function shownTotal(o) { return ["READY","ON_THE_WAY","DELIVERED"].indexOf(o.status) >= 0 ? finalTotal(o) : orderedTotal(o); }
+  function minutesWaiting(o) { var p = o.time.split(":"); return NOW - (parseInt(p[0], 10) * 60 + parseInt(p[1], 10)); }
+  function byCh(ch) { return orders.filter(function (o) { return o.ch === ch; }); }
+  function countStatus(ch, s) { return byCh(ch).filter(function (o) { return o.status === s; }).length; }
+  function active(ch) { return byCh(ch).filter(function (o) { return ["PENDING","PICKING","READY"].indexOf(o.status) >= 0; }).length; }
+  function pendingReturns(ch) { return returns.filter(function (r) { return r.ch === ch && r.status === "REQUESTED"; }).length; }
+  function daily(ch) {
+    var list = byCh(ch), live = list.filter(function (o) { return o.status !== "CANCELLED"; });
+    return {count:list.length, amount:live.reduce(function (s, o) { return s + shownTotal(o); }, 0),
+            cancelled:list.length - live.length, returns:returns.filter(function (r) { return r.ch === ch; }).length};
+  }
+
+  // ======================= Pages =======================
+  var view = document.getElementById("view");
+
+  function pageHome() {
+    var html = '<h1 class="page">' + t("home") + '</h1><div class="ch-cards">';
+    ["htgo","gk"].forEach(function (ch) {
+      html += '<button class="ch-card ' + ch + '" data-go="#orders-' + ch + '"><div class="ch-title">' + ICON[ch] + CH[ch].name + '</div>' +
+        '<div class="kvs"><div class="kv kv-active"><span class="lbl">' + SVG.bag + t("activeOrders") + ':</span><b>' + active(ch) + '</b></div>' +
+        '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div></div></button>';
+    });
+    html += '</div><section class="daily"><h2>' + t("daily") + '</h2><div class="daily-grid">';
+    ["htgo","gk"].forEach(function (ch) {
+      var d = daily(ch);
+      html += '<div class="daily-col ' + ch + '"><h3>' + CH[ch].name + '</h3>' +
+        '<div class="drow"><span>' + t("orderCount") + '</span><b>' + d.count + '</b></div>' +
+        '<div class="drow"><span>' + t("orderAmount") + '</span><b>' + money(d.amount) + '</b></div>' +
+        '<div class="drow"><span>' + t("cancelledCount") + '</span><b>' + d.cancelled + '</b></div></div>';
+    });
+    return html + '</div></section><p class="note" style="margin-top:18px">' + t("prototype") + '</p>';
+  }
+
+  var currentTab = {htgo:"PENDING", gk:"PENDING"};
+  function pickerOf(o) { return ACCOUNTS.filter(function (a) { return a.id === o.picker; })[0]; }
+  function pickerBadge(o) {
+    var a = pickerOf(o);
+    if (!a) return '<span class="note">—</span>';
+    return '<span class="picker"><i style="background:' + a.color + '">' + a.initials + '</i>' + esc(a.name) + '</span>';
+  }
+  function pageOrders(ch) {
+    var tabs = ["PENDING","PICKING","READY","ALL","CANCELLED"];
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("orders") + '</h1></div><div class="tabs" role="tablist">';
+    tabs.forEach(function (s) {
+      var n = s === "ALL" ? byCh(ch).length : countStatus(ch, s);
+      html += '<button class="tab" role="tab" aria-selected="' + (currentTab[ch] === s) + '" data-tab="' + s + '" data-ch="' + ch + '">' + t(s) + ' <span class="n">' + n + '</span></button>';
+    });
+    // In "Picking" and "Ready" the third column shows who is picking / picked the order
+    var showPicker = currentTab[ch] === "PICKING" || currentTab[ch] === "READY";
+    html += '</div><div class="list' + (showPicker ? ' with-picker' : '') + '"><div class="row head"><span>' + t("colOrder") + '</span><span>' + t("colTime") + '</span>' +
+      (showPicker ? '<span>' + t("colPicker") + '</span>' : '<span class="hide-s">' + t("colItems") + '</span>') +
+      '<span class="hide-s">' + t("colTotal") + '</span><span>' + t(currentTab[ch] === "PENDING" ? "colWait" : "colStatus") + '</span></div>';
+    var list = byCh(ch).filter(function (o) { return currentTab[ch] === "ALL" || o.status === currentTab[ch]; });
+    if (!list.length) html += '<div class="empty">' + t("noOrders") + '</div>';
+    list.forEach(function (o) {
+      var last;
+      if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o); last = '<span class="' + (m > 3 ? "late" : "") + '">' + m + ' ' + t("minutes") + '</span>'; }
+      else last = '<span class="pill s-' + o.status + '">' + t(o.status) + '</span>';
+      if (o.status === "PENDING") last = '<span>' + last + '<button class="accept" data-accept="' + o.no + '">✓ ' + t("accept") + '</button></span>';
+      var third = showPicker ? '<span>' + pickerBadge(o) + '</span>'
+        : '<span class="hide-s">' + o.items.reduce(function (s, it) { return s + it.qty; }, 0) + '</span>';
+      html += '<div class="row" role="button" tabindex="0" data-order="' + o.no + '"><span class="no">' + o.no + '</span><span>' + o.time + '</span>' +
+        third + '<span class="hide-s">' + money(shownTotal(o)) + '</span>' + last + '</div>';
+    });
+    return html + '</div></div>';
+  }
+
+  var productFilter = "";
+  var productOrder = Object.keys(P);
+  var SVG = {
+    plus:'<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+    upload:'<svg class="i" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>',
+    search:'<svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
+    edit:'<svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>',
+    image:'<svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>',
+    barcode:'<svg class="i" viewBox="0 0 24 24"><path d="M4 6v12M7 6v12M10 6v12M13 6v12M17 6v12M20 6v12" stroke-width="1.6"/></svg>',
+    bag:'<svg class="i" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg>',
+    ret:'<svg class="i" viewBox="0 0 24 24"><path d="M9 14l-5-5 5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>',
+    copy:'<svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>'
+  };
+  function productMatches(sku, q) {
+    if (!q) return true;
+    var p = P[sku];
+    return [p.brand, p.tr, p.de, p.en, "VP-" + sku, p.ean].join(" ").toLowerCase().indexOf(q) >= 0;
+  }
+  function pageProducts() {
+    var q = productFilter.trim().toLowerCase(), all = Object.keys(P), shown = all.filter(function (s) { return productMatches(s, q); });
+    var html = '<div class="page-head"><h1 class="page">' + t("productList") + '</h1><div class="head-actions">' +
+      '<button class="btn icon" data-new-product>' + SVG.plus + t("newProduct") + '</button>' +
+      '<button class="btn icon ghost" data-import>' + SVG.upload + t("importProducts") + '</button></div></div>' +
+      '<div class="counts"><span>' + t("listedCount") + ': <b>' + shown.length + '</b></span></div>' +
+      '<div class="toolbar"><div class="search">' + SVG.search + '<input id="psearch" type="search" placeholder="' + t("searchHint") + '" value="' + esc(productFilter) + '" aria-label="' + t("searchHint") + '"></div></div>' +
+      '<div class="list"><div class="prow head"><span>' + t("photo") + '</span><span>' + t("colProduct") + '</span><span class="hide-s">' + t("colSize") + '</span><span class="hide-s">' + t("colPrice") +
+      '</span><span class="hide-s">' + t("colStock") + '</span><span>' + t("colAvail") + '</span><span></span></div>';
+    shown.forEach(function (sku) {
+      var p = P[sku], on = p.stock > 0 && !p.off;
+      html += '<div class="prow"><img class="ph" src="' + photoOf(p) + '" alt="">' +
+        '<span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · VP-' + sku + '</span><span class="code">' + SVG.barcode + p.ean + '</span>' +
+        '<span class="show-s"><b style="display:inline">' + money(p.price) + '</b> · ' + esc(p.size[lang]) + ' · ' + t("colStock") + ' ' + p.stock + '</span></span>' +
+        '<span class="hide-s">' + esc(p.size[lang]) + '</span><span class="hide-s">' + money(p.price) + (p.kg ? ' <span class="note">/ ' + esc(p.size[lang]) + '</span>' : '') + '</span>' +
+        '<span class="hide-s">' + p.stock + '</span>' +
+        '<span><button class="switch ' + (on ? "on" : "off") + '" data-toggle-stock="' + sku + '">' + t(on ? "inStock" : "outOfStock") + '</button></span>' +
+        '<button class="editbtn" data-edit="' + sku + '" title="' + t("edit") + '" aria-label="' + t("edit") + '">' + SVG.edit + '</button></div>';
+    });
+    if (!shown.length) html += '<div class="empty">—</div>';
+    return html + '</div>';
+  }
+
+  // ---------- product form (new / edit) and import ----------
+  var editing = null, importing = null;
+  function openProductForm(sku) {
+    var p = sku ? P[sku] : null;
+    editing = {sku:sku, img:p ? p.img || null : null, imgErr:false, err:"",
+      v:{tr:p ? p.tr : "", de:p ? p.de : "", en:p ? p.en : "", bk:p ? p.bk : "milvara", cat:p ? p.cat : "DRY",
+         size:p ? p.size.tr : "", price:p ? String(p.price).replace(".", ",") : "", stock:p ? String(p.stock) : "0", ean:p ? p.ean : ""}};
+    renderProductModal();
+  }
+  function barcodeState(code, ownSku) {
+    if (!code) return "";
+    if (!eanValid(code)) return "bad";
+    var dup = Object.keys(P).some(function (s) { return s !== ownSku && P[s].ean === code; });
+    return dup ? "dup" : "ok";
+  }
+  function renderProductModal() {
+    var e = editing, v = e.v, bs = barcodeState(v.ean, e.sku);
+    var preview = e.img || (BRANDS[v.bk] ? BRANDS[v.bk].icon : "");
+    var brandOpts = Object.keys(BRANDS).map(function (k) { return '<option value="' + k + '"' + (k === v.bk ? " selected" : "") + '>' + esc(BRANDS[k].name) + '</option>'; }).join("");
+    var catOpts = Object.keys(CATS).map(function (k) { return '<option value="' + k + '"' + (k === v.cat ? " selected" : "") + '>' + esc(CATS[k][lang]) + '</option>'; }).join("");
+    var hint = bs === "ok" ? '<span class="hint ok">✓ ' + t("barcodeOk") + '</span>' : bs === "bad" ? '<span class="hint err">' + t("barcodeBad") + '</span>' : bs === "dup" ? '<span class="hint err">' + t("barcodeDup") + '</span>' : '';
+    modal.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-label="' + t(e.sku ? "editProduct" : "newProduct") + '"><div class="modal-head" style="background:var(--ink)"><b>' +
+      t(e.sku ? "editProduct" : "newProduct") + (e.sku ? ' · VP-' + e.sku : '') + '</b></div><div class="modal-body">' +
+      '<div class="imgbox"><img src="' + preview + '" alt=""><div><label class="btn icon ghost" style="display:inline-flex">' + SVG.image + t("uploadImage") +
+      '<input type="file" id="imgfile" accept="image/jpeg,image/png,image/webp" hidden></label><p class="note">' + t("imageRule") + '</p>' +
+      (e.imgErr ? '<p class="hint err">' + t("imageTooBig") + '</p>' : '') + '</div></div>' +
+      '<div class="form">' +
+      field("tr", t("nameTr"), true) + field("de", t("nameDe"), true) + field("en", t("nameEn"), true) +
+      '<label>' + t("brandF") + '<select data-f="bk">' + brandOpts + '</select></label>' +
+      '<label>' + t("category") + '<select data-f="cat">' + catOpts + '</select></label>' +
+      field("size", t("sizeF"), false) + field("price", t("priceF"), false, "decimal") + field("stock", t("stockF"), false, "numeric") +
+      '<label class="full">' + t("barcode") + '<span class="field-icon">' + SVG.barcode + '<input data-f="ean" inputmode="numeric" maxlength="13" value="' + esc(v.ean) + '" class="' + (bs === "bad" || bs === "dup" ? "bad" : "") + '"></span>' + hint + '</label>' +
+      '</div>' + (e.err ? '<div class="errbox">' + e.err + '</div>' : '') +
+      '<div class="actions"><button class="btn" data-save-product>' + t("save") + '</button><button class="btn ghost" data-close-form>' + t("cancel") + '</button></div></div></div>';
+    modal.hidden = false;
+    function field(key, label, full, mode) {
+      return '<label' + (full ? ' class="full"' : '') + '>' + label + '<input data-f="' + key + '"' + (mode ? ' inputmode="' + mode + '"' : '') + ' value="' + esc(v[key]) + '"></label>';
+    }
+  }
+  function saveProduct() {
+    var e = editing, v = e.v, price = parseNum(v.price), stock = parseInt(v.stock, 10);
+    if (!v.tr.trim() || !v.de.trim() || !v.en.trim() || !v.size.trim() || !(price > 0) || !(stock >= 0) || barcodeState(v.ean, e.sku) !== "ok") {
+      e.err = t("required") + (barcodeState(v.ean, e.sku) !== "ok" ? " " + t("barcodeBad") : ""); renderProductModal(); return;
+    }
+    var sku = e.sku || (v.cat + "-N" + String(newCounter++).padStart(2, "0"));
+    var old = P[sku] || {};
+    P[sku] = {bk:v.bk, ean:v.ean, brand:BRANDS[v.bk].name, tr:v.tr.trim(), de:v.de.trim(), en:v.en.trim(), cat:v.cat,
+      size:{tr:v.size.trim(), de:v.size.trim(), en:v.size.trim().replace(",", ".")}, price:Math.round(price * 100) / 100, stock:stock,
+      kg:old.kg, off:old.off, img:e.img};
+    editing = null; modal.hidden = true; render(); toast(t("savedToast"));
+  }
+  function renderImportModal() {
+    var r = importing;
+    modal.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-label="' + t("importTitle") + '"><div class="modal-head" style="background:var(--ink)"><b>' + t("importTitle") + '</b></div><div class="modal-body">' +
+      '<p class="note">' + t("importInfo") + '</p><code class="cols">barcode;name_tr;name_de;name_en;brand;category;size;price;stock</code>' +
+      '<div class="drop">' + SVG.upload + '<p>' + (r.file ? esc(r.file) : t("noFile")) + '</p><label class="btn icon" style="display:inline-flex">' + SVG.upload + t("chooseFile") +
+      '<input type="file" id="csvfile" accept=".csv,text/csv,text/plain" hidden></label></div>' +
+      (r.result ? '<div class="' + (r.bad ? "errbox" : "okbox") + '">' + r.result + '</div>' : '') +
+      '<div><p class="note" style="margin:0 0 6px">' + t("sampleFile") + ':</p><code class="cols" id="samplecsv" style="white-space:pre">' + esc(sampleCsv()) + '</code></div>' +
+      '<div class="actions"><button class="btn icon ghost" data-copy-sample>' + SVG.copy + t("copySample") + '</button><button class="btn ghost" data-close-form style="margin-left:auto">' + t("close") + '</button></div></div></div>';
+    modal.hidden = false;
+  }
+  // Reads a CSV file. Every row is checked; a row with any error is skipped and reported with its line number.
+  function importCsv(text) {
+    var lines = text.replace(/^﻿/, "").split(/\r?\n/), ok = 0, errors = [], seen = {};
+    // The separator comes from the header row: ";" (Excel in DE/TR) or ",". Never both – "1,49" must stay one field.
+    var header = lines[0] || "", sep = header.indexOf(";") >= 0 ? ";" : ",";
+    lines.slice(1).forEach(function (line, idx) {
+      var rowNo = idx + 2;
+      if (!line.trim()) return;
+      var f = line.split(sep).map(function (x) { return x.trim().replace(/^"(.*)"$/, "$1"); });
+      var err = function (key) { errors.push(t("rowErr").replace("{n}", rowNo).replace("{reason}", t(key)) + (f[0] ? " (" + esc(f[0]) + ")" : "")); };
+      if (f.length < 9) return err("errColumns");
+      var code = f[0];
+      if (/^\d+([.,]\d+)?E\+?\d+$/i.test(code)) return err("errBarcodeExcel");
+      if (!/^\d{13}$/.test(code)) return err("errBarcodeLength");
+      if (!eanValid(code)) return err("errBarcodeCheck");
+      if (seen[code]) return err("errBarcodeTwice");
+      if (barcodeState(code, null) === "dup") return err("errBarcodeDup");
+      if (!f[1] || !f[2] || !f[3]) return err("errName");
+      var bk = Object.keys(BRANDS).filter(function (k) { return k === f[4].toLowerCase() || BRANDS[k].name.toLowerCase() === f[4].toLowerCase(); })[0];
+      if (!bk) return err("errBrand");
+      var cat = (f[5] || "").toUpperCase();
+      if (!CATS[cat]) return err("errCategory");
+      if (!f[6]) return err("errSize");
+      var price = parseNum(f[7]);
+      if (!(price > 0)) return err("errPrice");
+      if (!/^\d+$/.test(f[8])) return err("errStock");
+      seen[code] = true;
+      var sku = cat + "-N" + String(newCounter++).padStart(2, "0");
+      P[sku] = {bk:bk, ean:code, brand:BRANDS[bk].name, tr:f[1], de:f[2], en:f[3], cat:cat, size:{tr:f[6], de:f[6], en:f[6].replace(",", ".")},
+        price:Math.round(price * 100) / 100, stock:parseInt(f[8], 10)};
+      ok++;
+    });
+    return {ok:ok, bad:errors.length, errors:errors};
+  }
+
+  var rejecting = null;
+  function pageReturns(ch) {
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("returns") + '</h1></div><div class="list">' +
+      '<div class="rrow head"><span>' + t("colReturnOrder") + '</span><span>' + t("colProduct") + '</span><span class="hide-s">' + t("colReason") + '</span><span class="hide-s">' + t("colAmount") + '</span><span>' + t("colStatus") + '</span><span></span></div>';
+    var list = returns.filter(function (r) { return r.ch === ch; });
+    list.forEach(function (r) {
+      var p = P[r.sku], act = '';
+      if (r.status === "REQUESTED") {
+        act = rejecting === r.id
+          ? '<span style="display:flex;gap:6px"><input id="rreason" placeholder="' + t("rejectReason") + '"><button class="mini no" data-reject-save="' + r.id + '">' + t("confirm") + '</button></span>'
+          : '<span style="display:flex;gap:6px"><button class="mini ok" data-approve="' + r.id + '">' + t("approve") + '</button><button class="mini no" data-reject="' + r.id + '">' + t("reject") + '</button></span>';
+      }
+      html += '<div class="rrow"><span class="no"><b>' + r.order + '</b></span><span class="nm">' + esc(p[lang]) + '<br><span class="note">' + esc(p.brand) + '</span></span><span class="hide-s">' + esc(r.reason[lang]) + (r.rejection ? '<br><span class="note">↳ ' + esc(r.rejection) + '</span>' : '') +
+        '</span><span class="hide-s">' + money(r.amount) + '</span><span><span class="pill s-' + r.status + '">' + t(r.status) + '</span></span>' + act + '</div>';
+    });
+    return html + '</div></div>';
+  }
+
+  var WEEK = {htgo:[38,42,35,47,51,58,11], gk:[29,33,31,36,40,44,8]};
+  function pageReport(ch) {
+    var d = daily(ch), live = d.count - d.cancelled;
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + t(ch === "htgo" ? "salesReportHtgo" : "salesReportGk") + '</h1></div><div class="kpis">' +
+      kpi(t("orderCount"), d.count) + kpi(t("revenue"), money(d.amount)) + kpi(t("avgBasket"), money(live ? d.amount / live : 0)) +
+      kpi(t("cancellations"), d.cancelled) + kpi(t("returnsKpi"), d.returns) + '</div>';
+    var days = [6,5,4,3,2,1,0].map(function (back) { var x = new Date(); x.setDate(x.getDate() - back); return x.toLocaleDateString(t("locale"), {weekday:"short"}); });
+    var max = Math.max.apply(null, WEEK[ch]);
+    html += '<div class="chart"><h2>' + t("last7") + '</h2><div class="bars">';
+    WEEK[ch].forEach(function (v, i) { html += '<div class="bar"><em>' + v + '</em><i style="height:' + Math.round(v / max * 140) + 'px"></i><small>' + days[i] + '</small></div>'; });
+    html += '</div></div><div class="chart" style="margin-top:14px"><h2>' + t("topProducts") + '</h2>';
+    var qty = {};
+    byCh(ch).forEach(function (o) { if (o.status !== "CANCELLED") o.items.forEach(function (it) { qty[it.sku] = (qty[it.sku] || 0) + it.qty; }); });
+    Object.keys(qty).sort(function (a, b) { return qty[b] - qty[a]; }).slice(0, 5).forEach(function (sku) {
+      html += '<div class="drow" style="color:#111827"><span>' + esc(P[sku].brand + " " + P[sku][lang]) + '</span><b>' + qty[sku] + '×</b></div>';
+    });
+    return html + '</div></div>';
+    function kpi(label, val) { return '<div class="kpi"><span>' + label + '</span><b>' + val + '</b></div>'; }
+  }
+
+  // ======================= Order detail (picking) =======================
+  var modal = document.getElementById("modal"), openOrder = null;
+  function renderModal() {
+    var o = openOrder; if (!o) { modal.hidden = true; return; }
+    var picking = o.status === "PICKING", ch = o.ch;
+    var html = '<div class="modal theme-' + ch + '" role="dialog" aria-modal="true" aria-label="' + o.no + '"><div class="modal-head ' + ch + '"><b>' + o.no + ' · ' + CH[ch].name + ' · ' + o.time + (pickerOf(o) ? '<br><span style="font-weight:500;font-size:13px">' + t("pickedBy") + ': ' + esc(pickerOf(o).name) + '</span>' : '') + '</b>' +
+      '<span class="pill s-' + o.status + '">' + t(o.status) + '</span></div><div class="modal-body"><div class="items">';
+    o.items.forEach(function (it, i) {
+      var p = P[it.sku], countOk = it.picked === it.qty, weightOk = !p.kg || it.kg, done = countOk && weightOk;
+      var right = picking
+        ? '<span class="counter"><button data-minus="' + i + '" aria-label="-">−</button><span class="val">' + it.picked + ' / ' + it.qty + '</span><button data-plus="' + i + '" aria-label="+">+</button></span>'
+        : '<span class="val">' + (o.status === "PENDING" ? it.qty + '×' : it.picked + ' / ' + it.qty) + '</span>';
+      var kgText = it.kg ? String(it.kg).replace(".", lang === "en" ? "." : ",") : "";
+      var weight = picking && p.kg ? '<input class="weight-in" type="text" inputmode="decimal" data-kg="' + i + '" value="' + kgText + '" placeholder="' + t("weight") + '" aria-label="' + t("weight") + '">' : '<span class="wslot"></span>';
+      var miss = '';
+      if (picking && !countOk) miss += '<span class="miss">' + t("missingQty") + ': ' + (it.qty - it.picked) + '</span>';
+      if (picking && !weightOk) miss += '<span class="miss">' + t("weightMissing") + '</span>';
+      html += '<div class="it' + (done && picking ? " done" : "") + (picking && !done && o.readyError ? " missing" : "") + '"><span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + ' · ' + money(it.price) + '</span>' + miss + '</span>' + weight + right + '</div>';
+    });
+    html += '</div>';
+    html += '<div class="sum"><span>' + t("orderedTotal") + '</span><span>' + money(orderedTotal(o)) + '</span></div>';
+    if (["READY","ON_THE_WAY","DELIVERED"].indexOf(o.status) >= 0)
+      html += '<div class="sum"><span>' + t("bagFee") + ' (' + (o.bags || 0) + ')</span><span>' + money((o.bags || 0) * BAG_FEE) + '</span></div><div class="sum" style="color:var(--c)"><span>' + t("finalTotal") + '</span><span>' + money(finalTotal(o)) + '</span></div>';
+    if (o.status === "CANCELLED") html += '<p class="note">' + t("cancelledUnreachable") + '</p>';
+    html += '<div class="actions">';
+    if (o.status === "PENDING") html += '<button class="btn" data-start style="background:#15803D">✓ ' + t("acceptOrder") + '</button>';
+    if (picking) {
+      html += '<label class="note">' + t("bags") + ' <input id="bags" class="weight-in" type="number" min="0" max="20" value="' + (o.bagsDraft != null ? o.bagsDraft : 1) + '"></label>' +
+        '<button class="btn" data-ready>' + t("markReady") + '</button>';
+    }
+    if (o.status === "READY") html += '<span class="note">' + t("waitingCourier") + '</span>';
+    if (o.status === "PENDING" || picking) {
+      html += '<button class="btn ghost" data-call>📞 ' + t("callCustomer") + ' (' + o.calls + '/2)</button>' +
+        '<button class="btn danger" data-cancel ' + (o.calls >= 2 ? "" : "disabled") + '>' + t("cancelOrder") + '</button>';
+    }
+    html += '<button class="btn ghost" data-close style="margin-left:auto">' + t("close") + '</button></div>';
+    if (picking && o.readyError) {
+      var missingLines = o.items.filter(function (it) { return it.picked !== it.qty || (P[it.sku].kg && !it.kg); })
+        .map(function (it) { return esc(P[it.sku][lang]); });
+      html += '<div class="errbox">' + t("readyBlocked") + ' ' + missingLines.join(", ") + '<br><span style="font-weight:500">' + t("readyHelp") + '</span></div>';
+    }
+    if ((o.status === "PENDING" || picking) && o.calls < 2) html += '<p class="note">' + t("cancelRule") + '</p>';
+    if (o.calls) html += '<div class="calllog">' + Array.from({length:o.calls}, function (_, k) { return t("callAttempt") + ' ' + (k + 1) + '/2 · ' + t("callNoAnswer"); }).join('<br>') + '</div>';
+    modal.innerHTML = html + '</div></div>';
+    modal.hidden = false;
+  }
+
+  // ======================= Router =======================
+  function render() {
+    var h = location.hash || "#home", parts = h.slice(1).split("-");
+    var page = parts[0], ch = parts[1] === "gk" ? "gk" : "htgo";
+    if (page === "orders") view.innerHTML = pageOrders(ch);
+    else if (page === "products") view.innerHTML = pageProducts();
+    else if (page === "returns") view.innerHTML = pageReturns(ch);
+    else if (page === "reports") view.innerHTML = pageReport(ch);
+    else view.innerHTML = pageHome();
+    document.querySelectorAll(".nav-item[data-go]").forEach(function (b) { b.classList.toggle("active", b.dataset.go === h); });
+    applyStaticTexts();
+    if (openOrder) renderModal();
+    else if (editing) renderProductModal();
+    else if (importing) renderImportModal();
+  }
+  function closeModal() { openOrder = null; editing = null; importing = null; modal.hidden = true; render(); }
+  function sampleCsv() {
+    return "barcode;name_tr;name_de;name_en;brand;category;size;price;stock\n" +
+      eanWithCheck("200000000100") + ";Milvara Laktozsuz Süt;Milvara Laktosefreie Milch;Milvara Lactose-Free Milk;Milvara;DRY;1 L;1,49;30\n" +
+      eanWithCheck("200000000101") + ";Krispel Acı Biberli Cips;Krispel Chips Chili;Krispel Chili Chips;Krispel;SNK;150 g;1,89;25";
+  }
+  function eanWithCheck(base12) {
+    var sum = 0;
+    for (var i = 0; i < 12; i++) sum += (+base12[i]) * (i % 2 ? 3 : 1);
+    return base12 + ((10 - sum % 10) % 10);
+  }
+  function applyStaticTexts() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-t]").forEach(function (el) { el.textContent = t(el.dataset.t); });
+    document.querySelectorAll(".langs").forEach(function (box, n) {
+      box.innerHTML = ["en","de","tr"].map(function (l) {
+        var flag = n ? FLAGS[l].replace(/pgb/g, "pgb" + n) : FLAGS[l];   // unique clip-path id per copy
+        return '<button type="button" data-lang="' + l + '" aria-pressed="' + (l === lang) + '"><span class="flag">' + flag + '</span>' + l.toUpperCase() + '</button>';
+      }).join("");
+    });
+    if (currentUser) {
+      document.getElementById("userRole").textContent = t(currentUser.roleKey);
+    }
+  }
+
+  // ======================= Demo accounts and login =======================
+  // Demo only: in the real app passwords are checked by the backend and stored as BCrypt hashes.
+  var ACCOUNTS = [
+    {id:"nadia", name:"Nadia Brenner", initials:"NB", email:"nadia.brenner@lindenkorb.example", pass:"Nadia#2026", roleKey:"role", color:"#5B3DF5"},
+    {id:"lukas", name:"Lukas Hartmann", initials:"LH", email:"lukas.hartmann@lindenkorb.example", pass:"Lukas#2026", roleKey:"roleManager", color:"#0E7490"}
+  ];
+  var currentUser = null;
+  var loginEl = document.getElementById("login"), emailIn = document.getElementById("loginEmail"),
+      passIn = document.getElementById("loginPass"), demoList = document.getElementById("demoList"), loginErr = document.getElementById("loginError");
+
+  function store(kind, value) {
+    try {
+      var s = kind === "local" ? localStorage : sessionStorage;
+      if (value) s.setItem("vp-proto-user", value); else s.removeItem("vp-proto-user");
+    } catch (x) {}
+  }
+  function stored(kind) { try { return (kind === "local" ? localStorage : sessionStorage).getItem("vp-proto-user"); } catch (x) { return null; } }
+
+  function showDemoList(open) {
+    if (open) {
+      demoList.innerHTML = '<p>' + t("demoAccounts") + '</p>' + ACCOUNTS.map(function (a) {
+        return '<button type="button" class="demo-opt" role="option" data-account="' + a.id + '"><span class="av" style="background:' + a.color + '">' + a.initials +
+          '</span><span><b>' + a.name + '</b><span>' + a.email + ' · ' + t(a.roleKey) + '</span></span></button>';
+      }).join("");
+    }
+    demoList.hidden = !open;
+    emailIn.setAttribute("aria-expanded", String(open));
+  }
+  function pickAccount(id) {
+    var a = ACCOUNTS.filter(function (x) { return x.id === id; })[0];
+    emailIn.value = a.email; passIn.value = a.pass; loginErr.hidden = true;
+    showDemoList(false); document.querySelector(".login-btn").focus();
+  }
+  function enterPanel(a, remember) {
+    currentUser = a;
+    document.getElementById("userInitials").textContent = a.initials;
+    document.getElementById("profileBtn").style.background = a.color;
+    document.getElementById("userName").textContent = a.name;
+    document.getElementById("footerUser").textContent = a.name;
+    store("session", a.id);
+    store("local", remember ? a.id : null);
+    loginEl.hidden = true;
+    location.hash = "#home"; render();
+  }
+  function logout() {
+    currentUser = null; store("session", null); store("local", null);
+    closeModal(); setMenu(false); setDropdown(false);
+    emailIn.value = ""; passIn.value = ""; document.getElementById("rememberMe").checked = false; loginErr.hidden = true;
+    loginEl.hidden = false; loginEl.scrollTop = 0;
+  }
+  function toast(msg) {
+    var el = document.getElementById("toast"); el.textContent = msg; el.hidden = false;
+    clearTimeout(toast.timer); toast.timer = setTimeout(function () { el.hidden = true; }, 2200);
+  }
+
+  // ======================= Menu, profile, logout =======================
+  var drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim"), menuBtn = document.getElementById("menuBtn");
+  function setMenu(open) { drawer.classList.toggle("open", open); scrim.hidden = !open; menuBtn.setAttribute("aria-expanded", String(open)); }
+  var dropdown = document.getElementById("dropdown"), profileBtn = document.getElementById("profileBtn");
+  function setDropdown(open) { dropdown.hidden = !open; profileBtn.setAttribute("aria-expanded", String(open)); }
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".email-wrap")) showDemoList(false);
+    var el = e.target.closest("button, [data-go], [data-order]");
+    if (!el) { if (!e.target.closest(".profile")) setDropdown(false); return; }
+    if (el.dataset.account) { pickAccount(el.dataset.account); return; }
+    if (el.dataset.action === "store") { toast(t("storeSoon")); return; }
+    if (el.dataset.action === "update") {
+      el.classList.add("busy"); el.querySelector("span").textContent = t("updating");
+      // Demo: the check always finds the newest version (open pages receive new versions automatically)
+      setTimeout(function () { el.classList.remove("busy"); el.querySelector("span").textContent = t("updateApp"); toast("✓ " + t("upToDate")); }, 900);
+      return;
+    }
+    if (el === menuBtn) { setMenu(!drawer.classList.contains("open")); return; }
+    if (el === profileBtn) { setDropdown(dropdown.hidden); return; }
+    if (!el.closest(".profile")) setDropdown(false);
+    var d = el.dataset;
+    if (d.go) { location.hash = d.go; setMenu(false); window.scrollTo(0, 0); return; }
+    if (d.toggle) { var sub = document.getElementById(d.toggle), open = sub.hidden; sub.hidden = !open; el.setAttribute("aria-expanded", String(open)); return; }
+    if (d.action === "closeMenu") { setMenu(false); return; }
+    if (d.action === "logout") { logout(); return; }
+    if (d.lang) { lang = d.lang; try { localStorage.setItem("vp-proto-lang", lang); } catch (x) {} render(); return; }
+    if (d.tab) { currentTab[d.ch] = d.tab; render(); return; }
+    if (d.accept) {
+      var acc = orders.filter(function (o) { return o.no === d.accept; })[0];
+      acc.status = "PICKING"; acc.picker = currentUser ? currentUser.id : null; render(); toast(t("acceptedToast")); return;
+    }
+    if (d.order) { openOrder = orders.filter(function (o) { return o.no === d.order; })[0]; renderModal(); return; }
+    // product list: new, edit, import
+    if ("newProduct" in d) { openProductForm(null); return; }
+    if (d.edit) { openProductForm(d.edit); return; }
+    if ("import" in d) { importing = {file:"", result:"", bad:0}; renderImportModal(); return; }
+    if ("closeForm" in d) { closeModal(); return; }
+    if ("saveProduct" in d) { saveProduct(); return; }
+    if ("copySample" in d) {
+      var text = sampleCsv();
+      var done = function () { toast(t("copied")); };
+      var fallback = function () {
+        var node = document.getElementById("samplecsv"), range = document.createRange();
+        range.selectNodeContents(node); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range); toast(t("selectToCopy"));
+      };
+      try { navigator.clipboard.writeText(text).then(done, fallback); } catch (x) { fallback(); }
+      return;
+    }
+    if (d.toggleStock) { var p = P[d.toggleStock]; p.off = !p.off && p.stock > 0 ? true : false; render(); return; }
+    if (d.approve) { find(d.approve).status = "APPROVED"; render(); toast(t("returnSaved")); return; }
+    if (d.reject) { rejecting = d.reject; render(); var inp = document.getElementById("rreason"); if (inp) inp.focus(); return; }
+    if (d.rejectSave) {
+      var reason = (document.getElementById("rreason").value || "").trim();
+      if (!reason) { toast(t("reasonRequired")); return; }
+      var r = find(d.rejectSave); r.status = "REJECTED"; r.rejection = reason; rejecting = null; render(); toast(t("returnSaved")); return;
+    }
+    // order detail actions
+    if (!openOrder) return;
+    var o = openOrder;
+    if ("close" in d) { closeModal(); return; }
+    if ("start" in d) { o.status = "PICKING"; o.picker = currentUser ? currentUser.id : null; currentTab[o.ch] = "PICKING"; toast(t("acceptedToast")); render(); return; }
+    if (d.plus != null) { var a = o.items[+d.plus]; if (a.picked < a.qty) a.picked++; renderModal(); return; }
+    if (d.minus != null) { var b = o.items[+d.minus]; if (b.picked > 0) b.picked--; renderModal(); return; }
+    if ("call" in d) { if (o.calls < 2) o.calls++; renderModal(); return; }
+    if ("cancel" in d) { o.status = "CANCELLED"; o.reason = "unreachable"; render(); return; }
+    if ("ready" in d) {
+      var complete = o.items.every(function (it) { return it.picked === it.qty && (!P[it.sku].kg || it.kg); });
+      if (!complete) { o.readyError = true; renderModal(); return; }
+      o.bags = Math.max(0, Math.min(20, parseInt(document.getElementById("bags").value, 10) || 0));
+      o.readyError = false; o.status = "READY"; currentTab[o.ch] = "READY"; toast(t("readyToast")); render(); return;
+    }
+    function find(id) { return returns.filter(function (x) { return x.id === id; })[0]; }
+  });
+  function find(id) { return returns.filter(function (x) { return x.id === id; })[0]; }
+
+  document.addEventListener("input", function (e) {
+    if (e.target.id === "psearch") {
+      productFilter = e.target.value; var pos = e.target.selectionStart; render();
+      var s = document.getElementById("psearch"); s.focus(); s.setSelectionRange(pos, pos);
+    }
+    if (e.target.dataset.kg != null && openOrder) {
+      var it = openOrder.items[+e.target.dataset.kg], v = parseNum(e.target.value);
+      it.kg = v > 0 ? v : null;
+      var row = e.target.closest(".it"), hintEl = row && row.querySelector(".miss:last-child");
+      if (it.kg && hintEl && hintEl.textContent === t("weightMissing")) hintEl.remove();
+    }
+    if (e.target.id === "bags" && openOrder) openOrder.bagsDraft = e.target.value;
+    if (e.target.dataset.f && editing) {
+      var key = e.target.dataset.f, caret = e.target.selectionStart;
+      editing.v[key] = key === "ean" ? e.target.value.replace(/\D/g, "") : e.target.value;
+      editing.err = "";
+      renderProductModal();
+      var again = modal.querySelector('[data-f="' + key + '"]');
+      if (again) { again.focus(); if (again.setSelectionRange && caret != null) try { again.setSelectionRange(caret, caret); } catch (x) {} }
+    }
+  });
+  document.addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (e.target.id === "imgfile" && editing) {
+      var okType = ["image/jpeg", "image/png", "image/webp"].indexOf(file.type) >= 0;
+      if (!okType || file.size > 2 * 1024 * 1024) { editing.imgErr = true; renderProductModal(); return; }
+      var reader = new FileReader();
+      reader.onload = function () { editing.img = reader.result; editing.imgErr = false; renderProductModal(); };
+      reader.readAsDataURL(file);
+    }
+    if (e.target.id === "csvfile" && importing) {
+      var r2 = new FileReader();
+      r2.onload = function () {
+        var res = importCsv(String(r2.result));
+        importing.file = file.name; importing.bad = res.bad;
+        importing.result = t("importResult").replace("{ok}", res.ok).replace("{bad}", res.bad) +
+          (res.errors.length ? '<ul style="margin:8px 0 0;padding-left:18px;font-weight:500">' + res.errors.slice(0, 10).map(function (x) { return "<li>" + x + "</li>"; }).join("") +
+          (res.errors.length > 10 ? "<li>…</li>" : "") + "</ul>" : "");
+        render();
+      };
+      r2.readAsText(file);
+    }
+  });
+  scrim.addEventListener("click", function () { setMenu(false); });
+  modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.matches && e.target.matches(".row[data-order]")) { e.target.click(); return; }
+    if (e.key !== "Escape") return;
+    if (!demoList.hidden) { showDemoList(false); return; }
+    if (!modal.hidden) closeModal();
+    else if (drawer.classList.contains("open")) setMenu(false);
+    else setDropdown(false);
+  });
+  emailIn.addEventListener("focus", function () { showDemoList(true); });
+  emailIn.addEventListener("click", function () { showDemoList(true); });
+  emailIn.addEventListener("input", function () { loginErr.hidden = true; showDemoList(emailIn.value === ""); });
+  passIn.addEventListener("input", function () { loginErr.hidden = true; });
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var mail = emailIn.value.trim().toLowerCase(), pass = passIn.value;
+    if (!mail || !pass) { loginErr.textContent = t("loginEmpty"); loginErr.hidden = false; return; }
+    var a = ACCOUNTS.filter(function (x) { return x.email === mail && x.pass === pass; })[0];
+    if (!a) { loginErr.textContent = t("loginWrong"); loginErr.hidden = false; passIn.value = ""; passIn.focus(); return; }
+    showDemoList(false);
+    enterPanel(a, document.getElementById("rememberMe").checked);
+    toast(t("welcome").replace("{name}", a.name.split(" ")[0]));
+  });
+  window.addEventListener("hashchange", function () { if (currentUser) render(); });
+
+  // Start: only a remembered (or same-tab) login skips the login page
+  render();
+  var savedId = stored("local") || stored("session");
+  var savedAcc = ACCOUNTS.filter(function (x) { return x.id === savedId; })[0];
+  if (savedAcc) enterPanel(savedAcc, !!stored("local"));
+  else loginEl.hidden = false;
+})();
+</script>
+</body>
+</html>

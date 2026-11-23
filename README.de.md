@@ -25,6 +25,7 @@ VetisPilot ist ein Multi-Channel-Bestellmanagementsystem. Ein Lebensmittelgesch�
 - [04 – Bestellprozess](docs/analysis/04-order-process.de.md)
 - [05 – Bildschirmliste](docs/analysis/05-screens.de.md)
 - [Datenbank – Datenmodell (ER)](docs/database/01-er-model.de.md)
+- [Klickbarer Prototyp des Panels](prototype/panel.html) – Anmeldung, Bestellungen, Kommissionierung, Produkte, Retouren, Berichte (Beispieldaten; Datei im Browser öffnen)
 
 ## Technologie
 | Schicht | Technologie |

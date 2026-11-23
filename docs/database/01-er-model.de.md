@@ -2,7 +2,7 @@
 
 🇬🇧 [English](01-er-model.md) · 🇩🇪 **Deutsch** · 🇹🇷 [Türkçe](01-er-model.tr.md)
 
-Dieses Dokument beschreibt, wie VetisPilot seine Daten in PostgreSQL speichert. Es übersetzt die Analyse ([docs/analysis](../analysis/01-scope.de.md)) in Tabellen. Die ausführbare Fassung ist [database/init/01_schema.sql](../../database/init/01_schema.sql).
+Dieses Dokument beschreibt, wie VetisPilot seine Daten in PostgreSQL speichert. Es übersetzt die Analyse ([docs/analysis](../analysis/01-scope.de.md)) in Tabellen. Die ausführbare Fassung ist [V1__initial_schema.sql](../../backend/src/main/resources/db/migration/V1__initial_schema.sql) – eine Flyway-Migration, die das Backend beim Start ausführt.
 
 ## 1. Konventionen
 | Thema | Regel |
@@ -232,6 +232,7 @@ Regeln, die die Datenbank allein nicht prüfen kann (z. B. dass die Filiale eine
 ## 5. Datenbank lokal starten
 ```powershell
 copy .env.example .env      # einmalig; danach in .env ein eigenes Passwort setzen
-docker compose up -d        # startet PostgreSQL und legt beim ersten Start alle Tabellen an
+docker compose up -d        # startet PostgreSQL (leere Datenbank)
+# danach das Backend starten (IntelliJ oder mvn spring-boot:run): Flyway legt alle Tabellen an
 docker compose down -v      # löscht die Datenbank vollständig (für einen Neustart)
 ```

@@ -25,6 +25,7 @@ VetisPilot is a multi-channel order management system. A grocery store or restau
 - [04 – Order Process](docs/analysis/04-order-process.md)
 - [05 – Screen List](docs/analysis/05-screens.md)
 - [Database – Data Model (ER)](docs/database/01-er-model.md)
+- [Clickable prototype of the panel](prototype/panel.html) – login, orders, picking, products, returns, reports (sample data; open the file in a browser)
 
 ## Tech stack
 | Layer | Technology |
