@@ -96,6 +96,7 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .late{color:#B91C1C;font-weight:800}
 /* waiting levels of pending orders */
 .waitcell{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.timecell{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
 .lvl{border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}
 .lvl.new{background:#DBEAFE;color:#1E3A8A} .lvl.wait{background:#FEF3C7;color:#78350F}
 .lvl.late{background:#FFEDD5;color:#9A3412} .lvl.verylate{background:#B91C1C;color:#fff}
@@ -194,6 +195,7 @@ button.reason{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:80
 .it .miss{display:block;font-size:12px;color:#B91C1C;font-weight:700}
 .picker{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:14px;min-width:0;white-space:nowrap}
 .list.with-picker .row{grid-template-columns:1fr .6fr 1.6fr .8fr 1fr}
+.list.with-wait .row{grid-template-columns:1fr 1.7fr .5fr .8fr 1.1fr}
 .picker i{width:24px;height:24px;border-radius:50%;color:#fff;font-style:normal;font-size:10px;font-weight:800;display:grid;place-items:center;flex-shrink:0}
 .row[data-order]{cursor:pointer} .row[data-order]:hover{background:#FAFAFB}
 .accept{border:0;border-radius:9px;padding:6px 12px;font-weight:700;font-size:12px;background:#15803D;color:#fff;margin-left:8px}
@@ -312,6 +314,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .toast[hidden]{display:none}
 @media (max-width:640px){
   .row,.list.with-picker .row{grid-template-columns:1fr 1fr;} .row .hide-s{display:none}
+  .list.with-wait .row{grid-template-columns:auto 1fr;column-gap:14px} .list.with-wait .row > span:last-child{grid-column:1 / -1}
   .prow{grid-template-columns:48px 1fr auto auto} .prow .hide-s{display:none}
   .form{grid-template-columns:1fr}
   .rrow{grid-template-columns:1fr 1fr} .rrow .hide-s{display:none}
@@ -814,14 +817,26 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   function chime() {
     if (!soundOn) return;
     try {
-      unlockAudio(); var s = audioCtx.currentTime;
-      [[880, 0], [1175, .16], [1568, .32]].forEach(function (n) {
-        var osc = audioCtx.createOscillator(), g = audioCtx.createGain();
-        osc.type = "sine"; osc.frequency.value = n[0];
-        g.gain.setValueAtTime(.0001, s + n[1]); g.gain.exponentialRampToValueAtTime(.25, s + n[1] + .02); g.gain.exponentialRampToValueAtTime(.0001, s + n[1] + .3);
-        osc.connect(g); g.connect(audioCtx.destination); osc.start(s + n[1]); osc.stop(s + n[1] + .32);
-      });
-      if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+      // ~2.7 s: a rising bell arpeggio played twice, the second time ending on a long ringing chord, with a soft echo
+      unlockAudio(); var ctx = audioCtx, s = ctx.currentTime + .05;
+      var out = ctx.createDynamicsCompressor(), master = ctx.createGain(), echo = ctx.createDelay(), fb = ctx.createGain();
+      master.gain.value = .9; echo.delayTime.value = .19; fb.gain.value = .28;
+      master.connect(out); master.connect(echo); echo.connect(fb); fb.connect(echo); fb.connect(out); out.connect(ctx.destination);
+      function bell(freq, at, len, vol) {
+        // a bell = base tone + a few quieter overtones that fade faster
+        [[1, 1], [2, .35], [2.76, .18], [5.4, .06]].forEach(function (h) {
+          var osc = ctx.createOscillator(), g = ctx.createGain();
+          osc.type = "sine"; osc.frequency.value = freq * h[0];
+          var l = len / (h[0] > 1 ? 1.8 : 1);
+          g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(vol * h[1], at + .012); g.gain.exponentialRampToValueAtTime(.0001, at + l);
+          osc.connect(g); g.connect(master); osc.start(at); osc.stop(at + l + .05);
+        });
+      }
+      var C6 = 1046.5, E6 = 1318.5, G6 = 1568, C7 = 2093;
+      [C6, E6, G6, C7].forEach(function (f, i) { bell(f, s + i * .12, .55, .16); });
+      [C6, E6, G6].forEach(function (f, i) { bell(f, s + .9 + i * .12, .5, .16); });
+      [C7, G6, E6].forEach(function (f) { bell(f, s + 1.32, 1.35, .11); });   // final chord rings out
+      if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate([200, 100, 200, 100, 400]);
     } catch (x) {}
   }
   function pendingCount(ch) { return orders.filter(function (o) { return o.status === "PENDING" && (!ch || o.ch === ch); }).length; }
@@ -933,20 +948,23 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     });
     // In "Picking" and "Ready" the third column shows who is picking / picked the order
     var showPicker = currentTab[ch] === "PICKING" || currentTab[ch] === "READY";
-    html += '</div><div class="list' + (showPicker ? ' with-picker' : '') + '"><div class="row head"><span>' + t("colOrder") + '</span><span>' + t("colTime") + '</span>' +
+    html += '</div><div class="list' + (showPicker ? ' with-picker' : '') + (currentTab[ch] === "PENDING" ? ' with-wait' : '') + '"><div class="row head"><span>' + t("colOrder") + '</span><span>' + t("colTime") + '</span>' +
       (showPicker ? '<span>' + t("colPicker") + '</span>' : '<span class="hide-s">' + t("colItems") + '</span>') +
       '<span class="hide-s">' + t("colTotal") + '</span><span>' + t(currentTab[ch] === "PENDING" ? "colWait" : currentTab[ch] === "CANCELLED" ? "colCancelReason" : "colStatus") + '</span></div>';
     var list = byCh(ch).filter(function (o) { return currentTab[ch] === "ALL" || o.status === currentTab[ch]; });
     if (!list.length) html += '<div class="empty">' + t("noOrders") + '</div>';
     list.forEach(function (o) {
       var last;
-      if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o), lv = waitLevel(m); last = '<span class="waitcell"><b>' + m + ' ' + t("minutes") + '</b><span class="lvl ' + lv + '">' + t("lvl_" + lv) + '</span></span>'; }
+      if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o), lv = waitLevel(m); last = '<span class="waitcell"><b>' + m + ' ' + t("minutes") + '</b></span>'; }
       else if (o.status === "CANCELLED") last = '<span class="cxl"><span class="reason cx">' + t("CR_" + o.reason) + '</span>' + scoreNote(o.reason) + '</span>';
       else last = '<span class="pill s-' + o.status + '">' + t(o.status) + '</span>';
       if (o.status === "PENDING") last = '<span>' + last + '<button class="accept" data-accept="' + o.no + '">✓ ' + t("accept") + '</button></span>';
       var third = showPicker ? '<span>' + pickerBadge(o) + '</span>'
         : '<span class="hide-s">' + o.items.reduce(function (s, it) { return s + it.qty; }, 0) + '</span>';
-      html += '<div class="row" role="button" tabindex="0" data-order="' + o.no + '"><span class="no">' + o.no + '</span><span>' + o.time + '</span>' +
+      // waiting orders: the level label sits on the same line as the time
+      var lvNow = o.status === "PENDING" ? waitLevel(minutesWaiting(o)) : "";
+      var timeCell = lvNow ? '<span class="timecell">' + o.time + '<span class="lvl ' + lvNow + '">' + t("lvl_" + lvNow) + '</span></span>' : '<span>' + o.time + '</span>';
+      html += '<div class="row" role="button" tabindex="0" data-order="' + o.no + '"><span class="no">' + o.no + '</span>' + timeCell +
         third + '<span class="hide-s">' + money(shownTotal(o)) + '</span>' + last + '</div>';
     });
     return html + '</div></div>';
@@ -1498,7 +1516,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     showDemoList(false);
     enterPanel(a, document.getElementById("rememberMe").checked);
     // demo: a new order arrives a few seconds after logging in (sound + banner)
-    if (!arriveOrder.demoDone) { arriveOrder.demoDone = true; setTimeout(function () { if (currentUser) arriveOrder(); }, 6000); }
+    if (!arriveOrder.demoDone) { arriveOrder.demoDone = true; setTimeout(function () { if (currentUser) arriveOrder(); }, 10000); }
     toast(t("welcome").replace("{name}", a.name.split(" ")[0]));
   });
   window.addEventListener("hashchange", function () { if (currentUser) render(); });
