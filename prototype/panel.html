@@ -158,6 +158,40 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .prow .nm b{display:block} .prow .nm span{font-size:12px;color:var(--muted)}
 .switch{border:0;border-radius:999px;padding:5px 12px;font-weight:700;font-size:12px}
 .switch.on{background:#DCFCE7;color:#14532D} .switch.off{background:#FEE2E2;color:#7F1D1D}
+/* sales status (open / close per channel) */
+.chans{display:flex;gap:6px;flex-wrap:wrap;border:0;background:none;padding:0}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:800;letter-spacing:.02em}
+.chip.on{background:#DCFCE7;color:#14532D} .chip.off{background:#FEE2E2;color:#7F1D1D} .chip.nostock{background:#F3F4F6;color:#4B5563}
+.chip i{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;color:#374151}
+.filter[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.sale-sum{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.sale-sum div{background:#fff;border-radius:14px;padding:12px 14px;border-left:6px solid var(--c);box-shadow:0 2px 10px rgba(0,0,0,.05);font-size:13px;font-weight:600;color:#374151}
+.sale-sum b{display:block;font-size:15px;color:#111827;margin-bottom:2px}
+.srow{display:grid;grid-template-columns:52px minmax(0,1fr) 110px 110px;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line)}
+.srow.head{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;background:#F9FAFB}
+.srow img.ph{width:48px;height:48px;border-radius:10px;object-fit:cover;background:#F3F4F6;display:block}
+.srow .nm b{display:block} .srow .nm span{display:block;font-size:12px;color:var(--muted)}
+.srow.closed{background:#FFFBFB}
+.tgl-cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#4B5563}
+.tgl{position:relative;width:50px;height:28px;border-radius:999px;border:0;background:#D1D5DB;padding:0;transition:background .15s}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .15s}
+.tgl[aria-checked="true"]{background:#16A34A} .tgl[aria-checked="true"]::after{transform:translateX(22px)}
+.tgl:disabled{opacity:.5;cursor:not-allowed} .tgl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ch-name{display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.ch-name i{width:9px;height:9px;border-radius:50%;display:inline-block}
+/* reasons (returns and cancellations) */
+.reason{display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:3px 8px;font-size:12px;font-weight:800;background:#FFF1E6;color:#9A3412}
+.reason.cx{background:#FEE2E2;color:#7F1D1D}
+.reason-note{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.score{display:block;font-size:11px;font-weight:700;margin-top:3px} .score.bad{color:#B91C1C} .score.ok{color:#15803D}
+.reason-sum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.reason-sum span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;color:#374151}
+.reason-sum b{color:#9A3412;margin-left:4px}
+.cxl{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.modal select{padding:9px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;max-width:100%}
+.cx-box{background:#FEF2F2;border-radius:12px;padding:10px 12px;font-size:14px}
 /* reports */
 .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px}
 .kpi{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-top:4px solid var(--c)}
@@ -188,10 +222,18 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .login-top .langs{background:rgba(255,255,255,.08);border-radius:12px;padding:4px}
 .login-top .langs button{background:transparent;border-color:transparent;color:#E5E3FA}
 .login-top .langs button[aria-pressed="true"]{background:#fff;color:var(--ink)}
-.market-box{display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.market-box .mk{width:52px;height:52px;border-radius:14px;background:#2F6B3A;color:#fff;display:grid;place-items:center;flex-shrink:0}
+/* market box: pale lilac fading into the button purple, with a slow light sweep */
+.market-box{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:center;gap:14px;text-align:center;color:#fff;border-radius:18px;padding:18px 16px;
+  background:linear-gradient(115deg,#E4DBFF 0%,#B49CFF 22%,#8466FF 50%,#5B3DF5 78%,#3F22C9 100%);
+  box-shadow:0 14px 36px rgba(91,61,245,.45),inset 0 1px 0 rgba(255,255,255,.65),inset 0 -1px 0 rgba(30,10,120,.35)}
+.market-box::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(90% 120% at 20% 0%,rgba(255,255,255,.45),transparent 60%)}
+.market-box::after{content:"";position:absolute;top:-40%;bottom:-40%;left:-60%;width:40%;z-index:-1;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:mk-shine 5s ease-in-out infinite}
+@keyframes mk-shine{0%,60%{left:-60%}100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.market-box::after{animation:none;display:none}}
+.market-box .mk{width:52px;height:52px;border-radius:14px;background:rgba(63,34,201,.35);border:1px solid rgba(255,255,255,.6);color:#fff;display:grid;place-items:center;flex-shrink:0;box-shadow:0 4px 12px rgba(30,10,120,.25)}
 .market-box .mk svg{width:30px;height:30px}
-.market-box b{display:block;font-size:22px;letter-spacing:-.01em;color:#1F2937} .market-box span{font-size:13px;color:var(--muted);font-weight:600}
+.market-box b{display:block;font-size:32px;line-height:1.05;font-weight:900;font-style:italic;letter-spacing:-.01em;color:#fff;text-shadow:0 2px 12px rgba(40,15,150,.55)}
+.market-box span{display:block;margin-top:3px;font-size:13px;color:#fff;font-weight:700;letter-spacing:.02em;text-shadow:0 1px 6px rgba(40,15,150,.6)}
 .login-card{background:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .login-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
 .login-head h2{margin:0;font-size:34px;letter-spacing:-.02em;color:var(--ink)}
@@ -225,6 +267,9 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   .prow{grid-template-columns:48px 1fr auto auto} .prow .hide-s{display:none}
   .form{grid-template-columns:1fr}
   .rrow{grid-template-columns:1fr 1fr} .rrow .hide-s{display:none}
+  .srow{grid-template-columns:44px minmax(0,1fr) 62px 62px;gap:8px;padding:10px 12px} .srow img.ph{width:44px;height:44px} .srow .hide-s{display:none}
+  .sale-sum{grid-template-columns:1fr 1fr;gap:8px} .sale-sum div{padding:10px;font-size:12px}
+  .tgl-cell{font-size:10px}
   .branch{font-size:14px} h1.page{font-size:20px}
   /* iPhone: 16px text in fields stops Safari from zooming in */
   input,select,textarea{font-size:16px !important}
@@ -338,6 +383,9 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     <button class="nav-item" data-go="#products">
       <svg class="i" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg><span data-t="productList"></span>
     </button>
+    <button class="nav-item" data-go="#sale">
+      <svg class="i" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="10" rx="5"/><circle cx="16.5" cy="12" r="3"/></svg><span data-t="saleStatus"></span>
+    </button>
     <button class="nav-item" data-toggle="subReturns" aria-expanded="false">
       <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21c.8-4.2 3.6-6.5 7-6.5s6.2 2.3 7 6.5"/><path d="M12 14.5l-1.3 2.2 1.3 3.3 1.3-3.3z"/></svg><span data-t="returns"></span>
       <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
@@ -396,7 +444,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       callAttempt:"Arama", cancelOrder:"Siparişi iptal et", cancelRule:"İptal için önce 2 cevapsız arama ya da müşteri onayı gerekir.",
       cancelledUnreachable:"İptal: müşteriye ulaşılamadı (mağaza puanı etkilenmez).", close:"Kapat",
       searchProducts:"Ürün, marka ya da SKU ara…", colProduct:"Ürün", colSize:"Boyut", colPrice:"Fiyat", colStock:"Stok", colAvail:"Satış durumu",
-      inStock:"Stokta", outOfStock:"Stokta yok", colReturnOrder:"Sipariş", colReason:"Müşteri sebebi", colAmount:"Tutar",
+      inStock:"Stokta", outOfStock:"Stokta yok", colReturnOrder:"Sipariş", colReason:"İade nedeni", colAmount:"Tutar",
       approve:"Onayla", reject:"Reddet", rejectReason:"Ret sebebi…", confirm:"Kaydet", reasonRequired:"Ret için sebep zorunlu.",
       todayKpi:"Bugün", revenue:"Ciro", avgBasket:"Ortalama sepet", cancellations:"İptaller", returnsKpi:"İadeler",
       last7:"Son 7 gün – sipariş sayısı", topProducts:"En çok satanlar (bugün)", prototype:"Prototip – örnek verilerle çalışır",
@@ -411,7 +459,14 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       priceF:"Fiyat (€)", stockF:"Stok adedi", barcode:"Barkod (EAN-13)", barcodeOk:"Geçerli barkod", barcodeBad:"Geçersiz barkod (13 rakam, son hane kontrol hanesi)",
       barcodeDup:"Bu barkod başka bir üründe kullanılıyor", save:"Kaydet", cancel:"Vazgeç", required:"Zorunlu alanları doldur.",
       savedToast:"Ürün kaydedildi.", importTitle:"Ürünleri içe aktar", importInfo:"Başlık satırlı bir CSV dosyası seç. Sütunlar (virgül ya da noktalı virgülle):",
-      chooseFile:"Dosya seç", sampleFile:"Örnek dosya", copySample:"Örneği kopyala", copied:"Kopyalandı.", selectToCopy:"Metin seçildi, kopyalamak için Kopyala'ya bas.", importResult:"{ok} ürün eklendi, {bad} satır hatalı.", noFile:"Henüz dosya seçilmedi.", rowErr:"Satır {n}: {reason}", errColumns:"sütun sayısı eksik (9 sütun olmalı)", errBarcodeExcel:"barkod Excel'de bilimsel sayıya dönüşmüş (ör. 2,00E+12) – barkod sütununu Metin olarak biçimlendir", errBarcodeLength:"barkod 13 rakam olmalı", errBarcodeCheck:"barkodun son hanesi (kontrol hanesi) yanlış", errBarcodeTwice:"bu barkod dosyada iki kez var", errBarcodeDup:"bu barkod zaten bir üründe kullanılıyor", errName:"ürün adı (TR/DE/EN) eksik", errBrand:"marka bulunamadı", errCategory:"kategori kodu geçersiz (ör. DRY, SNK)", errSize:"boyut eksik", errPrice:"fiyat pozitif bir sayı olmalı", errStock:"stok tam sayı olmalı"},
+      chooseFile:"Dosya seç", sampleFile:"Örnek dosya", copySample:"Örneği kopyala", copied:"Kopyalandı.", selectToCopy:"Metin seçildi, kopyalamak için Kopyala'ya bas.", importResult:"{ok} ürün eklendi, {bad} satır hatalı.", noFile:"Henüz dosya seçilmedi.", rowErr:"Satır {n}: {reason}", errColumns:"sütun sayısı eksik (9 sütun olmalı)", errBarcodeExcel:"barkod Excel'de bilimsel sayıya dönüşmüş (ör. 2,00E+12) – barkod sütununu Metin olarak biçimlendir", errBarcodeLength:"barkod 13 rakam olmalı", errBarcodeCheck:"barkodun son hanesi (kontrol hanesi) yanlış", errBarcodeTwice:"bu barkod dosyada iki kez var", errBarcodeDup:"bu barkod zaten bir üründe kullanılıyor", errName:"ürün adı (TR/DE/EN) eksik", errBrand:"marka bulunamadı", errCategory:"kategori kodu geçersiz (ör. DRY, SNK)", errSize:"boyut eksik", errPrice:"fiyat pozitif bir sayı olmalı", errStock:"stok tam sayı olmalı",
+      saleStatus:"Satışa Aç / Kapat", saleInfo:"Kapalı ürün o kanaldaki müşterilere gösterilmez ve sipariş edilemez. Stoğu 0 olan ürün otomatik olarak kapalıdır.", onSale:"Satışta", offSale:"Kapalı", noStock:"Stok yok",
+      filterAll:"Tümü", filterOn:"Satışta", filterOff:"Kapalı olanlar", saleCount:"{on} satışta · {off} kapalı", saleOpened:"{p} · {ch}: satışa açıldı", saleClosed:"{p} · {ch}: satışa kapatıldı", searchSale:"Ürün, marka ya da barkod ara…", closeBoth:"Her iki kanalda", openSaleList:"Satış durumunu değiştir",
+      byReason:"Nedene göre", customerNote:"Müşteri notu",
+      RR_DAMAGED:"Hasar görmüş ürün", RR_SPOILED:"Bozulmuş ürün", RR_EXPIRED:"Son kullanma tarihi geçmiş", RR_WRONG_ITEM:"Yanlış ürün gönderildi", RR_MISSING_ITEM:"Eksik ürün", RR_COLD_CHAIN:"Soğuk zincir bozulmuş",
+      colCancelReason:"İptal nedeni", cancelReasonPick:"İptal nedeni", cancelledBecause:"İptal nedeni",
+      CR_CUSTOMER_UNREACHABLE:"Müşteriye ulaşılamadı", CR_WRONG_ADDRESS:"Müşteri adresi hatalı", CR_CUSTOMER_CANCELLED:"Müşteri iptal etti", CR_ITEM_MISSING:"Ürün stokta yok", CR_BRANCH_OVERLOADED:"Şube çok yoğun",
+      scoreHit:"Mağaza puanını etkiler", scoreSafe:"Mağaza puanını etkilemez", cancelledToast:"Sipariş iptal edildi: {r}"},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
       management:"VERWALTUNG", productList:"Produktliste", returns:"Retouren", reports:"Berichte",
@@ -428,7 +483,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       callAttempt:"Anruf", cancelOrder:"Bestellung stornieren", cancelRule:"Zum Stornieren sind 2 unbeantwortete Anrufe oder die Zustimmung des Kunden nötig.",
       cancelledUnreachable:"Storniert: Kunde nicht erreichbar (Filialbewertung nicht betroffen).", close:"Schließen",
       searchProducts:"Produkt, Marke oder SKU suchen …", colProduct:"Produkt", colSize:"Größe", colPrice:"Preis", colStock:"Bestand", colAvail:"Verkaufsstatus",
-      inStock:"Vorrätig", outOfStock:"Nicht vorrätig", colReturnOrder:"Bestellung", colReason:"Grund des Kunden", colAmount:"Betrag",
+      inStock:"Vorrätig", outOfStock:"Nicht vorrätig", colReturnOrder:"Bestellung", colReason:"Retourengrund", colAmount:"Betrag",
       approve:"Genehmigen", reject:"Ablehnen", rejectReason:"Ablehnungsgrund …", confirm:"Speichern", reasonRequired:"Für eine Ablehnung ist ein Grund Pflicht.",
       todayKpi:"Heute", revenue:"Umsatz", avgBasket:"Ø Warenkorb", cancellations:"Stornierungen", returnsKpi:"Retouren",
       last7:"Letzte 7 Tage – Anzahl Bestellungen", topProducts:"Meistverkauft (heute)", prototype:"Prototyp – arbeitet mit Beispieldaten",
@@ -443,7 +498,14 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       priceF:"Preis (€)", stockF:"Bestand", barcode:"Barcode (EAN-13)", barcodeOk:"Gültiger Barcode", barcodeBad:"Ungültiger Barcode (13 Ziffern, letzte Ziffer ist die Prüfziffer)",
       barcodeDup:"Dieser Barcode wird schon bei einem anderen Produkt verwendet", save:"Speichern", cancel:"Abbrechen", required:"Bitte Pflichtfelder ausfüllen.",
       savedToast:"Produkt gespeichert.", importTitle:"Produkte importieren", importInfo:"Wähle eine CSV-Datei mit Kopfzeile. Spalten (Komma oder Semikolon):",
-      chooseFile:"Datei wählen", sampleFile:"Beispieldatei", copySample:"Beispiel kopieren", copied:"Kopiert.", selectToCopy:"Text markiert, zum Kopieren auf Kopieren tippen.", importResult:"{ok} Produkte hinzugefügt, {bad} Zeilen fehlerhaft.", noFile:"Noch keine Datei gewählt.", rowErr:"Zeile {n}: {reason}", errColumns:"zu wenige Spalten (9 erforderlich)", errBarcodeExcel:"Excel hat den Barcode in eine wissenschaftliche Zahl umgewandelt (z. B. 2,00E+12) – Barcode-Spalte als Text formatieren", errBarcodeLength:"Barcode muss 13 Ziffern haben", errBarcodeCheck:"letzte Ziffer (Prüfziffer) des Barcodes ist falsch", errBarcodeTwice:"dieser Barcode steht zweimal in der Datei", errBarcodeDup:"dieser Barcode wird schon bei einem Produkt verwendet", errName:"Produktname (TR/DE/EN) fehlt", errBrand:"Marke nicht gefunden", errCategory:"Kategoriecode ungültig (z. B. DRY, SNK)", errSize:"Größe fehlt", errPrice:"Preis muss eine positive Zahl sein", errStock:"Bestand muss eine ganze Zahl sein"},
+      chooseFile:"Datei wählen", sampleFile:"Beispieldatei", copySample:"Beispiel kopieren", copied:"Kopiert.", selectToCopy:"Text markiert, zum Kopieren auf Kopieren tippen.", importResult:"{ok} Produkte hinzugefügt, {bad} Zeilen fehlerhaft.", noFile:"Noch keine Datei gewählt.", rowErr:"Zeile {n}: {reason}", errColumns:"zu wenige Spalten (9 erforderlich)", errBarcodeExcel:"Excel hat den Barcode in eine wissenschaftliche Zahl umgewandelt (z. B. 2,00E+12) – Barcode-Spalte als Text formatieren", errBarcodeLength:"Barcode muss 13 Ziffern haben", errBarcodeCheck:"letzte Ziffer (Prüfziffer) des Barcodes ist falsch", errBarcodeTwice:"dieser Barcode steht zweimal in der Datei", errBarcodeDup:"dieser Barcode wird schon bei einem Produkt verwendet", errName:"Produktname (TR/DE/EN) fehlt", errBrand:"Marke nicht gefunden", errCategory:"Kategoriecode ungültig (z. B. DRY, SNK)", errSize:"Größe fehlt", errPrice:"Preis muss eine positive Zahl sein", errStock:"Bestand muss eine ganze Zahl sein",
+      saleStatus:"Verkauf freigeben / sperren", saleInfo:"Ein gesperrtes Produkt wird den Kunden dieses Kanals nicht angezeigt und kann nicht bestellt werden. Produkte mit Bestand 0 sind automatisch gesperrt.", onSale:"Im Verkauf", offSale:"Gesperrt", noStock:"Kein Bestand",
+      filterAll:"Alle", filterOn:"Im Verkauf", filterOff:"Gesperrte", saleCount:"{on} im Verkauf · {off} gesperrt", saleOpened:"{p} · {ch}: für den Verkauf freigegeben", saleClosed:"{p} · {ch}: für den Verkauf gesperrt", searchSale:"Produkt, Marke oder Barcode suchen …", closeBoth:"In beiden Kanälen", openSaleList:"Verkaufsstatus ändern",
+      byReason:"Nach Grund", customerNote:"Notiz des Kunden",
+      RR_DAMAGED:"Beschädigtes Produkt", RR_SPOILED:"Verdorbenes Produkt", RR_EXPIRED:"Mindesthaltbarkeit abgelaufen", RR_WRONG_ITEM:"Falsches Produkt geliefert", RR_MISSING_ITEM:"Fehlendes Produkt", RR_COLD_CHAIN:"Kühlkette unterbrochen",
+      colCancelReason:"Stornogrund", cancelReasonPick:"Stornogrund", cancelledBecause:"Stornogrund",
+      CR_CUSTOMER_UNREACHABLE:"Kunde nicht erreichbar", CR_WRONG_ADDRESS:"Kundenadresse fehlerhaft", CR_CUSTOMER_CANCELLED:"Kunde hat storniert", CR_ITEM_MISSING:"Artikel nicht vorrätig", CR_BRANCH_OVERLOADED:"Filiale überlastet",
+      scoreHit:"Zählt für die Filialbewertung", scoreSafe:"Zählt nicht für die Filialbewertung", cancelledToast:"Bestellung storniert: {r}"},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
       management:"MANAGEMENT", productList:"Product list", returns:"Returns", reports:"Reports",
@@ -460,7 +522,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       callAttempt:"Call", cancelOrder:"Cancel order", cancelRule:"Cancelling needs 2 unanswered calls or the customer's approval.",
       cancelledUnreachable:"Cancelled: customer unreachable (store score not affected).", close:"Close",
       searchProducts:"Search product, brand or SKU…", colProduct:"Product", colSize:"Size", colPrice:"Price", colStock:"Stock", colAvail:"Sales status",
-      inStock:"In stock", outOfStock:"Out of stock", colReturnOrder:"Order", colReason:"Customer reason", colAmount:"Amount",
+      inStock:"In stock", outOfStock:"Out of stock", colReturnOrder:"Order", colReason:"Return reason", colAmount:"Amount",
       approve:"Approve", reject:"Reject", rejectReason:"Reason for rejection…", confirm:"Save", reasonRequired:"A rejection needs a reason.",
       todayKpi:"Today", revenue:"Revenue", avgBasket:"Average basket", cancellations:"Cancellations", returnsKpi:"Returns",
       last7:"Last 7 days – number of orders", topProducts:"Best sellers (today)", prototype:"Prototype – works with sample data",
@@ -475,7 +537,14 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       priceF:"Price (€)", stockF:"Stock", barcode:"Barcode (EAN-13)", barcodeOk:"Valid barcode", barcodeBad:"Invalid barcode (13 digits, the last one is the check digit)",
       barcodeDup:"This barcode is already used by another product", save:"Save", cancel:"Cancel", required:"Please fill in the required fields.",
       savedToast:"Product saved.", importTitle:"Import products", importInfo:"Choose a CSV file with a header row. Columns (comma or semicolon):",
-      chooseFile:"Choose file", sampleFile:"Sample file", copySample:"Copy sample", copied:"Copied.", selectToCopy:"Text selected, tap Copy to copy it.", importResult:"{ok} products added, {bad} rows with errors.", noFile:"No file chosen yet.", rowErr:"Row {n}: {reason}", errColumns:"too few columns (9 needed)", errBarcodeExcel:"Excel turned the barcode into a scientific number (e.g. 2.00E+12) – format the barcode column as text", errBarcodeLength:"barcode must have 13 digits", errBarcodeCheck:"the barcode's last digit (check digit) is wrong", errBarcodeTwice:"this barcode appears twice in the file", errBarcodeDup:"this barcode is already used by a product", errName:"product name (TR/DE/EN) missing", errBrand:"brand not found", errCategory:"invalid category code (e.g. DRY, SNK)", errSize:"size missing", errPrice:"price must be a positive number", errStock:"stock must be a whole number"}
+      chooseFile:"Choose file", sampleFile:"Sample file", copySample:"Copy sample", copied:"Copied.", selectToCopy:"Text selected, tap Copy to copy it.", importResult:"{ok} products added, {bad} rows with errors.", noFile:"No file chosen yet.", rowErr:"Row {n}: {reason}", errColumns:"too few columns (9 needed)", errBarcodeExcel:"Excel turned the barcode into a scientific number (e.g. 2.00E+12) – format the barcode column as text", errBarcodeLength:"barcode must have 13 digits", errBarcodeCheck:"the barcode's last digit (check digit) is wrong", errBarcodeTwice:"this barcode appears twice in the file", errBarcodeDup:"this barcode is already used by a product", errName:"product name (TR/DE/EN) missing", errBrand:"brand not found", errCategory:"invalid category code (e.g. DRY, SNK)", errSize:"size missing", errPrice:"price must be a positive number", errStock:"stock must be a whole number",
+      saleStatus:"Open / close for sale", saleInfo:"A closed product is hidden from the customers of that channel and cannot be ordered. Products with 0 stock are closed automatically.", onSale:"On sale", offSale:"Closed", noStock:"No stock",
+      filterAll:"All", filterOn:"On sale", filterOff:"Closed", saleCount:"{on} on sale · {off} closed", saleOpened:"{p} · {ch}: opened for sale", saleClosed:"{p} · {ch}: closed for sale", searchSale:"Search product, brand or barcode…", closeBoth:"In both channels", openSaleList:"Change sales status",
+      byReason:"By reason", customerNote:"Customer note",
+      RR_DAMAGED:"Damaged product", RR_SPOILED:"Spoiled product", RR_EXPIRED:"Past best-before date", RR_WRONG_ITEM:"Wrong product delivered", RR_MISSING_ITEM:"Missing product", RR_COLD_CHAIN:"Cold chain broken",
+      colCancelReason:"Cancellation reason", cancelReasonPick:"Cancellation reason", cancelledBecause:"Cancellation reason",
+      CR_CUSTOMER_UNREACHABLE:"Customer unreachable", CR_WRONG_ADDRESS:"Wrong customer address", CR_CUSTOMER_CANCELLED:"Customer cancelled", CR_ITEM_MISSING:"Item out of stock", CR_BRANCH_OVERLOADED:"Branch overloaded",
+      scoreHit:"Counts against the store score", scoreSafe:"Does not affect the store score", cancelledToast:"Order cancelled: {r}"}
   };
   var lang = "tr";
   try { var savedLang = localStorage.getItem("vp-proto-lang"); if (T[savedLang]) lang = savedLang; } catch (e) {}
@@ -558,7 +627,9 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     O("HT-10478","htgo","PICKING","13:36",[["DRY-002",2,2],["BRK-001",1,0],["PRD-008",1,0]],{picker:"lukas"}),
     O("HT-10477","htgo","READY","13:30",[["BRK-001",1],["DRY-002",1]],{bags:1,picker:"lukas"}),
     O("HT-10470","htgo","ON_THE_WAY","12:55",[["FRZ-004",2],["BEV-009",1]],{bags:1}),
-    O("HT-10466","htgo","CANCELLED","12:20",[["PCR-005",1]],{reason:"unreachable"}),
+    O("HT-10466","htgo","CANCELLED","12:20",[["PCR-005",1]],{reason:"CUSTOMER_UNREACHABLE",calls:2}),
+    O("HT-10461","htgo","CANCELLED","12:05",[["BEV-006",2],["SWT-001",1]],{reason:"WRONG_ADDRESS"}),
+    O("HT-10449","htgo","CANCELLED","10:20",[["PRD-008",2],["DRY-003",1]],{reason:"ITEM_MISSING"}),
     O("HT-10463","htgo","DELIVERED","11:48",[["DRY-001",3],["BAK-003",2]],{bags:1}),
     O("HT-10459","htgo","DELIVERED","11:15",[["BRK-001",2],["SWT-001",3]],{bags:1}),
     O("HT-10455","htgo","DELIVERED","10:40",[["DRY-003",2],["BEV-009",2]],{bags:1}),
@@ -570,17 +641,32 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     O("GK-55118","gk","PICKING","13:50",[["HSH-006",1,1],["PCR-005",2,1]],{picker:"lukas"}),
     O("GK-55117","gk","PICKING","13:47",[["DRY-001",1,1],["BAK-003",2,0]],{picker:"nadia"}),
     O("GK-55112","gk","ON_THE_WAY","13:10",[["SNK-001",3]],{bags:1}),
+    O("GK-55110","gk","CANCELLED","12:50",[["BEV-003",1],["SNK-001",2]],{reason:"WRONG_ADDRESS"}),
     O("GK-55108","gk","DELIVERED","12:31",[["BRK-001",1],["DRY-001",2]],{bags:1}),
+    O("GK-55099","gk","CANCELLED","10:30",[["HSH-006",1]],{reason:"CUSTOMER_CANCELLED"}),
     O("GK-55103","gk","DELIVERED","11:20",[["BEV-009",2],["BAK-003",1]],{bags:1}),
     O("GK-55097","gk","DELIVERED","10:12",[["FRZ-004",2],["SWT-001",2]],{bags:1}),
     O("GK-55091","gk","DELIVERED","09:05",[["BEV-003",2],["DRY-002",2]],{bags:2})
   ];
   var returns = [
-    {id:"R-301",ch:"htgo",order:"HT-10455",sku:"DRY-003",reason:{tr:"Ürün bozuk çıktı",de:"Produkt war verdorben",en:"Product was spoiled"},amount:1.29,status:"REQUESTED"},
-    {id:"R-298",ch:"htgo",order:"HT-10447",sku:"SNK-001",reason:{tr:"Paket yırtık geldi",de:"Packung kam beschädigt an",en:"Package arrived torn"},amount:1.79,status:"APPROVED"},
-    {id:"R-412",ch:"gk",order:"GK-55103",sku:"BAK-003",reason:{tr:"Kruvasanlar ezilmiş",de:"Croissants waren zerdrückt",en:"Croissants were squashed"},amount:2.49,status:"REQUESTED"},
-    {id:"R-410",ch:"gk",order:"GK-55097",sku:"FRZ-004",reason:{tr:"Pizza erimiş geldi",de:"Pizza kam aufgetaut an",en:"Pizza arrived thawed"},amount:2.79,status:"REQUESTED"}
+    // code = the return reason the customer picks in the channel app; reason = the customer's own note
+    {id:"R-305",ch:"htgo",order:"HT-10463",sku:"DRY-001",code:"EXPIRED",reason:{tr:"Tarih dünü gösteriyordu",de:"Datum war schon gestern abgelaufen",en:"The date had already passed yesterday"},amount:1.29,status:"REQUESTED"},
+    {id:"R-301",ch:"htgo",order:"HT-10455",sku:"DRY-003",code:"SPOILED",reason:{tr:"Ürün bozuk çıktı",de:"Produkt war verdorben",en:"Product was spoiled"},amount:1.29,status:"REQUESTED"},
+    {id:"R-298",ch:"htgo",order:"HT-10447",sku:"SNK-001",code:"DAMAGED",reason:{tr:"Paket yırtık geldi",de:"Packung kam beschädigt an",en:"Package arrived torn"},amount:1.79,status:"APPROVED"},
+    {id:"R-296",ch:"htgo",order:"HT-10442",sku:"BEV-001",code:"MISSING_ITEM",reason:{tr:"6 şişe yerine 5 şişe geldi",de:"5 statt 6 Flaschen geliefert",en:"5 bottles instead of 6 arrived"},amount:0.49,status:"APPROVED"},
+    {id:"R-415",ch:"gk",order:"GK-55108",sku:"BRK-001",code:"WRONG_ITEM",reason:{tr:"Kafeinsiz kahve istemiştim",de:"Ich hatte entkoffeinierten Kaffee bestellt",en:"I had ordered decaf coffee"},amount:5.99,status:"REQUESTED"},
+    {id:"R-412",ch:"gk",order:"GK-55103",sku:"BAK-003",code:"DAMAGED",reason:{tr:"Kruvasanlar ezilmiş",de:"Croissants waren zerdrückt",en:"Croissants were squashed"},amount:2.49,status:"REQUESTED"},
+    {id:"R-410",ch:"gk",order:"GK-55097",sku:"FRZ-004",code:"COLD_CHAIN",reason:{tr:"Pizza erimiş geldi",de:"Pizza kam aufgetaut an",en:"Pizza arrived thawed"},amount:2.79,status:"REQUESTED"}
   ];
+  // Cancellation reasons (orders.cancel_reason). Customer-side reasons do not count against the store score.
+  var CANCEL_REASONS = ["CUSTOMER_UNREACHABLE","WRONG_ADDRESS","CUSTOMER_CANCELLED","ITEM_MISSING","BRANCH_OVERLOADED"];
+  var SCORE_SAFE = {CUSTOMER_UNREACHABLE:1, WRONG_ADDRESS:1, CUSTOMER_CANCELLED:1};
+  function scoreNote(code) { return SCORE_SAFE[code] ? '<span class="score ok">✓ ' + t("scoreSafe") + '</span>' : '<span class="score bad">⚠ ' + t("scoreHit") + '</span>'; }
+  // Sales status per channel: p.closed = {htgo:true} closes the product only in HTGO Market
+  function isOpen(p, ch) { return p.stock > 0 && !(p.closed && p.closed[ch]); }
+  P["FRZ-004"].closed = {htgo:false, gk:true};
+  P["PCR-005"].closed = {htgo:true, gk:true};
+  P["SNK-001"].closed = {htgo:true, gk:false};
   var BAG_FEE = 0.25;
   var CH = {htgo:{name:"HTGO Market"}, gk:{name:"GK Market"}};
   var ICON = {
@@ -655,12 +741,13 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     var showPicker = currentTab[ch] === "PICKING" || currentTab[ch] === "READY";
     html += '</div><div class="list' + (showPicker ? ' with-picker' : '') + '"><div class="row head"><span>' + t("colOrder") + '</span><span>' + t("colTime") + '</span>' +
       (showPicker ? '<span>' + t("colPicker") + '</span>' : '<span class="hide-s">' + t("colItems") + '</span>') +
-      '<span class="hide-s">' + t("colTotal") + '</span><span>' + t(currentTab[ch] === "PENDING" ? "colWait" : "colStatus") + '</span></div>';
+      '<span class="hide-s">' + t("colTotal") + '</span><span>' + t(currentTab[ch] === "PENDING" ? "colWait" : currentTab[ch] === "CANCELLED" ? "colCancelReason" : "colStatus") + '</span></div>';
     var list = byCh(ch).filter(function (o) { return currentTab[ch] === "ALL" || o.status === currentTab[ch]; });
     if (!list.length) html += '<div class="empty">' + t("noOrders") + '</div>';
     list.forEach(function (o) {
       var last;
       if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o); last = '<span class="' + (m > 3 ? "late" : "") + '">' + m + ' ' + t("minutes") + '</span>'; }
+      else if (o.status === "CANCELLED") last = '<span class="cxl"><span class="reason cx">' + t("CR_" + o.reason) + '</span>' + scoreNote(o.reason) + '</span>';
       else last = '<span class="pill s-' + o.status + '">' + t(o.status) + '</span>';
       if (o.status === "PENDING") last = '<span>' + last + '<button class="accept" data-accept="' + o.no + '">✓ ' + t("accept") + '</button></span>';
       var third = showPicker ? '<span>' + pickerBadge(o) + '</span>'
@@ -699,14 +786,53 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       '<div class="list"><div class="prow head"><span>' + t("photo") + '</span><span>' + t("colProduct") + '</span><span class="hide-s">' + t("colSize") + '</span><span class="hide-s">' + t("colPrice") +
       '</span><span class="hide-s">' + t("colStock") + '</span><span>' + t("colAvail") + '</span><span></span></div>';
     shown.forEach(function (sku) {
-      var p = P[sku], on = p.stock > 0 && !p.off;
+      var p = P[sku];
       html += '<div class="prow"><img class="ph" src="' + photoOf(p) + '" alt="">' +
         '<span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · VP-' + sku + '</span><span class="code">' + SVG.barcode + p.ean + '</span>' +
         '<span class="show-s"><b style="display:inline">' + money(p.price) + '</b> · ' + esc(p.size[lang]) + ' · ' + t("colStock") + ' ' + p.stock + '</span></span>' +
         '<span class="hide-s">' + esc(p.size[lang]) + '</span><span class="hide-s">' + money(p.price) + (p.kg ? ' <span class="note">/ ' + esc(p.size[lang]) + '</span>' : '') + '</span>' +
         '<span class="hide-s">' + p.stock + '</span>' +
-        '<span><button class="switch ' + (on ? "on" : "off") + '" data-toggle-stock="' + sku + '">' + t(on ? "inStock" : "outOfStock") + '</button></span>' +
+        '<span><button class="chans" data-go="#sale" title="' + t("openSaleList") + '" aria-label="' + t("openSaleList") + '">' + saleChip(p, "htgo") + saleChip(p, "gk") + '</button></span>' +
         '<button class="editbtn" data-edit="' + sku + '" title="' + t("edit") + '" aria-label="' + t("edit") + '">' + SVG.edit + '</button></div>';
+    });
+    if (!shown.length) html += '<div class="empty">—</div>';
+    return html + '</div>';
+  }
+
+  // ---------- open / close products for sale, per channel ----------
+  var saleFilter = "ALL", saleQuery = "";
+  function saleChip(p, ch) {
+    var cls = p.stock <= 0 ? "nostock" : (isOpen(p, ch) ? "on" : "off");
+    return '<span class="chip ' + cls + '"><i></i>' + (ch === "htgo" ? "HTGO" : "GK") + '</span>';
+  }
+  function pageSale() {
+    var q = saleQuery.trim().toLowerCase(), all = Object.keys(P);
+    var shown = all.filter(function (s) {
+      var p = P[s], anyClosed = !isOpen(p, "htgo") || !isOpen(p, "gk");
+      if (saleFilter === "ON" && anyClosed) return false;
+      if (saleFilter === "OFF" && !anyClosed) return false;
+      return productMatches(s, q);
+    });
+    var html = '<div class="page-head"><h1 class="page">' + t("saleStatus") + '</h1></div><p class="note" style="margin:-4px 0 12px">' + t("saleInfo") + '</p><div class="sale-sum">';
+    ["htgo","gk"].forEach(function (ch) {
+      var on = all.filter(function (s) { return isOpen(P[s], ch); }).length;
+      html += '<div style="--c:var(--' + ch + ')"><b>' + CH[ch].name + '</b>' + t("saleCount").replace("{on}", on).replace("{off}", all.length - on) + '</div>';
+    });
+    html += '</div><div class="toolbar"><div class="search">' + SVG.search + '<input id="salesearch" type="search" placeholder="' + t("searchSale") + '" value="' + esc(saleQuery) + '" aria-label="' + t("searchSale") + '"></div>' +
+      '<div class="filters">' + [["ALL","filterAll"],["ON","filterOn"],["OFF","filterOff"]].map(function (f) {
+        return '<button class="filter" data-sale-filter="' + f[0] + '" aria-pressed="' + (saleFilter === f[0]) + '">' + t(f[1]) + '</button>'; }).join("") + '</div></div>';
+    html += '<div class="list"><div class="srow head"><span>' + t("photo") + '</span><span>' + t("colProduct") + '</span>' +
+      '<span class="ch-name"><i style="background:var(--htgo)"></i>HTGO</span><span class="ch-name"><i style="background:var(--gk)"></i>GK</span></div>';
+    shown.forEach(function (sku) {
+      var p = P[sku], closedSomewhere = !isOpen(p, "htgo") || !isOpen(p, "gk");
+      html += '<div class="srow' + (closedSomewhere ? ' closed' : '') + '"><img class="ph" src="' + photoOf(p) + '" alt="">' +
+        '<span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + ' · ' + money(p.price) + '</span><span>' + t("colStock") + ': ' + p.stock + '</span></span>';
+      ["htgo","gk"].forEach(function (ch) {
+        var on = isOpen(p, ch), label = p.stock <= 0 ? t("noStock") : t(on ? "onSale" : "offSale");
+        html += '<span class="tgl-cell"><button class="tgl" role="switch" aria-checked="' + on + '" data-sale="' + sku + '|' + ch + '"' + (p.stock <= 0 ? ' disabled' : '') +
+          ' aria-label="' + esc(p[lang]) + ' – ' + CH[ch].name + ': ' + label + '"></button>' + label + '</span>';
+      });
+      html += '</div>';
     });
     if (!shown.length) html += '<div class="empty">—</div>';
     return html + '</div>';
@@ -760,7 +886,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     var old = P[sku] || {};
     P[sku] = {bk:v.bk, ean:v.ean, brand:BRANDS[v.bk].name, tr:v.tr.trim(), de:v.de.trim(), en:v.en.trim(), cat:v.cat,
       size:{tr:v.size.trim(), de:v.size.trim(), en:v.size.trim().replace(",", ".")}, price:Math.round(price * 100) / 100, stock:stock,
-      kg:old.kg, off:old.off, img:e.img};
+      kg:old.kg, closed:old.closed, img:e.img};
     editing = null; modal.hidden = true; render(); toast(t("savedToast"));
   }
   function renderImportModal() {
@@ -811,7 +937,11 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 
   var rejecting = null;
   function pageReturns(ch) {
-    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("returns") + '</h1></div><div class="list">' +
+    var counts = {};
+    returns.forEach(function (r) { if (r.ch === ch) counts[r.code] = (counts[r.code] || 0) + 1; });
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("returns") + '</h1></div>' +
+      '<div class="reason-sum"><span style="border:0;background:none;padding-left:0">' + t("byReason") + ':</span>' +
+      Object.keys(counts).map(function (c) { return '<span>' + t("RR_" + c) + '<b>' + counts[c] + '</b></span>'; }).join("") + '</div><div class="list">' +
       '<div class="rrow head"><span>' + t("colReturnOrder") + '</span><span>' + t("colProduct") + '</span><span class="hide-s">' + t("colReason") + '</span><span class="hide-s">' + t("colAmount") + '</span><span>' + t("colStatus") + '</span><span></span></div>';
     var list = returns.filter(function (r) { return r.ch === ch; });
     list.forEach(function (r) {
@@ -821,7 +951,10 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
           ? '<span style="display:flex;gap:6px"><input id="rreason" placeholder="' + t("rejectReason") + '"><button class="mini no" data-reject-save="' + r.id + '">' + t("confirm") + '</button></span>'
           : '<span style="display:flex;gap:6px"><button class="mini ok" data-approve="' + r.id + '">' + t("approve") + '</button><button class="mini no" data-reject="' + r.id + '">' + t("reject") + '</button></span>';
       }
-      html += '<div class="rrow"><span class="no"><b>' + r.order + '</b></span><span class="nm">' + esc(p[lang]) + '<br><span class="note">' + esc(p.brand) + '</span></span><span class="hide-s">' + esc(r.reason[lang]) + (r.rejection ? '<br><span class="note">↳ ' + esc(r.rejection) + '</span>' : '') +
+      var reasonHtml = '<span class="reason">' + t("RR_" + r.code) + '</span><span class="reason-note">“' + esc(r.reason[lang]) + '”</span>' +
+        (r.rejection ? '<span class="reason-note">↳ ' + esc(r.rejection) + '</span>' : '');
+      html += '<div class="rrow"><span class="no"><b>' + r.order + '</b></span><span class="nm">' + esc(p[lang]) + '<br><span class="note">' + esc(p.brand) + '</span>' +
+        '<span class="show-s" style="margin-top:6px">' + reasonHtml + '</span></span><span class="hide-s">' + reasonHtml +
         '</span><span class="hide-s">' + money(r.amount) + '</span><span><span class="pill s-' + r.status + '">' + t(r.status) + '</span></span>' + act + '</div>';
     });
     return html + '</div></div>';
@@ -870,7 +1003,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     html += '<div class="sum"><span>' + t("orderedTotal") + '</span><span>' + money(orderedTotal(o)) + '</span></div>';
     if (["READY","ON_THE_WAY","DELIVERED"].indexOf(o.status) >= 0)
       html += '<div class="sum"><span>' + t("bagFee") + ' (' + (o.bags || 0) + ')</span><span>' + money((o.bags || 0) * BAG_FEE) + '</span></div><div class="sum" style="color:var(--c)"><span>' + t("finalTotal") + '</span><span>' + money(finalTotal(o)) + '</span></div>';
-    if (o.status === "CANCELLED") html += '<p class="note">' + t("cancelledUnreachable") + '</p>';
+    if (o.status === "CANCELLED") html += '<div class="cx-box"><b>' + t("cancelledBecause") + ':</b> <span class="reason cx">' + t("CR_" + o.reason) + '</span>' + scoreNote(o.reason) + '</div>';
     html += '<div class="actions">';
     if (o.status === "PENDING") html += '<button class="btn" data-start style="background:#15803D">✓ ' + t("acceptOrder") + '</button>';
     if (picking) {
@@ -879,7 +1012,11 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     }
     if (o.status === "READY") html += '<span class="note">' + t("waitingCourier") + '</span>';
     if (o.status === "PENDING" || picking) {
+      // the branch picks a reason; "customer cancelled" only comes from the channel app, so it is not offered here
       html += '<button class="btn ghost" data-call>📞 ' + t("callCustomer") + ' (' + o.calls + '/2)</button>' +
+        '<select id="cxReason" aria-label="' + t("cancelReasonPick") + '"' + (o.calls >= 2 ? '' : ' disabled') + '>' +
+        CANCEL_REASONS.filter(function (c) { return c !== "CUSTOMER_CANCELLED"; }).map(function (c) {
+          return '<option value="' + c + '"' + (c === (o.cxDraft || "CUSTOMER_UNREACHABLE") ? ' selected' : '') + '>' + t("CR_" + c) + '</option>'; }).join("") + '</select>' +
         '<button class="btn danger" data-cancel ' + (o.calls >= 2 ? "" : "disabled") + '>' + t("cancelOrder") + '</button>';
     }
     html += '<button class="btn ghost" data-close style="margin-left:auto">' + t("close") + '</button></div>';
@@ -900,6 +1037,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     var page = parts[0], ch = parts[1] === "gk" ? "gk" : "htgo";
     if (page === "orders") view.innerHTML = pageOrders(ch);
     else if (page === "products") view.innerHTML = pageProducts();
+    else if (page === "sale") view.innerHTML = pageSale();
     else if (page === "returns") view.innerHTML = pageReturns(ch);
     else if (page === "reports") view.innerHTML = pageReport(ch);
     else view.innerHTML = pageHome();
@@ -1038,7 +1176,16 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       try { navigator.clipboard.writeText(text).then(done, fallback); } catch (x) { fallback(); }
       return;
     }
-    if (d.toggleStock) { var p = P[d.toggleStock]; p.off = !p.off && p.stock > 0 ? true : false; render(); return; }
+    if (d.sale) {
+      var sp = d.sale.split("|"), prod = P[sp[0]], sch = sp[1];
+      if (prod.stock <= 0) return;
+      prod.closed = prod.closed || {};
+      prod.closed[sch] = isOpen(prod, sch);
+      render();
+      toast(t(isOpen(prod, sch) ? "saleOpened" : "saleClosed").replace("{p}", prod[lang]).replace("{ch}", CH[sch].name));
+      return;
+    }
+    if (d.saleFilter) { saleFilter = d.saleFilter; render(); return; }
     if (d.approve) { find(d.approve).status = "APPROVED"; render(); toast(t("returnSaved")); return; }
     if (d.reject) { rejecting = d.reject; render(); var inp = document.getElementById("rreason"); if (inp) inp.focus(); return; }
     if (d.rejectSave) {
@@ -1054,7 +1201,12 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     if (d.plus != null) { var a = o.items[+d.plus]; if (a.picked < a.qty) a.picked++; renderModal(); return; }
     if (d.minus != null) { var b = o.items[+d.minus]; if (b.picked > 0) b.picked--; renderModal(); return; }
     if ("call" in d) { if (o.calls < 2) o.calls++; renderModal(); return; }
-    if ("cancel" in d) { o.status = "CANCELLED"; o.reason = "unreachable"; render(); return; }
+    if ("cancel" in d) {
+      if (o.calls < 2) return;
+      var sel = document.getElementById("cxReason");
+      o.reason = sel ? sel.value : "CUSTOMER_UNREACHABLE"; o.status = "CANCELLED"; currentTab[o.ch] = "CANCELLED";
+      render(); toast(t("cancelledToast").replace("{r}", t("CR_" + o.reason))); return;
+    }
     if ("ready" in d) {
       var complete = o.items.every(function (it) { return it.picked === it.qty && (!P[it.sku].kg || it.kg); });
       if (!complete) { o.readyError = true; renderModal(); return; }
@@ -1069,6 +1221,11 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     if (e.target.id === "psearch") {
       productFilter = e.target.value; var pos = e.target.selectionStart; render();
       var s = document.getElementById("psearch"); s.focus(); s.setSelectionRange(pos, pos);
+    }
+    if (e.target.id === "cxReason" && openOrder) openOrder.cxDraft = e.target.value;
+    if (e.target.id === "salesearch") {
+      saleQuery = e.target.value; var pos2 = e.target.selectionStart; render();
+      var s2 = document.getElementById("salesearch"); s2.focus(); s2.setSelectionRange(pos2, pos2);
     }
     if (e.target.dataset.kg != null && openOrder) {
       var it = openOrder.items[+e.target.dataset.kg], v = parseNum(e.target.value);
