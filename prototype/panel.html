@@ -902,7 +902,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   function chime() {
     if (!soundOn) return;
     try {
-      // ~2.7 s: a rising bell arpeggio played twice, the second time ending on a long ringing chord, with a soft echo
+      // ~2.7 s: the same rising bell arpeggio played three times, with a soft echo
       unlockAudio(); var ctx = audioCtx, s = ctx.currentTime + .05;
       var out = ctx.createDynamicsCompressor(), master = ctx.createGain(), echo = ctx.createDelay(), fb = ctx.createGain();
       master.gain.value = .9; echo.delayTime.value = .19; fb.gain.value = .28;
@@ -918,9 +918,10 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
         });
       }
       var C6 = 1046.5, E6 = 1318.5, G6 = 1568, C7 = 2093;
-      [C6, E6, G6, C7].forEach(function (f, i) { bell(f, s + i * .12, .55, .16); });
-      [C6, E6, G6].forEach(function (f, i) { bell(f, s + .9 + i * .12, .5, .16); });
-      [C7, G6, E6].forEach(function (f) { bell(f, s + 1.32, 1.35, .11); });   // final chord rings out
+      // the same rising "din-din-din-din" three times – no closing chord
+      [0, .9, 1.8].forEach(function (start) {
+        [C6, E6, G6, C7].forEach(function (f, i) { bell(f, s + start + i * .12, .55, .16); });
+      });
       if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate([200, 100, 200, 100, 400]);
     } catch (x) {}
   }
