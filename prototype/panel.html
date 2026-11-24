@@ -94,6 +94,52 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .s-ON_THE_WAY{background:#EDE9FE;color:#4C1D95} .s-DELIVERED{background:#F3F4F6;color:#374151} .s-CANCELLED{background:#FEE2E2;color:#7F1D1D}
 .s-REQUESTED{background:#FEF3C7;color:#78350F} .s-APPROVED{background:#DCFCE7;color:#14532D} .s-REJECTED{background:#FEE2E2;color:#7F1D1D}
 .late{color:#B91C1C;font-weight:800}
+/* waiting levels of pending orders */
+.waitcell{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lvl{border-radius:999px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}
+.lvl.new{background:#DBEAFE;color:#1E3A8A} .lvl.wait{background:#FEF3C7;color:#78350F}
+.lvl.late{background:#FFEDD5;color:#9A3412} .lvl.verylate{background:#B91C1C;color:#fff}
+/* new-order banner (slides down from the top for 3 seconds) */
+.banner{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));z-index:95;width:min(440px,calc(100% - 24px));transform:translate(-50%,-140%);transition:transform .35s ease;
+  display:flex;align-items:center;gap:12px;background:#fff;color:#111827;border-radius:16px;padding:12px 14px;box-shadow:0 14px 36px rgba(14,11,43,.35);border-left:6px solid var(--accent)}
+.banner.show{transform:translate(-50%,0)}
+.banner.wa{border-left-color:#15803D}
+.banner .bi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#EEEBFF;color:var(--accent);flex-shrink:0}
+.banner.wa .bi{background:#DCFCE7;color:#15803D}
+.banner .bi svg{width:24px;height:24px}
+.banner b{display:block;font-size:15px} .banner span{font-size:12px;color:var(--muted);font-weight:600}
+.banner.show .bi svg{animation:ring .5s ease-in-out 2}
+@keyframes ring{0%,100%{transform:rotate(0)}25%{transform:rotate(14deg)}75%{transform:rotate(-14deg)}}
+@media (prefers-reduced-motion:reduce){.banner{transition:none} .banner.show .bi svg{animation:none}}
+/* notifications page */
+.al-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:start}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h2{margin:0;font-size:16px}
+button.reason{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:800} button.reason:hover{text-decoration:underline}
+.reason-sum .lbl{padding:5px 0;font-size:12px;font-weight:700;color:#374151}
+.reason-sum button{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;color:#374151}
+.reason-sum button:hover{border-color:#9A3412} .reason-sum button[aria-pressed="true"]{background:#9A3412;border-color:#9A3412;color:#fff}
+.reason-sum button[aria-pressed="true"] b{color:#fff} .reason-sum button.all{border-style:dashed}
+.orderlink{border:0;background:none;padding:0;font:inherit;font-weight:800;color:var(--c,var(--accent));text-decoration:underline;text-underline-offset:3px}
+.it.returned{background:#FFF1E6;border-radius:10px;padding-left:8px;padding-right:8px;outline:2px solid #FDBA74}
+.it .rtag{display:block;margin-top:3px;font-size:11px;font-weight:800;color:#9A3412}
+.rule{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;font-size:14px}
+.rule .lvl{justify-self:start}
+.rule em{font-style:normal;font-weight:800;font-size:13px;color:#374151}
+.person{display:flex;align-items:center;gap:10px}
+.person .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+.person div{flex:1;min-width:0} .person b{display:block;font-size:14px} .person span{font-size:12px;color:var(--muted)}
+.demo-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.clock{font-weight:800;font-size:13px;background:#F3F4F6;border-radius:10px;padding:8px 10px}
+.chat{background:#EFEAE2;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;max-height:560px;overflow:auto}
+.bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:9px 12px 6px;box-shadow:0 1px 1px rgba(0,0,0,.08);font-size:14px;line-height:1.4;max-width:100%}
+.bubble.lv-late{background:#FFF7ED} .bubble.lv-verylate{background:#FEF2F2}
+.bubble .from{display:block;font-size:12px;font-weight:800;color:#15803D;margin-bottom:2px}
+.bubble .ords{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.bubble .ords span{background:#F3F4F6;border-radius:6px;padding:1px 6px;font-size:11px;font-weight:700;color:#374151}
+.bubble .meta{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#6B7280;margin-top:5px}
+.bubble .meta i{font-style:normal;color:#2563EB}
+@media (max-width:760px){.al-grid{grid-template-columns:1fr}}
 .empty{padding:28px;text-align:center;color:var(--muted)}
 /* order detail */
 .modal-wrap{position:fixed;inset:0;background:rgba(14,11,43,.5);z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:calc(24px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));overflow:auto}
@@ -187,7 +233,6 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .reason-note{display:block;font-size:12px;color:var(--muted);margin-top:3px}
 .score{display:block;font-size:11px;font-weight:700;margin-top:3px} .score.bad{color:#B91C1C} .score.ok{color:#15803D}
 .reason-sum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.reason-sum span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;color:#374151}
 .reason-sum b{color:#9A3412;margin-left:4px}
 .cxl{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
 .modal select{padding:9px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;max-width:100%}
@@ -381,6 +426,9 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       <button data-go="#orders-htgo"><i class="dot" style="background:var(--htgo)"></i>HTGO Market</button>
       <button data-go="#orders-gk"><i class="dot" style="background:var(--gk)"></i>GK Market</button>
     </div>
+    <button class="nav-item" data-go="#alerts">
+      <svg class="i" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><span data-t="alerts"></span>
+    </button>
 
     <div class="nav-label" data-t="management"></div>
     <button class="nav-item" data-go="#products">
@@ -426,6 +474,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 <!-- ============ Order detail ============ -->
 <div id="modal" class="modal-wrap" hidden></div>
 <div id="toast" class="toast" hidden role="status"></div>
+<div id="banner" class="banner" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
@@ -469,7 +518,18 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       RR_DAMAGED:"Hasar görmüş ürün", RR_SPOILED:"Bozulmuş ürün", RR_EXPIRED:"Son kullanma tarihi geçmiş", RR_WRONG_ITEM:"Yanlış ürün gönderildi", RR_MISSING_ITEM:"Eksik ürün", RR_COLD_CHAIN:"Soğuk zincir bozulmuş",
       colCancelReason:"İptal nedeni", cancelReasonPick:"İptal nedeni", cancelledBecause:"İptal nedeni",
       CR_CUSTOMER_UNREACHABLE:"Müşteriye ulaşılamadı", CR_WRONG_ADDRESS:"Müşteri adresi hatalı", CR_CUSTOMER_CANCELLED:"Müşteri iptal etti", CR_ITEM_MISSING:"Ürün stokta yok", CR_BRANCH_OVERLOADED:"Şube çok yoğun",
-      scoreHit:"Mağaza puanını etkiler", scoreSafe:"Mağaza puanını etkilemez", cancelledToast:"Sipariş iptal edildi: {r}"},
+      scoreHit:"Mağaza puanını etkiler", scoreSafe:"Mağaza puanını etkilemez", cancelledToast:"Sipariş iptal edildi: {r}",
+      lvl_new:"Yeni", lvl_wait:"Kabul bekliyor", lvl_late:"Gecikmede", lvl_verylate:"Çok gecikmiş",
+      bannerNew:"Kabul etmeni bekleyen {n} yeni sipariş var", bannerSub:"HTGO Market: {a} · GK Market: {b}", bannerWa:"WhatsApp hatırlatması gönderildi", bannerWaSub:"{n} personele · {time}",
+      alerts:"Bildirimler", alertsTitle:"Sipariş bildirimleri ve WhatsApp", rulesTitle:"Hatırlatma kuralları",
+      rule0:"Telefonda bildirim sesi + üstte 3 saniyelik bildirim", rule2:"WhatsApp: kabul edilmeyi bekleyen siparişler", rule6:"WhatsApp her 2 dakikada bir: sipariş gecikmede", rule12:"WhatsApp: sipariş çok gecikmiş",
+      onArrival:"Gelince", minFrom:"{m} dk+",
+      recipients:"Alıcılar (vardiyadaki personel)", waOn:"WhatsApp açık", waOff:"WhatsApp kapalı", phone:"Telefon",
+      msgLog:"Gönderilen WhatsApp mesajları", noMsgs:"Henüz mesaj yok.", sender:"VetisPilot · Lindenkorb Berlin-Spandau", sentTo:"Gönderildi: {names}",
+      waWait:"⏱ {m} dakikadır kabul etmenizi bekleyen {n} sipariş var.", waLate:"⚠️ {m} dakikadır kabul etmediğiniz {n} sipariş gecikmede!", waVeryLate:"🚨 {m} dakikadır bekleyen {n} sipariş çok gecikmiş! Lütfen hemen kabul edin.",
+      demoTitle:"Demo", demoClock:"Demo saati", demoNewOrder:"Yeni sipariş gelsin", demoAdvance:"Saati 2 dk ileri al", soundTest:"Sesi dene", orderSound:"Sipariş sesi",
+      waProtoNote:"Prototip: mesajlar gerçekten gönderilmez. Gerçek uygulamada bildirim sesi mobil uygulamanın anlık bildirimiyle (telefon kilitliyken de) gelir, WhatsApp mesajları da WhatsApp Business API üzerinden onaylı bir şablonla gönderilir.",
+      filterByReason:"Bu nedene göre süz", showAllReasons:"Tümünü göster", openOrderHint:"Siparişi aç", returnedItem:"İade edilen ürün"},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
       management:"VERWALTUNG", productList:"Produktliste", returns:"Retouren", reports:"Berichte",
@@ -508,7 +568,19 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       RR_DAMAGED:"Beschädigtes Produkt", RR_SPOILED:"Verdorbenes Produkt", RR_EXPIRED:"Mindesthaltbarkeit abgelaufen", RR_WRONG_ITEM:"Falsches Produkt geliefert", RR_MISSING_ITEM:"Fehlendes Produkt", RR_COLD_CHAIN:"Kühlkette unterbrochen",
       colCancelReason:"Stornogrund", cancelReasonPick:"Stornogrund", cancelledBecause:"Stornogrund",
       CR_CUSTOMER_UNREACHABLE:"Kunde nicht erreichbar", CR_WRONG_ADDRESS:"Kundenadresse fehlerhaft", CR_CUSTOMER_CANCELLED:"Kunde hat storniert", CR_ITEM_MISSING:"Artikel nicht vorrätig", CR_BRANCH_OVERLOADED:"Filiale überlastet",
-      scoreHit:"Zählt für die Filialbewertung", scoreSafe:"Zählt nicht für die Filialbewertung", cancelledToast:"Bestellung storniert: {r}"},
+      scoreHit:"Zählt für die Filialbewertung", scoreSafe:"Zählt nicht für die Filialbewertung", cancelledToast:"Bestellung storniert: {r}",
+      lvl_new:"Neu", lvl_wait:"Wartet auf Annahme", lvl_late:"Verspätet", lvl_verylate:"Stark verspätet",
+      bannerNew:"{n} neue Bestellungen warten auf deine Annahme", bannerSub:"HTGO Market: {a} · GK Market: {b}", bannerWa:"WhatsApp-Erinnerung gesendet", bannerWaSub:"an {n} Mitarbeitende · {time}",
+      alerts:"Benachrichtigungen", alertsTitle:"Bestellbenachrichtigungen und WhatsApp", rulesTitle:"Erinnerungsregeln",
+      rule0:"Benachrichtigungston auf dem Handy + 3 Sekunden Hinweis oben", rule2:"WhatsApp: Bestellungen warten auf Annahme", rule6:"WhatsApp alle 2 Minuten: Bestellung verspätet", rule12:"WhatsApp: Bestellung stark verspätet",
+      onArrival:"Bei Eingang", minFrom:"ab {m} Min.",
+      recipients:"Empfänger (Mitarbeitende im Dienst)", waOn:"WhatsApp an", waOff:"WhatsApp aus", phone:"Telefon",
+      msgLog:"Gesendete WhatsApp-Nachrichten", noMsgs:"Noch keine Nachrichten.", sender:"VetisPilot · Lindenkorb Berlin-Spandau", sentTo:"Gesendet an: {names}",
+      waWait:"⏱ Seit {m} Minuten warten {n} Bestellungen auf Ihre Annahme.", waLate:"⚠️ {n} Bestellungen seit {m} Minuten nicht angenommen – sie sind verspätet!", waVeryLate:"🚨 {n} Bestellungen warten seit {m} Minuten – stark verspätet! Bitte sofort annehmen.",
+      demoTitle:"Demo", demoClock:"Demo-Uhrzeit", demoNewOrder:"Neue Bestellung kommt", demoAdvance:"Uhr 2 Min. vorstellen", soundTest:"Ton testen", orderSound:"Bestellton",
+      waProtoNote:"Prototyp: Es werden keine Nachrichten wirklich gesendet. In der echten App kommt der Ton als Push-Benachrichtigung der mobilen App (auch bei gesperrtem Handy), und WhatsApp-Nachrichten werden über die WhatsApp Business API mit einer freigegebenen Vorlage gesendet.",
+      filterByReason:"Nach diesem Grund filtern", showAllReasons:"Alle anzeigen", openOrderHint:"Bestellung öffnen", returnedItem:"Retourniertes Produkt",
+      bannerNew1:"1 neue Bestellung wartet auf deine Annahme", waWait1:"⏱ Seit {m} Minuten wartet 1 Bestellung auf Ihre Annahme.", waLate1:"⚠️ 1 Bestellung seit {m} Minuten nicht angenommen – sie ist verspätet!", waVeryLate1:"🚨 1 Bestellung wartet seit {m} Minuten – stark verspätet! Bitte sofort annehmen."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
       management:"MANAGEMENT", productList:"Product list", returns:"Returns", reports:"Reports",
@@ -547,7 +619,19 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       RR_DAMAGED:"Damaged product", RR_SPOILED:"Spoiled product", RR_EXPIRED:"Past best-before date", RR_WRONG_ITEM:"Wrong product delivered", RR_MISSING_ITEM:"Missing product", RR_COLD_CHAIN:"Cold chain broken",
       colCancelReason:"Cancellation reason", cancelReasonPick:"Cancellation reason", cancelledBecause:"Cancellation reason",
       CR_CUSTOMER_UNREACHABLE:"Customer unreachable", CR_WRONG_ADDRESS:"Wrong customer address", CR_CUSTOMER_CANCELLED:"Customer cancelled", CR_ITEM_MISSING:"Item out of stock", CR_BRANCH_OVERLOADED:"Branch overloaded",
-      scoreHit:"Counts against the store score", scoreSafe:"Does not affect the store score", cancelledToast:"Order cancelled: {r}"}
+      scoreHit:"Counts against the store score", scoreSafe:"Does not affect the store score", cancelledToast:"Order cancelled: {r}",
+      lvl_new:"New", lvl_wait:"Waiting", lvl_late:"Late", lvl_verylate:"Very late",
+      bannerNew:"{n} new orders are waiting for you to accept", bannerSub:"HTGO Market: {a} · GK Market: {b}", bannerWa:"WhatsApp reminder sent", bannerWaSub:"to {n} staff · {time}",
+      alerts:"Notifications", alertsTitle:"Order notifications and WhatsApp", rulesTitle:"Reminder rules",
+      rule0:"Notification sound on the phone + 3-second banner at the top", rule2:"WhatsApp: orders waiting to be accepted", rule6:"WhatsApp every 2 minutes: order is late", rule12:"WhatsApp: order is very late",
+      onArrival:"On arrival", minFrom:"{m} min+",
+      recipients:"Recipients (staff on shift)", waOn:"WhatsApp on", waOff:"WhatsApp off", phone:"Phone",
+      msgLog:"Sent WhatsApp messages", noMsgs:"No messages yet.", sender:"VetisPilot · Lindenkorb Berlin-Spandau", sentTo:"Sent to: {names}",
+      waWait:"⏱ {n} orders have been waiting {m} minutes for you to accept.", waLate:"⚠️ {n} orders not accepted for {m} minutes – they are late!", waVeryLate:"🚨 {n} orders waiting for {m} minutes – very late! Please accept them now.",
+      demoTitle:"Demo", demoClock:"Demo clock", demoNewOrder:"New order arrives", demoAdvance:"Move clock 2 min ahead", soundTest:"Test sound", orderSound:"Order sound",
+      waProtoNote:"Prototype: no messages are really sent. In the real app the sound comes as a push notification of the mobile app (also when the phone is locked), and WhatsApp messages are sent through the WhatsApp Business API with an approved template.",
+      filterByReason:"Filter by this reason", showAllReasons:"Show all", openOrderHint:"Open order", returnedItem:"Returned product",
+      bannerNew1:"1 new order is waiting for you to accept", waWait1:"⏱ 1 order has been waiting {m} minutes for you to accept.", waLate1:"⚠️ 1 order not accepted for {m} minutes – it is late!", waVeryLate1:"🚨 1 order waiting for {m} minutes – very late! Please accept it now."}
   };
   var lang = "tr";
   try { var savedLang = localStorage.getItem("vp-proto-lang"); if (T[savedLang]) lang = savedLang; } catch (e) {}
@@ -616,15 +700,18 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   }
   function parseNum(v) { var n = parseFloat(String(v).replace(",", ".")); return isNaN(n) ? null : n; }
   function photoOf(p) { return p.img || (BRANDS[p.bk] ? BRANDS[p.bk].icon : ""); }
-  var NOW = 14 * 60 + 9; // demo clock: 14:09
+  var NOW = 14 * 60 + 10; // demo clock: 14:10 (the "+2 min" demo button moves it forward)
   function O(no, ch, status, time, items, extra) {
     var o = {no:no, ch:ch, status:status, time:time, items:items.map(function (x) { return {sku:x[0], qty:x[1], price:P[x[0]].price, picked:status === "PENDING" ? 0 : (x[2] == null ? x[1] : x[2]), kg:null}; }), calls:0};
     for (var k in extra || {}) o[k] = extra[k];
     return o;
   }
   var orders = [
+    // waiting orders, oldest first: 12 min = very late, 6 min = late, 4 min = waiting, 1 min = new
     O("HT-10481","htgo","PENDING","13:58",[["DRY-001",2],["BAK-003",1],["PRD-001",1]]),
     O("HT-10482","htgo","PENDING","14:04",[["BEV-006",3],["SNK-001",2]]),
+    O("HT-10483","htgo","PENDING","14:06",[["BRK-001",1],["DRY-002",2]]),
+    O("HT-10484","htgo","PENDING","14:09",[["SWT-001",2],["BEV-009",1]]),
     O("HT-10480","htgo","PICKING","13:52",[["SNK-001",2,1],["BEV-009",1,0]],{picker:"nadia"}),
     O("HT-10479","htgo","PICKING","13:41",[["BEV-003",2,1],["DRY-003",1,0],["SWT-001",2,2]],{picker:"nadia"}),
     O("HT-10478","htgo","PICKING","13:36",[["DRY-002",2,2],["BRK-001",1,0],["PRD-008",1,0]],{picker:"lukas"}),
@@ -639,8 +726,10 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     O("HT-10451","htgo","DELIVERED","10:02",[["HSH-006",1],["PCR-005",2]],{bags:1}),
     O("HT-10447","htgo","DELIVERED","09:31",[["BEV-006",2],["SNK-001",3]],{bags:1}),
     O("HT-10442","htgo","DELIVERED","08:57",[["FRZ-004",3],["BEV-001",6]],{bags:2}),
-    O("GK-55121","gk","PENDING","14:05",[["BEV-001",6],["PRD-008",1]]),
-    O("GK-55120","gk","PICKING","13:58",[["BEV-006",2,0],["SWT-001",1,1],["PRD-001",1,0]],{picker:"lukas"}),
+    O("GK-55121","gk","PENDING","13:57",[["BEV-001",6],["PRD-008",1]]),
+    O("GK-55122","gk","PENDING","14:03",[["DRY-003",2],["BAK-003",1]]),
+    O("GK-55123","gk","PENDING","14:08",[["HSH-006",1],["SNK-001",1]]),
+    O("GK-55120","gk","PICKING","13:54",[["BEV-006",2,0],["SWT-001",1,1],["PRD-001",1,0]],{picker:"lukas"}),
     O("GK-55118","gk","PICKING","13:50",[["HSH-006",1,1],["PCR-005",2,1]],{picker:"lukas"}),
     O("GK-55117","gk","PICKING","13:47",[["DRY-001",1,1],["BAK-003",2,0]],{picker:"nadia"}),
     O("GK-55112","gk","ON_THE_WAY","13:10",[["SNK-001",3]],{bags:1}),
@@ -681,6 +770,108 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     de:'<svg viewBox="0 0 5 3" preserveAspectRatio="xMidYMid slice"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>',
     tr:'<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice"><rect width="1200" height="800" fill="#E30A17"/><circle cx="425" cy="400" r="200" fill="#fff"/><circle cx="475" cy="400" r="160" fill="#E30A17"/><polygon fill="#fff" points="583.3,400 652.4,377.5 652.4,304.9 695.1,363.7 764.2,341.2 721.5,400 764.2,458.8 695.1,436.3 652.4,495.1 652.4,422.5"/></svg>'
   };
+
+  // ======================= Waiting levels, new-order alert, WhatsApp reminders =======================
+  function tn(k, n) { return (n === 1 && T[lang][k + "1"]) || t(k); }          // singular text where the language needs it
+  function waitLevel(m) { return m >= 12 ? "verylate" : m >= 6 ? "late" : m >= 2 ? "wait" : "new"; }
+  function toMin(hhmm) { var p = hhmm.split(":"); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+  function fmtTime(min) { return String(Math.floor(min / 60)).padStart(2, "0") + ":" + String(min % 60).padStart(2, "0"); }
+  var STAFF_WA = {nadia:true, lukas:true};    // who gets WhatsApp reminders (registered phone number + switched on)
+  var waLog = [];                              // sent reminders, newest first
+  // The server checks every 2 minutes. The text depends on how long the OLDEST open order waits:
+  // 2 and 4 min = waiting, 6 min and more = late, 12 min and more = very late. n = orders waiting 2 min or more.
+  function reminderCheck(at) {
+    var waiting = orders.filter(function (o) { return o.status === "PENDING" && at - toMin(o.time) >= 2; });
+    var to = Object.keys(STAFF_WA).filter(function (id) { return STAFF_WA[id]; });
+    if (!waiting.length || !to.length) return null;
+    var oldest = Math.max.apply(null, waiting.map(function (o) { return at - toMin(o.time); }));
+    var m = Math.floor(oldest / 2) * 2;
+    var msg = {at:at, m:m, n:waiting.length, lv:waitLevel(m), to:to,
+               orders:waiting.map(function (o) { return {no:o.no, w:at - toMin(o.time)}; }).sort(function (a, b) { return b.w - a.w; })};
+    waLog.unshift(msg);
+    return msg;
+  }
+  (function () {   // demo history: the checks that already ran today (every even minute up to the demo clock)
+    var first = Math.min.apply(null, orders.filter(function (o) { return o.status === "PENDING"; }).map(function (o) { return toMin(o.time); }));
+    for (var c = Math.ceil((first + 2) / 2) * 2; c <= NOW; c += 2) reminderCheck(c);
+  })();
+
+  // new-order banner + sound (in the real app: push notification of the mobile app, also on a locked phone)
+  var bannerEl = document.getElementById("banner");
+  var BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
+  var CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.4-4A8 8 0 1 1 8.5 19z"/><path d="M9 10h6M9 13h4"/></svg>';
+  function showBanner(kind, title, sub) {
+    bannerEl.className = "banner" + (kind === "wa" ? " wa" : "");
+    bannerEl.innerHTML = '<span class="bi">' + (kind === "wa" ? CHAT : BELL) + '</span><span><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></span>';
+    void bannerEl.offsetWidth; bannerEl.classList.add("show");
+    clearTimeout(showBanner.timer);
+    showBanner.timer = setTimeout(function () { bannerEl.classList.remove("show"); }, 3000);
+  }
+  var audioCtx = null, soundOn = true;
+  function unlockAudio() {   // browsers only allow sound after the user has tapped something once
+    try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === "suspended") audioCtx.resume(); } catch (x) {}
+  }
+  function chime() {
+    if (!soundOn) return;
+    try {
+      unlockAudio(); var s = audioCtx.currentTime;
+      [[880, 0], [1175, .16], [1568, .32]].forEach(function (n) {
+        var osc = audioCtx.createOscillator(), g = audioCtx.createGain();
+        osc.type = "sine"; osc.frequency.value = n[0];
+        g.gain.setValueAtTime(.0001, s + n[1]); g.gain.exponentialRampToValueAtTime(.25, s + n[1] + .02); g.gain.exponentialRampToValueAtTime(.0001, s + n[1] + .3);
+        osc.connect(g); g.connect(audioCtx.destination); osc.start(s + n[1]); osc.stop(s + n[1] + .32);
+      });
+      if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+    } catch (x) {}
+  }
+  function pendingCount(ch) { return orders.filter(function (o) { return o.status === "PENDING" && (!ch || o.ch === ch); }).length; }
+  function notifyNewOrders() {
+    var n = pendingCount();
+    chime();
+    showBanner("order", tn("bannerNew", n).replace("{n}", n), t("bannerSub").replace("{a}", pendingCount("htgo")).replace("{b}", pendingCount("gk")));
+  }
+  var newSeq = {htgo:10485, gk:55124}, newPick = 0;
+  var BASKETS = [[["BEV-006",2],["SNK-001",1]], [["DRY-001",2],["BAK-003",1]], [["BRK-001",1],["SWT-001",2]], [["BEV-001",6],["PRD-001",1]]];
+  function arriveOrder() {
+    var ch = newPick % 2 ? "gk" : "htgo";
+    var o = O((ch === "htgo" ? "HT-" : "GK-") + newSeq[ch]++, ch, "PENDING", fmtTime(NOW), BASKETS[newPick++ % BASKETS.length]);
+    var last = -1;
+    orders.forEach(function (x, i) { if (x.ch === ch && x.status === "PENDING") last = i; });
+    orders.splice(last + 1, 0, o);           // waiting list stays oldest first
+    render(); notifyNewOrders();
+  }
+  function advanceClock() {
+    NOW += 2;
+    var msg = reminderCheck(NOW);
+    render();
+    if (msg) showBanner("wa", t("bannerWa"), t("bannerWaSub").replace("{n}", msg.to.length).replace("{time}", fmtTime(NOW)));
+  }
+  function pageAlerts() {
+    var html = '<h1 class="page">' + t("alertsTitle") + '</h1><div class="al-grid"><div style="display:flex;flex-direction:column;gap:16px;min-width:0">';
+    html += '<div class="card"><h2>' + t("rulesTitle") + '</h2>' +
+      rule("new", t("onArrival"), t("rule0")) + rule("wait", t("minFrom").replace("{m}", 2), t("rule2")) +
+      rule("late", t("minFrom").replace("{m}", 6), t("rule6")) + rule("verylate", t("minFrom").replace("{m}", 12), t("rule12")) + '</div>';
+    html += '<div class="card"><h2>' + t("recipients") + '</h2>' + ACCOUNTS.map(function (a) {
+      return '<div class="person"><span class="av" style="background:' + a.color + '">' + a.initials + '</span><div><b>' + esc(a.name) + '</b><span>' + t(a.roleKey) + ' · ' + t("phone") + ': ' + a.phone + '</span></div>' +
+        '<span class="tgl-cell"><button class="tgl" role="switch" aria-checked="' + !!STAFF_WA[a.id] + '" data-wa="' + a.id + '" aria-label="WhatsApp – ' + esc(a.name) + '"></button>' + t(STAFF_WA[a.id] ? "waOn" : "waOff") + '</span></div>';
+    }).join("") + '</div>';
+    html += '<div class="card"><h2>' + t("demoTitle") + '</h2><div class="demo-row"><span class="clock">🕑 ' + t("demoClock") + ': ' + fmtTime(NOW) + '</span></div><div class="demo-row">' +
+      '<button class="btn" data-demo="order">🔔 ' + t("demoNewOrder") + '</button><button class="btn ghost" data-demo="advance">⏩ ' + t("demoAdvance") + '</button>' +
+      '<button class="btn ghost" data-demo="sound">🔊 ' + t("soundTest") + '</button></div>' +
+      '<label class="remember" style="margin:0"><input type="checkbox" id="soundOn"' + (soundOn ? ' checked' : '') + '><span>' + t("orderSound") + '</span></label>' +
+      '<p class="note" style="margin:0">' + t("waProtoNote") + '</p></div></div>';
+    html += '<div class="card"><h2>' + t("msgLog") + ' (' + waLog.length + ')</h2><div class="chat">';
+    if (!waLog.length) html += '<p class="note">' + t("noMsgs") + '</p>';
+    waLog.forEach(function (w) {
+      var key = w.lv === "verylate" ? "waVeryLate" : w.lv === "late" ? "waLate" : "waWait";
+      var names = w.to.map(function (id) { return ACCOUNTS.filter(function (a) { return a.id === id; })[0].name.split(" ")[0]; }).join(", ");
+      html += '<div class="bubble lv-' + w.lv + '"><span class="from">' + t("sender") + '</span>' + esc(tn(key, w.n).replace("{m}", w.m).replace("{n}", w.n)) +
+        '<span class="ords">' + w.orders.map(function (x) { return '<span>' + x.no + ' · ' + x.w + ' ' + t("minutes") + '</span>'; }).join("") + '</span>' +
+        '<span class="meta"><span>' + t("sentTo").replace("{names}", names) + '</span><span>' + fmtTime(w.at) + ' <i>✓✓</i></span></span></div>';
+    });
+    return html + '</div></div></div>';
+    function rule(lv, when, text) { return '<div class="rule"><span class="lvl ' + lv + '">' + when + '</span><span>' + text + '</span></div>'; }
+  }
 
   // ======================= Calculations =======================
   function lineAmount(it, useFinal) {
@@ -749,7 +940,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     if (!list.length) html += '<div class="empty">' + t("noOrders") + '</div>';
     list.forEach(function (o) {
       var last;
-      if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o); last = '<span class="' + (m > 3 ? "late" : "") + '">' + m + ' ' + t("minutes") + '</span>'; }
+      if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o), lv = waitLevel(m); last = '<span class="waitcell"><b>' + m + ' ' + t("minutes") + '</b><span class="lvl ' + lv + '">' + t("lvl_" + lv) + '</span></span>'; }
       else if (o.status === "CANCELLED") last = '<span class="cxl"><span class="reason cx">' + t("CR_" + o.reason) + '</span>' + scoreNote(o.reason) + '</span>';
       else last = '<span class="pill s-' + o.status + '">' + t(o.status) + '</span>';
       if (o.status === "PENDING") last = '<span>' + last + '<button class="accept" data-accept="' + o.no + '">✓ ' + t("accept") + '</button></span>';
@@ -939,14 +1130,16 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   }
 
   var rejecting = null;
+  var returnFilter = {htgo:"", gk:""};
   function pageReturns(ch) {
     var counts = {};
     returns.forEach(function (r) { if (r.ch === ch) counts[r.code] = (counts[r.code] || 0) + 1; });
     var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("returns") + '</h1></div>' +
-      '<div class="reason-sum"><span style="border:0;background:none;padding-left:0">' + t("byReason") + ':</span>' +
-      Object.keys(counts).map(function (c) { return '<span>' + t("RR_" + c) + '<b>' + counts[c] + '</b></span>'; }).join("") + '</div><div class="list">' +
+      '<div class="reason-sum"><span class="lbl">' + t("byReason") + ':</span>' +
+      Object.keys(counts).map(function (c) { return '<button data-reason-filter="' + c + '" aria-pressed="' + (returnFilter[ch] === c) + '" title="' + t("filterByReason") + '">' + t("RR_" + c) + '<b>' + counts[c] + '</b></button>'; }).join("") +
+      (returnFilter[ch] ? '<button data-reason-filter="" class="all">✕ ' + t("showAllReasons") + '</button>' : '') + '</div><div class="list">' +
       '<div class="rrow head"><span>' + t("colReturnOrder") + '</span><span>' + t("colProduct") + '</span><span class="hide-s">' + t("colReason") + '</span><span class="hide-s">' + t("colAmount") + '</span><span>' + t("colStatus") + '</span><span></span></div>';
-    var list = returns.filter(function (r) { return r.ch === ch; });
+    var list = returns.filter(function (r) { return r.ch === ch && (!returnFilter[ch] || r.code === returnFilter[ch]); });
     list.forEach(function (r) {
       var p = P[r.sku], act = '';
       if (r.status === "REQUESTED") {
@@ -954,9 +1147,11 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
           ? '<span style="display:flex;gap:6px"><input id="rreason" placeholder="' + t("rejectReason") + '"><button class="mini no" data-reject-save="' + r.id + '">' + t("confirm") + '</button></span>'
           : '<span style="display:flex;gap:6px"><button class="mini ok" data-approve="' + r.id + '">' + t("approve") + '</button><button class="mini no" data-reject="' + r.id + '">' + t("reject") + '</button></span>';
       }
-      var reasonHtml = '<span class="reason">' + t("RR_" + r.code) + '</span><span class="reason-note">“' + esc(r.reason[lang]) + '”</span>' +
+      // tapping the reason opens the order the return belongs to, with the returned product marked
+      var openAttr = ' data-open-order="' + r.order + '" data-sku="' + r.sku + '" title="' + t("openOrderHint") + ' ' + r.order + '"';
+      var reasonHtml = '<button class="reason"' + openAttr + '>' + t("RR_" + r.code) + ' ›</button><span class="reason-note">“' + esc(r.reason[lang]) + '”</span>' +
         (r.rejection ? '<span class="reason-note">↳ ' + esc(r.rejection) + '</span>' : '');
-      html += '<div class="rrow"><span class="no"><b>' + r.order + '</b></span><span class="nm">' + esc(p[lang]) + '<br><span class="note">' + esc(p.brand) + '</span>' +
+      html += '<div class="rrow"><span class="no"><button class="orderlink"' + openAttr + '>' + r.order + '</button></span><span class="nm">' + esc(p[lang]) + '<br><span class="note">' + esc(p.brand) + '</span>' +
         '<span class="show-s" style="margin-top:6px">' + reasonHtml + '</span></span><span class="hide-s">' + reasonHtml +
         '</span><span class="hide-s">' + money(r.amount) + '</span><span><span class="pill s-' + r.status + '">' + t(r.status) + '</span></span>' + act + '</div>';
     });
@@ -1000,7 +1195,9 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       var miss = '';
       if (picking && !countOk) miss += '<span class="miss">' + t("missingQty") + ': ' + (it.qty - it.picked) + '</span>';
       if (picking && !weightOk) miss += '<span class="miss">' + t("weightMissing") + '</span>';
-      html += '<div class="it' + (done && picking ? " done" : "") + (picking && !done && o.readyError ? " missing" : "") + '"><span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + ' · ' + money(it.price) + '</span>' + miss + '</span>' + weight + right + '</div>';
+      var isReturned = o.hlSku === it.sku;
+      if (isReturned) miss += '<span class="rtag">↩ ' + t("returnedItem") + '</span>';
+      html += '<div class="it' + (done && picking ? " done" : "") + (picking && !done && o.readyError ? " missing" : "") + (isReturned ? " returned" : "") + '"><span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + ' · ' + money(it.price) + '</span>' + miss + '</span>' + weight + right + '</div>';
     });
     html += '</div>';
     html += '<div class="sum"><span>' + t("orderedTotal") + '</span><span>' + money(orderedTotal(o)) + '</span></div>';
@@ -1041,6 +1238,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     if (page === "orders") view.innerHTML = pageOrders(ch);
     else if (page === "products") view.innerHTML = pageProducts();
     else if (page === "sale") view.innerHTML = pageSale();
+    else if (page === "alerts") view.innerHTML = pageAlerts();
     else if (page === "returns") view.innerHTML = pageReturns(ch);
     else if (page === "reports") view.innerHTML = pageReport(ch);
     else view.innerHTML = pageHome();
@@ -1050,7 +1248,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     else if (editing) renderProductModal();
     else if (importing) renderImportModal();
   }
-  function closeModal() { openOrder = null; editing = null; importing = null; modal.hidden = true; render(); }
+  function closeModal() { if (openOrder) openOrder.hlSku = null; openOrder = null; editing = null; importing = null; modal.hidden = true; render(); }
   function sampleCsv() {
     return "barcode;name_tr;name_de;name_en;brand;category;size;price;stock\n" +
       eanWithCheck("200000000100") + ";Milvara Laktozsuz Süt;Milvara Laktosefreie Milch;Milvara Lactose-Free Milk;Milvara;DRY;1 L;1,49;30\n" +
@@ -1078,8 +1276,8 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   // ======================= Demo accounts and login =======================
   // Demo only: in the real app passwords are checked by the backend and stored as BCrypt hashes.
   var ACCOUNTS = [
-    {id:"nadia", name:"Nadia Brenner", initials:"NB", email:"nadia.brenner@lindenkorb.example", pass:"Nadia#2026", roleKey:"role", color:"#5B3DF5"},
-    {id:"lukas", name:"Lukas Hartmann", initials:"LH", email:"lukas.hartmann@lindenkorb.example", pass:"Lukas#2026", roleKey:"roleManager", color:"#0E7490"}
+    {id:"nadia", name:"Nadia Brenner", initials:"NB", email:"nadia.brenner@lindenkorb.example", pass:"Nadia#2026", phone:"+49 151 ••• 0101", roleKey:"role", color:"#5B3DF5"},
+    {id:"lukas", name:"Lukas Hartmann", initials:"LH", email:"lukas.hartmann@lindenkorb.example", pass:"Lukas#2026", phone:"+49 160 ••• 0202", roleKey:"roleManager", color:"#0E7490"}
   ];
   var currentUser = null;
   var loginEl = document.getElementById("login"), emailIn = document.getElementById("loginEmail"),
@@ -1138,6 +1336,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 
   document.addEventListener("click", function (e) {
     if (!e.target.closest(".email-wrap")) showDemoList(false);
+    unlockAudio();
     var el = e.target.closest("button, [data-go], [data-order]");
     if (!el) { if (!e.target.closest(".profile")) setDropdown(false); return; }
     if (el.dataset.account) { pickAccount(el.dataset.account); return; }
@@ -1189,6 +1388,12 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       return;
     }
     if (d.saleFilter) { saleFilter = d.saleFilter; render(); return; }
+    if (d.reasonFilter != null) { var rch = location.hash.indexOf("gk") >= 0 ? "gk" : "htgo"; returnFilter[rch] = returnFilter[rch] === d.reasonFilter ? "" : d.reasonFilter; render(); return; }
+    if (d.openOrder) { openOrder = orders.filter(function (o) { return o.no === d.openOrder; })[0]; if (openOrder) { openOrder.hlSku = d.sku; renderModal(); } return; }
+    if (d.wa) { STAFF_WA[d.wa] = !STAFF_WA[d.wa]; render(); return; }
+    if (d.demo === "order") { arriveOrder(); return; }
+    if (d.demo === "advance") { advanceClock(); return; }
+    if (d.demo === "sound") { chime(); return; }
     if (d.approve) { find(d.approve).status = "APPROVED"; render(); toast(t("returnSaved")); return; }
     if (d.reject) { rejecting = d.reject; render(); var inp = document.getElementById("rreason"); if (inp) inp.focus(); return; }
     if (d.rejectSave) {
@@ -1226,6 +1431,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       var s = document.getElementById("psearch"); s.focus(); s.setSelectionRange(pos, pos);
     }
     if (e.target.id === "cxReason" && openOrder) openOrder.cxDraft = e.target.value;
+    if (e.target.id === "soundOn") soundOn = e.target.checked;
     if (e.target.id === "salesearch") {
       saleQuery = e.target.value; var pos2 = e.target.selectionStart; render();
       var s2 = document.getElementById("salesearch"); s2.focus(); s2.setSelectionRange(pos2, pos2);
@@ -1291,6 +1497,8 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     if (!a) { loginErr.textContent = t("loginWrong"); loginErr.hidden = false; passIn.value = ""; passIn.focus(); return; }
     showDemoList(false);
     enterPanel(a, document.getElementById("rememberMe").checked);
+    // demo: a new order arrives a few seconds after logging in (sound + banner)
+    if (!arriveOrder.demoDone) { arriveOrder.demoDone = true; setTimeout(function () { if (currentUser) arriveOrder(); }, 6000); }
     toast(t("welcome").replace("{name}", a.name.split(" ")[0]));
   });
   window.addEventListener("hashchange", function () { if (currentUser) render(); });
