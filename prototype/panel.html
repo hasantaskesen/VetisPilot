@@ -68,7 +68,27 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .kv-active{background:#15803D} .kv-returns{background:#B91C1C} .ch-card .kv-returns.zero{background:#E5E7EB;color:#4B5563}
 .ch-card .kv-active b,.ch-card .kv-returns b{color:inherit;font-size:20px}
 .daily{margin-top:26px}
-.daily h2{font-size:15px;letter-spacing:.14em;margin:0 0 10px;color:var(--muted)}
+.daily h2{font-size:15px;letter-spacing:.14em;margin:0 0 10px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.daily h2 .date-chip{margin-left:0}
+/* home card is a div now (it holds the rating button) */
+.ch-card[data-go]{cursor:pointer}
+.ch-name{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
+.rating-link{border:0;background:#FEF3C7;color:#78350F;border-radius:999px;padding:3px 10px;font:inherit;font-size:13px;display:inline-flex;gap:5px;align-items:center;white-space:nowrap}
+.rating-link b{font-weight:800} .rating-link span{font-weight:600;color:#92400E} .rating-link:hover{background:#FDE68A}
+/* stars in boxes: --p = how much of the box is filled */
+.stars{display:inline-flex;gap:3px}
+.stars i{font-style:normal;width:20px;height:20px;border-radius:5px;display:grid;place-items:center;font-size:13px;line-height:1;color:#fff;background:linear-gradient(90deg,#F59E0B var(--p),#D1D5DB var(--p))}
+.stars.big i{width:30px;height:30px;font-size:19px;border-radius:7px}
+.rv-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;margin-bottom:16px}
+.rv-score{align-items:center;text-align:center;justify-content:center} .rv-big{font-size:48px;line-height:1;color:var(--c)}
+.rv-dist{display:grid;grid-template-columns:36px 1fr 54px;gap:8px;align-items:center;font-size:13px;font-weight:600}
+.rv-dist span:last-child{text-align:right}
+.rv-bar{height:8px;background:#F3F4F6;border-radius:99px;overflow:hidden} .rv-bar i{display:block;height:100%;background:#F59E0B}
+.rv-crit{display:grid;grid-template-columns:76px auto 1fr;gap:10px;align-items:center;font-size:14px;font-weight:600} .rv-crit b{text-align:right}
+.rv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
+.rv-head{display:flex;align-items:center;gap:10px} .rv-head div{flex:1;min-width:0} .rv-head div b{display:block}
+.rv-av{width:38px;height:38px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;flex-shrink:0} .rv-ov{color:#B45309}
+.rv-text{margin:0;font-size:14px;color:#374151;font-style:italic}
 .daily-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .daily-col{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:6px solid var(--c)}
 .daily-col.htgo{--c:var(--htgo)} .daily-col.gk{--c:var(--gk)}
@@ -160,6 +180,9 @@ button.reason{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:80
 .btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;background:var(--c,var(--accent));color:#fff}
 .btn.ghost{background:#fff;color:#111827;border:1px solid var(--line)}
 .btn.danger{background:#B91C1C} .btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.danger:disabled{background:#9CA3AF;opacity:1}
+#cxReason{border:2px solid #D1D5DB} #cxReason.chosen{border-color:#B91C1C;color:#991B1B;font-weight:700}
+.cx-hint{flex-basis:100%;font-weight:700;color:#6B7280}
 .note{font-size:13px;color:var(--muted)}
 .sum{display:flex;justify-content:space-between;font-weight:800;font-size:17px}
 .calllog{font-size:13px;background:#F9FAFB;border-radius:10px;padding:8px 12px}
@@ -308,7 +331,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .login-card input[type=email],.login-card input[type=password]{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:16px}
 .login-card input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .email-wrap{position:relative}
-.demo-list{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 30px rgba(0,0,0,.18);padding:6px;z-index:5}
+.demo-list{position:static;margin-top:6px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 30px rgba(0,0,0,.18);padding:6px;z-index:5}
 .demo-list p{margin:4px 8px 6px;font-size:12px;font-weight:800;color:#6B7280;letter-spacing:.04em}
 .demo-opt{width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;border-radius:10px;padding:8px;text-align:left}
 .demo-opt:hover,.demo-opt:focus-visible{background:#EEEBFF;outline:none}
@@ -317,6 +340,8 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .remember{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;color:#374151;margin:4px 0}
 .remember input{width:20px;height:20px;accent-color:var(--accent)}
 .login-btn{width:100%;padding:13px;font-size:16px;background:var(--accent)}
+button,a,label,input{touch-action:manipulation}
+@media (max-width:640px){.login-wrap{justify-content:flex-start;padding-top:8px}}
 .platforms{border-top:1px solid var(--line);margin-top:8px;padding-top:12px}
 .platforms p{margin:0 0 8px;font-size:12px;font-weight:800;color:#6B7280;text-align:center;letter-spacing:.04em}
 .plat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -447,7 +472,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
 
       <label class="remember"><input type="checkbox" id="rememberMe"><span data-t="rememberMe"></span></label>
       <p id="loginError" class="errbox" hidden></p>
-      <button class="btn login-btn" type="submit" data-t="login"></button>
+      <button id="loginBtn" class="btn login-btn" type="button" data-t="login"></button>
 
       <div class="platforms">
         <p data-t="availableOn"></p>
@@ -537,6 +562,14 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       <button data-go="#reports-htgo"><i class="dot" style="background:var(--htgo)"></i><span data-t="salesReportHtgo"></span></button>
       <button data-go="#reports-gk"><i class="dot" style="background:var(--gk)"></i><span data-t="salesReportGk"></span></button>
     </div>
+    <button class="nav-item" data-toggle="subReviews" aria-expanded="false">
+      <svg class="i" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg><span data-t="reviews"></span>
+      <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="sub" id="subReviews" hidden>
+      <button data-go="#reviews-htgo"><i class="dot" style="background:var(--htgo)"></i>HTGO Market</button>
+      <button data-go="#reviews-gk"><i class="dot" style="background:var(--gk)"></i>GK Market</button>
+    </div>
 
     <hr class="nav-sep">
     <button class="nav-item logout" data-action="logout">
@@ -577,7 +610,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       waitingCourier:"Kurye bekleniyor – sonraki durumu kanal belirler.", picked:"toplandı", weight:"Ağırlık (kg)",
       bags:"Poşet sayısı", bagFee:"Poşet ücreti", orderedTotal:"Sipariş tutarı", finalTotal:"Son tutar",
       allLinesFirst:"Önce tüm satırları say (toplanan = sipariş edilen).", callCustomer:"Müşteriyi ara", callNoAnswer:"Cevap yok",
-      callAttempt:"Arama", cancelOrder:"Siparişi iptal et", cancelRule:"\"Şube çok yoğun\" aramadan seçilebilir (mağaza puanını etkiler). \"Müşteriye ulaşılamadı\" ve \"Ürün stokta yok\" için önce müşteri 2 kez aranmalı.", needsCalls:"önce 2 arama",
+      callAttempt:"Arama", cancelOrder:"Siparişi iptal et", cancelRule:"\"Şube çok yoğun\" aramadan seçilebilir (mağaza puanını etkiler). \"Müşteriye ulaşılamadı\" ve \"Ürün stokta yok\" için önce müşteri 2 kez aranmalı.", needsCalls:"önce 2 arama", cxChoose:"İptal nedeni seç", cxChooseFirst:"Siparişi iptal etmek için önce iptal nedenini seç.",
       cancelledUnreachable:"İptal: müşteriye ulaşılamadı (mağaza puanı etkilenmez).", close:"Kapat",
       searchProducts:"Ürün, marka ya da SKU ara…", colProduct:"Ürün", colSize:"Boyut", colPrice:"Fiyat", colStock:"Stok", colAvail:"Satış durumu",
       inStock:"Stokta", outOfStock:"Stokta yok", colReturnOrder:"Sipariş", colReason:"İade nedeni", colAmount:"Tutar",
@@ -630,7 +663,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       chart_day:"Saatlik sipariş sayısı (bugün)", chart_week:"Günlük sipariş sayısı (son 7 gün)", chart_month:"Günlük sipariş sayısı (bu ay)", chart_year:"Aylık sipariş sayısı (bu yıl)",
       tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
       reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
-      refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı"},
+      refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı",
+      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
+      recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
       management:"VERWALTUNG", productList:"Produktliste", returns:"Retouren", reports:"Berichte",
@@ -644,7 +679,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       waitingCourier:"Wartet auf den Kurier – den nächsten Status setzt der Kanal.", picked:"kommissioniert", weight:"Gewicht (kg)",
       bags:"Anzahl Tüten", bagFee:"Tütengebühr", orderedTotal:"Bestellter Betrag", finalTotal:"Endbetrag",
       allLinesFirst:"Zuerst alle Zeilen zählen (kommissioniert = bestellt).", callCustomer:"Kunden anrufen", callNoAnswer:"Keine Antwort",
-      callAttempt:"Anruf", cancelOrder:"Bestellung stornieren", cancelRule:"\"Filiale überlastet\" geht ohne Anruf (zählt für die Filialbewertung). Für \"Kunde nicht erreichbar\" und \"Artikel nicht vorrätig\" muss der Kunde zuerst 2-mal angerufen werden.", needsCalls:"erst 2 Anrufe",
+      callAttempt:"Anruf", cancelOrder:"Bestellung stornieren", cancelRule:"\"Filiale überlastet\" geht ohne Anruf (zählt für die Filialbewertung). Für \"Kunde nicht erreichbar\" und \"Artikel nicht vorrätig\" muss der Kunde zuerst 2-mal angerufen werden.", needsCalls:"erst 2 Anrufe", cxChoose:"Stornogrund wählen", cxChooseFirst:"Zum Stornieren zuerst den Stornogrund wählen.",
       cancelledUnreachable:"Storniert: Kunde nicht erreichbar (Filialbewertung nicht betroffen).", close:"Schließen",
       searchProducts:"Produkt, Marke oder SKU suchen …", colProduct:"Produkt", colSize:"Größe", colPrice:"Preis", colStock:"Bestand", colAvail:"Verkaufsstatus",
       inStock:"Vorrätig", outOfStock:"Nicht vorrätig", colReturnOrder:"Bestellung", colReason:"Retourengrund", colAmount:"Betrag",
@@ -698,7 +733,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       chart_day:"Bestellungen pro Stunde (heute)", chart_week:"Bestellungen pro Tag (letzte 7 Tage)", chart_month:"Bestellungen pro Tag (dieser Monat)", chart_year:"Bestellungen pro Monat (dieses Jahr)",
       tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
       reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
-      refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet"},
+      refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet",
+      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
+      recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
       management:"MANAGEMENT", productList:"Product list", returns:"Returns", reports:"Reports",
@@ -712,7 +749,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       waitingCourier:"Waiting for the courier – the channel sets the next status.", picked:"picked", weight:"Weight (kg)",
       bags:"Number of bags", bagFee:"Bag fee", orderedTotal:"Ordered amount", finalTotal:"Final amount",
       allLinesFirst:"Count every line first (picked = ordered).", callCustomer:"Call customer", callNoAnswer:"No answer",
-      callAttempt:"Call", cancelOrder:"Cancel order", cancelRule:"\"Branch overloaded\" works without a call (counts against the store score). For \"Customer unreachable\" and \"Item out of stock\" the customer must be called twice first.", needsCalls:"2 calls first",
+      callAttempt:"Call", cancelOrder:"Cancel order", cancelRule:"\"Branch overloaded\" works without a call (counts against the store score). For \"Customer unreachable\" and \"Item out of stock\" the customer must be called twice first.", needsCalls:"2 calls first", cxChoose:"Choose a reason", cxChooseFirst:"To cancel the order, choose the cancellation reason first.",
       cancelledUnreachable:"Cancelled: customer unreachable (store score not affected).", close:"Close",
       searchProducts:"Search product, brand or SKU…", colProduct:"Product", colSize:"Size", colPrice:"Price", colStock:"Stock", colAvail:"Sales status",
       inStock:"In stock", outOfStock:"Out of stock", colReturnOrder:"Order", colReason:"Return reason", colAmount:"Amount",
@@ -766,7 +803,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       chart_day:"Orders per hour (today)", chart_week:"Orders per day (last 7 days)", chart_month:"Orders per day (this month)", chart_year:"Orders per month (this year)",
       tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
       reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
-      refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded"}
+      refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded",
+      reviews:"Reviews", reviewsCount:"{n} reviews", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
+      recentReviews:"Latest reviews", todayWord:"today", yesterday:"yesterday", daysAgo:"{n} days ago", reviewsNote:"Customers give 1–5 stars in the channel app after delivery (service, taste, delivery). The panel only shows the reviews."}
   };
   var lang = "tr";
   try { var savedLang = localStorage.getItem("vp-proto-lang"); if (T[savedLang]) lang = savedLang; } catch (e) {}
@@ -1126,9 +1165,11 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function pageHome() {
     var html = '<h1 class="page">' + t("home") + '</h1><div class="ch-cards">';
     ["htgo","gk"].forEach(function (ch) {
-      html += '<button class="ch-card ' + ch + '" data-go="#orders-' + ch + '"><div class="ch-title">' + ICON[ch] + CH[ch].name + '</div>' +
+      // the card opens the orders; the rating line inside it opens the reviews
+      html += '<div class="ch-card ' + ch + '" role="link" tabindex="0" data-go="#orders-' + ch + '"><div class="ch-title">' + ICON[ch] + '<span class="ch-name">' + CH[ch].name +
+        '<button class="rating-link" data-go="#reviews-' + ch + '" aria-label="' + t("reviews") + ' ' + CH[ch].name + '"><b>★ ' + fmt1(RATING[ch].avg) + '</b><span>(' + RATING[ch].count.toLocaleString(t("locale")) + ')</span></button></span></div>' +
         '<div class="kvs"><div class="kv kv-active"><span class="lbl">' + SVG.bag + t("activeOrders") + ':</span><b>' + active(ch) + '</b></div>' +
-        '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div></div></button>';
+        '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div></div></div>';
     });
     html += '</div><section class="daily"><h2>' + t("daily") + ' <span class="date-chip">📅 ' + t("chipDay") + ' · ' + fmtDate(new Date(), {weekday:"long", day:"numeric", month:"long"}) + '</span></h2><div class="daily-grid">';
     ["htgo","gk"].forEach(function (ch) {
@@ -1521,6 +1562,60 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     applyStaticTexts();
   }
 
+  // ======================= Customer ratings and reviews =======================
+  // Customers rate in the channel app after delivery, 1–5 stars in three criteria; the panel only shows them.
+  // The star distribution is chosen so that it gives exactly the shown average (HTGO 4.9, GK 4.7).
+  var RATING = {
+    htgo:{avg:4.9, count:2004, dist:[1858, 112, 20, 6, 8], crit:{service:4.9, taste:4.8, delivery:4.9}},
+    gk:{avg:4.7, count:2026, dist:[1610, 300, 70, 22, 24], crit:{service:4.7, taste:4.8, delivery:4.6}}
+  };
+  var REVIEWS = {
+    htgo:[
+      {name:"Anna K.", days:0, s:5, t:5, d:5, txt:{tr:"Her şey çok tazeydi, kurye de çok kibardı.", de:"Alles war super frisch und der Kurier sehr freundlich.", en:"Everything was very fresh and the courier was very friendly."}},
+      {name:"Murat Y.", days:0, s:5, t:5, d:5, txt:{tr:"Siparişim 25 dakikada geldi, teşekkürler!", de:"Meine Bestellung war in 25 Minuten da, danke!", en:"My order arrived in 25 minutes, thanks!"}},
+      {name:"Sophie L.", days:1, s:5, t:5, d:4, txt:{tr:"Ürünler harika, teslimat birkaç dakika gecikti.", de:"Produkte top, die Lieferung kam ein paar Minuten später.", en:"Great products, delivery was a few minutes late."}},
+      {name:"Jonas B.", days:1, s:5, t:5, d:5, txt:{tr:"Eksik ürün için önceden aradılar, çok iyi.", de:"Wegen eines fehlenden Artikels haben sie vorher angerufen, sehr gut.", en:"They called beforehand about a missing item, very good."}},
+      {name:"Elif D.", days:2, s:5, t:4, d:5, txt:{tr:"Muzlar biraz yeşildi ama genel olarak çok memnunum.", de:"Die Bananen waren etwas grün, aber insgesamt sehr zufrieden.", en:"The bananas were a bit green, but overall very happy."}},
+      {name:"Max R.", days:3, s:5, t:5, d:5, txt:{tr:"Soğuk ürünler gerçekten soğuk geldi.", de:"Kühlware kam wirklich kalt an.", en:"Chilled products really arrived cold."}}
+    ],
+    gk:[
+      {name:"Leonie S.", days:0, s:5, t:5, d:5, txt:{tr:"Hızlı ve özenli paketlenmiş.", de:"Schnell und sorgfältig verpackt.", en:"Fast and carefully packed."}},
+      {name:"Ahmet K.", days:0, s:4, t:5, d:4, txt:{tr:"Ürünler güzeldi, teslimat biraz uzun sürdü.", de:"Gute Produkte, die Lieferung hat etwas gedauert.", en:"Good products, delivery took a while."}},
+      {name:"Clara M.", days:1, s:5, t:5, d:5, txt:{tr:"Kruvasanlar taptazeydi!", de:"Die Croissants waren ofenfrisch!", en:"The croissants were fresh from the oven!"}},
+      {name:"Paul W.", days:1, s:4, t:4, d:3, txt:{tr:"Bir şişe su eksikti, para iadesi hemen yapıldı.", de:"Eine Flasche Wasser fehlte, die Erstattung kam sofort.", en:"One bottle of water was missing, the refund came right away."}},
+      {name:"Zeynep A.", days:2, s:5, t:5, d:5, txt:{tr:"Her hafta buradan sipariş veriyorum.", de:"Ich bestelle hier jede Woche.", en:"I order here every week."}},
+      {name:"Lukas F.", days:3, s:5, t:4, d:5, txt:{tr:"Kurye çok yardımseverdi.", de:"Der Kurier war sehr hilfsbereit.", en:"The courier was very helpful."}}
+    ]
+  };
+  function fmt1(v) { return v.toLocaleString(t("locale"), {minimumFractionDigits:1, maximumFractionDigits:1}); }
+  // five star boxes; value may be a decimal (4.9 -> the last box is 90 % filled)
+  function starBoxes(v, big) {
+    var h = '<span class="stars' + (big ? ' big' : '') + '" role="img" aria-label="' + fmt1(v) + ' / 5">';
+    for (var i = 1; i <= 5; i++) { var p = Math.max(0, Math.min(1, v - (i - 1))); h += '<i style="--p:' + Math.round(p * 100) + '%">★</i>'; }
+    return h + '</span>';
+  }
+  function pageReviews(ch) {
+    var R = RATING[ch];
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("reviews") + '</h1></div><div class="rv-top">' +
+      '<div class="card rv-score"><b class="rv-big">' + fmt1(R.avg) + '</b><span class="note">' + t("outOf5") + '</span>' + starBoxes(R.avg, true) +
+      '<span class="note">' + t("reviewsCount").replace("{n}", R.count.toLocaleString(t("locale"))) + '</span></div>' +
+      '<div class="card"><h2>' + t("ratingDist") + '</h2>' + R.dist.map(function (n, i) {
+        var star = 5 - i; return '<div class="rv-dist"><span>' + star + ' ★</span><span class="rv-bar"><i style="width:' + (n / R.count * 100).toFixed(1) + '%"></i></span><span>' + n.toLocaleString(t("locale")) + '</span></div>';
+      }).join("") + '</div>' +
+      '<div class="card"><h2>' + t("criteria") + '</h2>' + ["service","taste","delivery"].map(function (k) {
+        return '<div class="rv-crit"><span>' + t("crit_" + k) + '</span>' + starBoxes(R.crit[k]) + '<b>' + fmt1(R.crit[k]) + '</b></div>';
+      }).join("") + '</div></div>';
+    html += '<h2 class="sub-h">' + t("recentReviews") + '</h2><div class="rv-list">';
+    REVIEWS[ch].forEach(function (r) {
+      var overall = (r.s + r.t + r.d) / 3, when = r.days === 0 ? t("todayWord") : r.days === 1 ? t("yesterday") : t("daysAgo").replace("{n}", r.days);
+      html += '<div class="card rv-item"><div class="rv-head"><span class="rv-av">' + esc(r.name.charAt(0)) + '</span><div><b>' + esc(r.name) + '</b><span class="note">' + when + '</span></div><b class="rv-ov">★ ' + fmt1(overall) + '</b></div>' +
+        [["service", r.s], ["taste", r.t], ["delivery", r.d]].map(function (c) {
+          return '<div class="rv-crit"><span>' + t("crit_" + c[0]) + '</span>' + starBoxes(c[1]) + '<b>' + c[1] + '/5</b></div>';
+        }).join("") + '<p class="rv-text">“' + esc(r.txt[lang]) + '”</p></div>';
+    });
+    return html + '</div><p class="note" style="margin-top:12px">' + t("reviewsNote") + '</p></div>';
+  }
+
   // ======================= Sales report: day / week / month / year =======================
   // Today comes from the live panel (same numbers as the home page). Earlier days are sample data,
   // calculated the same way every time (seeded), at a normal level for one supermarket branch.
@@ -1662,13 +1757,16 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       //  - "branch overloaded" can be chosen without calling (it counts against the store score)
       //  - "customer unreachable" and "item out of stock" stay grey until 2 calls are logged
       //  - "customer cancelled" / "wrong address" come from the channel, so they are not offered here
-      var cxSel = branchCancelAllowed(o, o.cxDraft) ? o.cxDraft : "BRANCH_OVERLOADED";
+      // nothing is pre-selected: the order can only be cancelled after a reason has been chosen (button grey -> red)
+      var cxSel = branchCancelAllowed(o, o.cxDraft) ? o.cxDraft : "";
       html += '<button class="btn ghost" data-call>📞 ' + t("callCustomer") + ' (' + o.calls + '/2)</button>' +
-        '<select id="cxReason" aria-label="' + t("cancelReasonPick") + '">' +
+        '<select id="cxReason" class="' + (cxSel ? 'chosen' : '') + '" aria-label="' + t("cancelReasonPick") + '">' +
+        '<option value=""' + (cxSel ? '' : ' selected') + ' disabled>— ' + t("cxChoose") + ' —</option>' +
         BRANCH_CANCEL.map(function (c) {
           var ok = branchCancelAllowed(o, c);
           return '<option value="' + c + '"' + (c === cxSel ? ' selected' : '') + (ok ? '' : ' disabled') + '>' + t("CR_" + c) + (ok ? '' : ' (' + t("needsCalls") + ')') + '</option>'; }).join("") + '</select>' +
-        '<button class="btn danger" data-cancel>' + t("cancelOrder") + '</button>';
+        '<button class="btn danger" data-cancel' + (cxSel ? '' : ' disabled title="' + t("cxChooseFirst") + '"') + '>' + t("cancelOrder") + '</button>' +
+        (cxSel ? '' : '<span class="note cx-hint">↑ ' + t("cxChooseFirst") + '</span>');
     }
     html += '<button class="btn ghost" data-close style="margin-left:auto">' + t("close") + '</button></div>';
     if (picking && o.readyError) {
@@ -1693,6 +1791,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     else if (page === "sale") view.innerHTML = pageSale();
     else if (page === "alerts") view.innerHTML = pageAlerts();
     else if (page === "returns") view.innerHTML = pageReturns(ch);
+    else if (page === "reviews") view.innerHTML = pageReviews(ch);
     else if (page === "reports") view.innerHTML = pageReport(ch);
     else view.innerHTML = pageHome();
     document.querySelectorAll(".nav-item[data-go]").forEach(function (b) { b.classList.toggle("active", b.dataset.go === h); });
@@ -1870,7 +1969,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     if (d.minus != null) { var b = o.items[+d.minus]; if (b.picked > 0) b.picked--; renderModal(); return; }
     if ("call" in d) { if (o.calls < 2) o.calls++; renderModal(); return; }
     if ("cancel" in d) {
-      var sel = document.getElementById("cxReason"), why = sel ? sel.value : "BRANCH_OVERLOADED";
+      var sel = document.getElementById("cxReason"), why = sel ? sel.value : "";
       if (!branchCancelAllowed(o, why)) return;
       o.reason = why; o.status = "CANCELLED"; currentTab[o.ch] = "CANCELLED";
       render(); toast(t("cancelledToast").replace("{r}", t("CR_" + o.reason))); return;
@@ -1945,7 +2044,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   scrim.addEventListener("click", function () { setMenu(false); });
   modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && e.target.matches && e.target.matches(".row[data-order]")) { e.target.click(); return; }
+    if (e.key === "Enter" && e.target.matches && e.target.matches(".row[data-order], .ch-card[data-go]")) { e.target.click(); return; }
     if (e.key !== "Escape") return;
     if (!demoList.hidden) { showDemoList(false); return; }
     if (!modal.hidden) closeModal();
@@ -1956,8 +2055,13 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   emailIn.addEventListener("click", function () { showDemoList(true); });
   emailIn.addEventListener("input", function () { loginErr.hidden = true; showDemoList(emailIn.value === ""); });
   passIn.addEventListener("input", function () { loginErr.hidden = true; });
-  document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+  // Login works from the button's own tap (some Android browsers, e.g. on Tecno phones, never send the form's
+  // "submit" event inside the viewer frame), from the Enter key in both fields, and from a normal form submit.
+  document.getElementById("loginForm").addEventListener("submit", function (e) { e.preventDefault(); doLogin(); });
+  document.getElementById("loginBtn").addEventListener("click", function (e) { e.preventDefault(); doLogin(); });
+  [emailIn, passIn].forEach(function (f) { f.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); doLogin(); } }); });
+  function doLogin() {
+    unlockAudio();
     var mail = emailIn.value.trim().toLowerCase(), pass = passIn.value;
     if (!mail || !pass) { loginErr.textContent = t("loginEmpty"); loginErr.hidden = false; return; }
     var a = ACCOUNTS.filter(function (x) { return x.email === mail && x.pass === pass; })[0];
@@ -1967,7 +2071,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     // demo: a new order arrives a few seconds after logging in (sound + banner)
     if (!arriveOrder.demoDone) { arriveOrder.demoDone = true; setTimeout(function () { if (currentUser) arriveOrder(); }, 8000); }
     toast(t("welcome").replace("{name}", a.name.split(" ")[0]));
-  });
+  }
   window.addEventListener("hashchange", function () { if (currentUser && !courierMode) render(); });
 
   // Start: a scanned return QR code opens the courier page; otherwise only a remembered (or same-tab) login skips the login page
