@@ -73,8 +73,9 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 /* home card is a div now (it holds the rating button) */
 .ch-card[data-go]{cursor:pointer}
 .ch-name{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
-.rating-link{border:0;background:#FEF3C7;color:#78350F;border-radius:999px;padding:3px 10px;font:inherit;font-size:13px;display:inline-flex;gap:5px;align-items:center;white-space:nowrap}
-.rating-link b{font-weight:800} .rating-link span{font-weight:600;color:#92400E} .rating-link:hover{background:#FDE68A}
+.rating-link{border:1px solid #CBD5E1;background:#fff;color:#0F172A;border-radius:999px;padding:3px 10px;font:inherit;font-size:13px;display:inline-flex;gap:5px;align-items:center;white-space:nowrap}
+.rating-link b{font-weight:800} .rating-link span{font-weight:600;color:#475569} .rating-link:hover{background:#F1F5F9}
+.rating-link .st,.rv-ov .st{font-style:normal;color:#F59E0B}
 /* stars in boxes: --p = how much of the box is filled */
 .stars{display:inline-flex;gap:3px}
 .stars i{font-style:normal;width:20px;height:20px;border-radius:5px;display:grid;place-items:center;font-size:13px;line-height:1;color:#fff;background:linear-gradient(90deg,#F59E0B var(--p),#D1D5DB var(--p))}
@@ -87,7 +88,7 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .rv-crit{display:grid;grid-template-columns:76px auto 1fr;gap:10px;align-items:center;font-size:14px;font-weight:600} .rv-crit b{text-align:right}
 .rv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
 .rv-head{display:flex;align-items:center;gap:10px} .rv-head div{flex:1;min-width:0} .rv-head div b{display:block}
-.rv-av{width:38px;height:38px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;flex-shrink:0} .rv-ov{color:#B45309}
+.rv-av{width:38px;height:38px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;flex-shrink:0} .rv-ov{color:#0F172A}
 .rv-text{margin:0;font-size:14px;color:#374151;font-style:italic}
 .daily-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .daily-col{background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:6px solid var(--c)}
@@ -1167,7 +1168,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     ["htgo","gk"].forEach(function (ch) {
       // the card opens the orders; the rating line inside it opens the reviews
       html += '<div class="ch-card ' + ch + '" role="link" tabindex="0" data-go="#orders-' + ch + '"><div class="ch-title">' + ICON[ch] + '<span class="ch-name">' + CH[ch].name +
-        '<button class="rating-link" data-go="#reviews-' + ch + '" aria-label="' + t("reviews") + ' ' + CH[ch].name + '"><b>★ ' + fmt1(RATING[ch].avg) + '</b><span>(' + RATING[ch].count.toLocaleString(t("locale")) + ')</span></button></span></div>' +
+        '<button class="rating-link" data-go="#reviews-' + ch + '" aria-label="' + t("reviews") + ' ' + CH[ch].name + '"><b><i class="st">★</i> ' + fmt1(RATING[ch].avg) + '</b><span>(' + RATING[ch].count.toLocaleString(t("locale")) + ')</span></button></span></div>' +
         '<div class="kvs"><div class="kv kv-active"><span class="lbl">' + SVG.bag + t("activeOrders") + ':</span><b>' + active(ch) + '</b></div>' +
         '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div></div></div>';
     });
@@ -1573,7 +1574,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     htgo:[
       {name:"Anna K.", days:0, s:5, t:5, d:5, txt:{tr:"Her şey çok tazeydi, kurye de çok kibardı.", de:"Alles war super frisch und der Kurier sehr freundlich.", en:"Everything was very fresh and the courier was very friendly."}},
       {name:"Murat Y.", days:0, s:5, t:5, d:5, txt:{tr:"Siparişim 25 dakikada geldi, teşekkürler!", de:"Meine Bestellung war in 25 Minuten da, danke!", en:"My order arrived in 25 minutes, thanks!"}},
-      {name:"Sophie L.", days:1, s:5, t:5, d:4, txt:{tr:"Ürünler harika, teslimat birkaç dakika gecikti.", de:"Produkte top, die Lieferung kam ein paar Minuten später.", en:"Great products, delivery was a few minutes late."}},
+      {name:"Sophie L.", days:1, s:5, t:5, d:4, txt:{tr:"Ürünler harika, teslimat 10 dakika gecikti.", de:"Produkte top, die Lieferung kam 10 Minuten zu spät.", en:"Great products, delivery was 10 minutes late."}},
       {name:"Jonas B.", days:1, s:5, t:5, d:5, txt:{tr:"Eksik ürün için önceden aradılar, çok iyi.", de:"Wegen eines fehlenden Artikels haben sie vorher angerufen, sehr gut.", en:"They called beforehand about a missing item, very good."}},
       {name:"Elif D.", days:2, s:5, t:4, d:5, txt:{tr:"Muzlar biraz yeşildi ama genel olarak çok memnunum.", de:"Die Bananen waren etwas grün, aber insgesamt sehr zufrieden.", en:"The bananas were a bit green, but overall very happy."}},
       {name:"Max R.", days:3, s:5, t:5, d:5, txt:{tr:"Soğuk ürünler gerçekten soğuk geldi.", de:"Kühlware kam wirklich kalt an.", en:"Chilled products really arrived cold."}}
@@ -1608,7 +1609,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     html += '<h2 class="sub-h">' + t("recentReviews") + '</h2><div class="rv-list">';
     REVIEWS[ch].forEach(function (r) {
       var overall = (r.s + r.t + r.d) / 3, when = r.days === 0 ? t("todayWord") : r.days === 1 ? t("yesterday") : t("daysAgo").replace("{n}", r.days);
-      html += '<div class="card rv-item"><div class="rv-head"><span class="rv-av">' + esc(r.name.charAt(0)) + '</span><div><b>' + esc(r.name) + '</b><span class="note">' + when + '</span></div><b class="rv-ov">★ ' + fmt1(overall) + '</b></div>' +
+      html += '<div class="card rv-item"><div class="rv-head"><span class="rv-av">' + esc(r.name.charAt(0)) + '</span><div><b>' + esc(r.name) + '</b><span class="note">' + when + '</span></div><b class="rv-ov"><i class="st">★</i> ' + fmt1(overall) + '</b></div>' +
         [["service", r.s], ["taste", r.t], ["delivery", r.d]].map(function (c) {
           return '<div class="rv-crit"><span>' + t("crit_" + c[0]) + '</span>' + starBoxes(c[1]) + '<b>' + c[1] + '/5</b></div>';
         }).join("") + '<p class="rv-text">“' + esc(r.txt[lang]) + '”</p></div>';
