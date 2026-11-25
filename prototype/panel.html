@@ -78,6 +78,9 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .daily{margin-top:26px}
 /* split orders and courier volume */
 .ch-head.center{flex-direction:column;justify-content:center;text-align:center;gap:6px} .ch-head.center h1{line-height:1.2} .h-sub{display:block;font-size:.72em;font-weight:700;opacity:.9}
+.trip{display:block;font-size:11.5px;font-weight:700;line-height:1.3;margin-top:3px;white-space:normal}
+.trip.out{color:#6D28D9} .trip.back{color:#B45309} .trip.back.done{color:#15803D}
+body.dark .trip.out{color:#C4B5FD} body.dark .trip.back{color:#FCD34D} body.dark .trip.back.done{color:#4ADE80}
 .split-tag{display:block;font-size:11px;font-weight:700;color:#6D28D9;line-height:1.3;white-space:normal}
 .modal-head .split-tag{display:inline;color:#E9D5FF}
 .vol{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:#374151}
@@ -331,7 +334,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .login[hidden]{display:none}
 .login-wrap{width:100%;max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-height:100%;justify-content:center}
-.login-top{display:flex;justify-content:flex-end}
+.login-top{display:flex;justify-content:flex-end;align-items:center;gap:8px}
 .login-top .langs{background:rgba(255,255,255,.08);border-radius:12px;padding:4px}
 .login-top .langs button{background:transparent;border-color:transparent;color:#E5E3FA}
 .login-top .langs button[aria-pressed="true"]{background:#fff;color:var(--ink)}
@@ -519,7 +522,13 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
 <!-- ============ Login page – everyone starts here ============ -->
 <div id="login" class="login">
   <div class="login-wrap">
-    <div class="login-top"><div class="langs" role="group" aria-label="Language"></div></div>
+    <div class="login-top">
+      <button id="themeBtnLogin" class="theme-btn" type="button" aria-pressed="false">
+        <svg class="i moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        <svg class="i sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      </button>
+      <div class="langs" role="group" aria-label="Language"></div>
+    </div>
 
     <div class="market-box">
       <span class="mk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10a4 4 0 0 1 8 0"/><path d="M3 10h18l-2 9a2 2 0 0 1-2 1.6H7A2 2 0 0 1 5 19z"/><path d="M8 14v3M12 14v3M16 14v3"/></svg></span>
@@ -743,7 +752,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
       reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
       refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı",
-      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", nightMode:"Gece modu", dayMode:"Gündüz modu", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
+      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", nightMode:"Gece modu", dayMode:"Gündüz modu", tripToCustomer:"Kurye {c} teslimat adresine gidiyor", tripReturnToStore:"İade {id}: kurye {c} iadeyi mağazaya getiriyor", tripReturnAtStore:"İade {id}: kurye mağazada, QR okutulmayı bekliyor", tripReturnDone:"İade {id}: mağaza teslim aldı", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
       recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.1)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
@@ -813,7 +822,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
       reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
       refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet",
-      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", nightMode:"Nachtmodus", dayMode:"Tagmodus", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
+      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", nightMode:"Nachtmodus", dayMode:"Tagmodus", tripToCustomer:"Kurier {c} ist unterwegs zur Lieferadresse", tripReturnToStore:"Retoure {id}: Kurier {c} bringt die Retoure zur Filiale", tripReturnAtStore:"Retoure {id}: Kurier in der Filiale, wartet auf QR-Scan", tripReturnDone:"Retoure {id}: von der Filiale angenommen", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
       recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.1)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
@@ -883,7 +892,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
       reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
       refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded",
-      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", nightMode:"Night mode", dayMode:"Day mode", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
+      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", nightMode:"Night mode", dayMode:"Day mode", tripToCustomer:"Courier {c} is on the way to the delivery address", tripReturnToStore:"Return {id}: courier {c} is bringing the return to the store", tripReturnAtStore:"Return {id}: courier at the store, waiting for the QR scan", tripReturnDone:"Return {id}: received by the store", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
       recentReviews:"Latest reviews", todayWord:"today", yesterday:"yesterday", daysAgo:"{n} days ago", reviewsNote:"Customers give 1–5 stars in the channel app after delivery (service, taste, delivery). The panel only shows the reviews."}
   };
   var lang = "tr";
@@ -1014,7 +1023,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     O("HT-10476","htgo","PICKING","13:33",[["BEV-006",2,1],["SWT-001",1,0],["DRY-003",2,0],["BAK-003",1,1],["FRZ-004",1,0]],{picker:"tobias"}),
     O("HT-10477","htgo","READY","13:30",[["BRK-001",1],["DRY-002",1]],{bags:1,picker:"lukas"}),
     O("HT-10475","htgo","READY","13:24",[["DRY-001",2],["SNK-001",1]],{bags:1,picker:"mira"}),
-    O("HT-10470","htgo","ON_THE_WAY","12:55",[["FRZ-004",2],["BEV-009",1]],{bags:1}),
+    O("HT-10474","htgo","ON_THE_WAY","13:18",[["DRY-001",2],["BAK-003",1],["SWT-001",2]],{bags:1,picker:"tobias",courier:"Emre K."}),
+    O("HT-10470","htgo","ON_THE_WAY","12:55",[["FRZ-004",2],["BEV-009",1]],{bags:1,picker:"nadia",courier:"Jonas W."}),
     O("HT-10466","htgo","CANCELLED","12:20",[["PCR-005",1]],{reason:"CUSTOMER_UNREACHABLE",calls:2}),
     O("HT-10461","htgo","DELIVERED","12:05",[["BEV-006",2],["SWT-001",1]],{bags:1,picker:"mira"}),
     O("HT-10449","htgo","CANCELLED","10:20",[["PRD-008",2],["DRY-003",1]],{reason:"ITEM_MISSING"}),
@@ -1032,7 +1042,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     O("GK-55117","gk","PICKING","13:47",[["DRY-001",1,1],["BAK-003",2,0],["PRD-008",1,0],["SWT-001",2,2],["BRK-001",1,0]],{picker:"nadia"}),
     O("GK-55116","gk","PICKING","13:44",[["BRK-001",1,0],["BEV-009",2,2],["DRY-003",1,1],["SNK-001",2,0],["FRZ-004",1,0]],{picker:"mira"}),
     O("GK-55114","gk","READY","13:28",[["PRD-001",1],["DRY-003",2]],{bags:1,picker:"tobias"}),
-    O("GK-55112","gk","ON_THE_WAY","13:10",[["SNK-001",3]],{bags:1}),
+    O("GK-55113","gk","ON_THE_WAY","13:22",[["BEV-006",2],["PRD-008",1],["DRY-003",2]],{bags:1,picker:"mira",courier:"Lena H."}),
+    O("GK-55112","gk","ON_THE_WAY","13:10",[["SNK-001",3]],{bags:1,picker:"lukas",courier:"Selin A."}),
     O("GK-55110","gk","CANCELLED","12:50",[["BEV-003",1],["SNK-001",2]],{reason:"WRONG_ADDRESS"}),
     O("GK-55108","gk","DELIVERED","12:31",[["BRK-001",1],["DRY-001",2]],{bags:1}),
     O("GK-55099","gk","CANCELLED","10:30",[["HSH-006",1]],{reason:"CUSTOMER_CANCELLED"}),
@@ -1366,6 +1377,18 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     if (!a) return '<span class="note">—</span>';
     return '<span class="picker"><i style="background:' + a.color + '">' + a.initials + '</i>' + esc(a.name) + '</span>';
   }
+  // courier lines under the status: delivery on its way, and returns of this order that a courier brings back
+  function courierTrips(o) {
+    var h = '';
+    if (o.status === "ON_THE_WAY") h += '<span class="trip out">🛵 ' + t("tripToCustomer").replace("{c}", esc(o.courier || COURIERS[o.ch])) + '</span>';
+    returns.forEach(function (r) {
+      if (r.order !== orderNo(o) || r.status !== "APPROVED") return;
+      var st = handoverStatus(r.id), c = esc(r.courier || COURIERS[r.ch]);
+      h += '<span class="trip back' + (st === "RECEIVED" ? ' done' : '') + '">↩ ' +
+        t(st === "WAITING" ? "tripReturnToStore" : st === "QR" ? "tripReturnAtStore" : "tripReturnDone").replace("{c}", c).replace("{id}", r.id) + '</span>';
+    });
+    return h;
+  }
   function pageOrders(ch) {
     var tabs = ["PENDING","PICKING","READY","ALL","CANCELLED"];
     var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("orders") + '</h1></div><div class="tabs" role="tablist">';
@@ -1386,6 +1409,9 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       if (currentTab[ch] === "PENDING") { var m = minutesWaiting(o), lv = waitLevel(m); last = '<span class="waitcell"><b>' + m + ' ' + t("minutes") + '</b></span>'; }
       else if (o.status === "CANCELLED") last = '<span class="cxl"><span class="reason cx">' + t("CR_" + o.reason) + '</span>' + scoreNote(o.reason) + '</span>';
       else last = '<span class="pill s-' + o.status + '">' + t(o.status) + '</span>';
+      // where the courier is: on the way to the customer, or bringing a return back to the store
+      var trips = courierTrips(o);
+      if (trips) last = '<span class="cxl">' + last + trips + '</span>';
       if (o.status === "PENDING") last = '<span>' + last + '<button class="accept" data-accept="' + o.no + '">✓ ' + t("accept") + '</button></span>';
       var third = showPicker ? '<span>' + pickerBadge(o) + '</span>'
         : '<span class="hide-s">' + o.items.reduce(function (s, it) { return s + it.qty; }, 0) + '</span>';
@@ -1995,6 +2021,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
         '<button class="btn" data-ready>' + t("markReady") + '</button>';
     }
     if (o.status === "READY") html += '<span class="note">' + t("waitingCourier") + '</span>';
+    var trips = courierTrips(o);
+    if (trips) html += '<span class="cxl">' + trips + '</span>';
     if (o.status === "PENDING" || picking) {
       // The branch picks a reason (the list can always be opened):
       //  - "branch overloaded" can be chosen without calling (it counts against the store score)
@@ -2134,8 +2162,11 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
   var themeBtn = document.getElementById("themeBtn");
   function applyTheme(dark) {
     document.body.classList.toggle("dark", dark);
-    themeBtn.setAttribute("aria-pressed", String(dark));
-    themeBtn.setAttribute("aria-label", t(dark ? "dayMode" : "nightMode")); themeBtn.title = t(dark ? "dayMode" : "nightMode");
+    // the same switch sits in the top bar and on the login page
+    document.querySelectorAll(".theme-btn").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(dark)); b.setAttribute("aria-label", t(dark ? "dayMode" : "nightMode")); b.title = t(dark ? "dayMode" : "nightMode");
+    });
+
   }
   var savedTheme = null; try { savedTheme = localStorage.getItem("vp-proto-theme"); } catch (x) {}
   applyTheme(savedTheme === "dark");
@@ -2155,7 +2186,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       return;
     }
     if (el === menuBtn) { setMenu(!drawer.classList.contains("open")); return; }
-    if (el === themeBtn) { var dk = !document.body.classList.contains("dark"); applyTheme(dk); try { localStorage.setItem("vp-proto-theme", dk ? "dark" : "light"); } catch (x) {} return; }
+    if (el.classList.contains("theme-btn")) { var dk = !document.body.classList.contains("dark"); applyTheme(dk); try { localStorage.setItem("vp-proto-theme", dk ? "dark" : "light"); } catch (x) {} return; }
     if (el === profileBtn) { setDropdown(dropdown.hidden); return; }
     if (!el.closest(".profile")) setDropdown(false);
     var d = el.dataset;
