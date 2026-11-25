@@ -236,3 +236,6 @@ docker compose up -d        # PostgreSQL'i başlatır (boş veritabanı)
 # sonra backend'i başlat (IntelliJ ya da mvn spring-boot:run): tabloları Flyway oluşturur
 docker compose down -v      # veritabanını tamamen siler (sıfırdan başlamak için)
 ```
+
+## 6. Prototipten gelen planlı değişiklikler
+Tıklanabilir prototipin (v1.0.1) testi, şema değişikliği gerektiren yeni kurallar getirdi: ürün hacmi, kanal başına satış durumu, bölünen siparişler, müşteri onayı zamanı, trigger'daki yeni iptal kuralları, iade nedenleri, QR ile teslim alma ve para iadesi, WhatsApp izni ve değerlendirmeler. Hepsi [06 – Prototip kararları §9](../analysis/06-prototype-decisions.tr.md) içinde listeleniyor ve yeni bir Flyway migration'ı (`V2__…`) olarak gelecek – `V1` bir kez çalıştıktan sonra asla değiştirilmez.

@@ -6,7 +6,7 @@
 
 VetisPilot çok kanallı bir sipariş yönetim sistemidir. Bir market ya da restoran, iki (kurgusal) teslimat platformundan, **HTGO Market** ve **GK Market**'ten sipariş alır ve hepsini tek panelden yönetir: siparişler, ürünler, şubeler, iadeler ve satış raporları.
 
-> 🚧 Geliştirme sürüyor – 1. aşama (analiz) tamamlandı, şu an **2. aşama: Veritabanı tasarımı**.
+> 🚧 Geliştirme sürüyor – 1. aşama (analiz) tamamlandı, tıklanabilir prototip **v1.0.1** denendi, şu an **2. aşama: Veritabanı tasarımı**.
 
 ## Planlanan özellikler
 - **Dashboard:** günlük ciro, aktif siparişler, bekleyen iadeler
@@ -24,8 +24,9 @@ VetisPilot çok kanallı bir sipariş yönetim sistemidir. Bir market ya da rest
 - [03 – User Story'ler](docs/analysis/03-user-stories.tr.md)
 - [04 – Sipariş Süreci](docs/analysis/04-order-process.tr.md)
 - [05 – Ekran Listesi](docs/analysis/05-screens.tr.md)
+- [06 – Tıklanabilir prototipten çıkan kararlar](docs/analysis/06-prototype-decisions.tr.md)
 - [Veritabanı – Veri Modeli (ER)](docs/database/01-er-model.tr.md)
-- [Panelin tıklanabilir prototipi](prototype/panel.html) – giriş, siparişler, toplama, ürünler, iadeler, raporlar (örnek veriler; dosyayı tarayıcıda aç)
+- [Panelin tıklanabilir prototipi](prototype/panel.html) (v1.0.1) – giriş, uyarılı ve bölünebilen siparişler, tutar korumalı toplama, ürünler ve satış durumu, QR ile iade teslim alma, raporlar, değerlendirmeler, gündüz / gece modu (örnek veriler; dosyayı tarayıcıda aç)
 
 ## Teknoloji
 | Katman | Teknoloji |

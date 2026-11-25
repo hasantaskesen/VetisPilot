@@ -5,7 +5,8 @@
 Dieses Dokument listet alle Bildschirme des Händler-Panels auf, wer sie öffnen darf und welche User Stories sie abdecken ([03 – User Stories](03-user-stories.de.md)). Die Wireframes sind grobe Skizzen des Layouts, nicht das endgültige Design.
 
 ## 1. Aufbau jedes Bildschirms
-- **Obere Leiste:** VetisPilot-Logo · aktueller Kanal (HTGO Market oder GK Market) mit **Kanal wechseln** · Filialauswahl (Händler und Admin) · 🔔 Benachrichtigungen · Sprachumschalter 🇬🇧 EN · 🇩🇪 DE · 🇹🇷 TR · Benutzermenü (Profil, Abmelden)
+- **Obere Leiste:** VetisPilot-Logo · aktueller Kanal (HTGO Market oder GK Market) mit **Kanal wechseln** · Filialauswahl (Händler und Admin) · 🔔 Benachrichtigungen · ☀️ / 🌙 Tag- und Nachtmodus (US-53) · Sprachumschalter 🇬🇧 EN · 🇩🇪 DE · 🇹🇷 TR · Benutzermenü (Profil, Abmelden)
+- **Hinweis bei neuer Bestellung:** Ton pro Kanal und ein 3-Sekunden-Banner in den Kanalfarben auf jedem Bildschirm (US-41)
 - **Seitenmenü:** nur die Einträge, die die Rolle des Benutzers öffnen darf (siehe Abschnitt 3)
 - **Live-Aktualisierung:** Bestellzähler, Dashboard-Zahlen und Benachrichtigungen aktualisieren sich ohne Neuladen (US-06, US-20)
 - **Kanalfarben:** nach der Kanalwahl (S-17) nutzt das Panel dessen Farben – HTGO Market blau, GK Market braun
@@ -24,13 +25,18 @@ Dieses Dokument listet alle Bildschirme des Händler-Panels auf, wer sie öffnen
 | S-09 | Filialen | Filialdaten, Öffnungszeiten, geöffnet / geschlossen, Tütengebühr | ✔ | ✔ eigene | – | US-21, US-33 | M |
 | S-10 | Benutzer | Filialmitarbeiter anlegen, bearbeiten, deaktivieren | ✔ | ✔ eigene Filialen | – | US-22 | M |
 | S-11 | Mein Profil | Name, Sprache, Passwort | ✔ | ✔ | ✔ | US-03, US-23 | M |
-| S-12 | Bericht: Kanalumsatz | HTGO vs. GK: Bestellungen, Umsatz, durchschnittlicher Bestellwert, Stornierungen, Retouren | ✔ | ✔ | – | US-26, US-28 | S |
+| S-12 | Bericht: Kanalumsatz | Reiter Tag / Woche / Monat / Jahr: Bestellungen, Umsatz, durchschnittlicher Bestellwert, Stornierungen, Retouren, Diagramm und Detailtabelle; in der Tagesansicht öffnen die Kästen die Liste hinter der Zahl | ✔ | ✔ | – | US-26, US-28, US-52 | S |
 | S-13 | Bericht: Produkte | Top- und Flop-Produkte, Anteil pro Kanal, Anzahl nicht vorrätig | ✔ | ✔ | – | US-27, US-28 | S |
 | S-14 | Bericht: Stornogründe | Stornierungen pro Grund als Diagramm, pro Kanal und Filiale | ✔ | ✔ | – | US-30, US-28 | S |
 | S-15 | Admin: Händler | Händler und ihre Filialen anlegen, bearbeiten, deaktivieren | ✔ | – | – | US-24 | S |
 | S-16 | Admin: Audit-Log | Wer hat wann was geändert; nur lesen | ✔ | – | – | US-25 | M |
 | S-17 | Kanalauswahl | Nach der Anmeldung HTGO Market oder GK Market wählen; zeigt offene Bestellungen pro Kanal | ✔ | ✔ | ✔ | US-39 | M |
 | S-18 | Bericht: Kommissionierqualität | Scans, manuelle Zählungen und Fehlscans pro Filiale und Mitarbeiter | ✔ | ✔ | – | US-38 | S |
+| S-19 | Verkaufsstatus | Ein Schalter pro Produkt und Kanal (HTGO / GK); Bestand 0 sperrt automatisch | ✔ | ✔ | ✔ | US-40 | M |
+| S-20 | Benachrichtigungen & WhatsApp | Erinnerungsregeln, Empfänger mit WhatsApp-Einwilligung, gesendete Erinnerungen, Demo-Buttons | ✔ | ✔ | ✔ lesen | US-41 – US-43 | S |
+| S-21 | Retourenannahme | Zurückgebrachte Produkte abhaken, QR-Code erstellen, angenommene Retouren und Erstattungen sehen | ✔ lesen | ✔ | ✔ | US-48, US-49 | M |
+| S-22 | Kurierbestätigung | Öffnet sich beim Scannen des QR-Codes, ohne Anmeldung; der Kurier bestätigt die Übergabe | – | – | – (Kurier) | US-48 | M |
+| S-23 | Bewertungen | Durchschnitt, Sternverteilung, Service / Geschmack / Lieferung, neueste Bewertungen | ✔ | ✔ | ✔ | US-51 | S |
 
 Der Kanal-Simulator (US-29) hat keinen Bildschirm im Panel; er läuft als separater Dienst und wird über eine Konfigurationsdatei eingestellt.
 

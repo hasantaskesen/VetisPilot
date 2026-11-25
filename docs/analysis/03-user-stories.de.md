@@ -50,6 +50,20 @@
 | US-37 | Kommissionierung | Jeden gescannten Barcode prüfen | Filialmitarbeiter | M | G2 |
 | US-38 | Berichte | Bericht zur Kommissionierqualität | Händler, Admin | S | G2 |
 | US-39 | Zugang | Kanal beim Betreten des Panels wählen | Filialmitarbeiter, Händler | M | G1 |
+| US-40 | Produkte | Produkt pro Kanal für den Verkauf freigeben oder sperren | Filialmitarbeiter | M | G3 |
+| US-41 | Bestellungen | Hinweis mit Ton bei neuer Bestellung | Filialmitarbeiter | M | G1 |
+| US-42 | Bestellungen | Sehen, wie lange Bestellungen warten | Filialmitarbeiter | M | G1 |
+| US-43 | Bestellungen | WhatsApp-Erinnerung für wartende Bestellungen | Filialleitung | S | G1 |
+| US-44 | Kommissionierung | Endbetrag schützen | Händler, Filialmitarbeiter | M | G4 |
+| US-45 | Kommissionierung | Fehlende Produkte mit Zustimmung des Kunden entfernen | Filialmitarbeiter | M | G4 |
+| US-46 | Kommissionierung | Bestellungen über der Kurierkapazität teilen | Filialmitarbeiter | M | G2 |
+| US-47 | Retouren | Nur einige Produkte zurückgeben | Filialmitarbeiter | M | G4 |
+| US-48 | Retouren | Retouren mit QR-Code annehmen | Filialmitarbeiter, Kurier | M | G4 |
+| US-49 | Retouren | Erstattung nach Annahme der Retoure | Kunde (über den Kanal) | M | G4 |
+| US-50 | Retouren | Gründe sehen und filtern | Filialmitarbeiter | S | G4 |
+| US-51 | Dashboard | Kundenbewertungen sehen | Händler, Filialmitarbeiter | S | G5 |
+| US-52 | Berichte | Verkaufsbericht pro Tag, Woche, Monat, Jahr | Händler | S | G4 |
+| US-53 | Zugang | Tag- und Nachtmodus | Alle Nutzer | C | – |
 
 ---
 
@@ -126,7 +140,7 @@
 - **Gegeben** eine Bestellung im Status *Offen* oder *In Kommissionierung*, **wenn** der Kanal sie storniert, **dann** wird der Status *Storniert* und die Filiale erhält eine Benachrichtigung.
 - **Gegeben** eine Bestellung im Status *Bereit* oder später, **dann** kann sie nicht mehr storniert werden.
 - Bestellungen werden nie gelöscht (Regel R3).
-- **Gegeben** die Filiale möchte stornieren, **dann** ist die Schaltfläche erst aktiv, nachdem der Kunde kontaktiert wurde (US-35): Der Kunde wurde erreicht und hat zugestimmt, oder 2 Anrufe blieben unbeantwortet (Regel R6).
+- **Gegeben** die Filiale möchte stornieren, **dann** muss zuerst ein Grund gewählt werden (nichts ist vorausgewählt), und die Schaltfläche wechselt von grau zu rot. *Filiale überlastet* ist sofort erlaubt; *Kunde nicht erreichbar* und *Artikel nicht vorrätig* erst nach 2 protokollierten Anrufen (Regel R6, aktualisiert – siehe [06 §4](06-prototype-decisions.de.md)).
 - **Gegeben** 2 Anrufe blieben unbeantwortet, **dann** storniert das System mit dem Grund *Kunde nicht erreichbar*, und die Stornierung zählt **nicht** gegen die Filialbewertung (US-36). Stornierungen aus anderen Gründen zählen.
 
 ## Epic 3 – Produkte und Bestand
@@ -299,3 +313,71 @@
 - **Gegeben** ich möchte zum anderen Kanal, **dann** bringt mich „Kanal wechseln“ in der oberen Leiste zurück zur Auswahl; die letzte Wahl wird gespeichert.
 - **Gegeben** eine neue Bestellung kommt im Kanal an, den ich gerade nicht ansehe, **dann** erscheint eine Benachrichtigung mit Name und Farbe dieses Kanals, damit sie nicht übersehen wird (G1).
 - Berichte (S-12 – S-14, S-18) können weiterhin beide Kanäle nebeneinander vergleichen.
+
+## Epic 13 – Erkenntnisse aus dem klickbaren Prototyp
+Diese Stories entstanden beim Testen des Prototyps (v1.0.1). Hintergrund, Beispiele und Gründe: [06 – Prototyp-Entscheidungen](06-prototype-decisions.de.md).
+
+### US-40 – Produkt pro Kanal für den Verkauf freigeben oder sperren · M
+*Als* Filialmitarbeiter *möchte ich* ein Produkt in HTGO Market und GK Market getrennt freigeben oder sperren, *damit* Kunden nur sehen, was wir wirklich liefern können.
+- **Gegeben** ein Produkt, **dann** sehe ich einen Schalter pro Kanal; gesperrt sehen es die Kunden dieses Kanals nicht.
+- **Gegeben** der Bestand ist 0, **dann** ist das Produkt in beiden Kanälen automatisch gesperrt und der Schalter lässt sich nicht einschalten.
+
+### US-41 – Hinweis mit Ton bei neuer Bestellung · M
+*Als* Filialmitarbeiter *möchte ich* einen Ton und ein Banner, wenn eine Bestellung eingeht, *damit* ich sie auch bemerke, wenn ich nicht auf den Bildschirm schaue.
+- **Gegeben** eine neue Bestellung, **dann** zeigt ein 3-Sekunden-Banner *„Neue Bestellung · Kanal“*, die Bestellnummer und die Zahl der wartenden Bestellungen in den Farben und mit dem Logo des Kanals.
+- **Gegeben** HTGO oder GK, **dann** hat jeder Kanal seinen eigenen Ton. In der mobilen App ist das eine Push-Benachrichtigung, auch bei gesperrtem Handy.
+
+### US-42 – Sehen, wie lange Bestellungen warten · M
+*Als* Filialmitarbeiter *möchte ich* wartende Bestellungen nach Wartezeit markiert sehen, *damit* ich die älteste zuerst annehme.
+- **Gegeben** der Reiter *Offen*, **dann** zeigt jede Bestellung die Minuten und neben der Uhrzeit eine Stufe: *Neu* (< 2 Min.), *Wartet* (2 – 5), *Verspätet* (6 – 11), *Stark verspätet* (≥ 12).
+
+### US-43 – WhatsApp-Erinnerung für wartende Bestellungen · S
+*Als* Filialleitung *möchte ich*, dass Mitarbeitende im Dienst eine WhatsApp-Erinnerung bekommen, *damit* keine Bestellung zu lange wartet.
+- **Gegeben** Bestellungen warten 2 Minuten oder länger, **dann** geht alle 2 Minuten eine Nachricht raus; ab 6 Minuten heißt es *verspätet*, ab 12 Minuten *stark verspätet*.
+- **Gegeben** eine Person hat nicht eingewilligt oder ist nicht im Dienst, **dann** bekommt sie keine Nachricht (DSGVO, siehe 06 §8).
+
+### US-44 – Endbetrag schützen · M
+*Als* Händler *möchte ich*, dass falsche Gewichte und Beträge gesperrt werden, *damit* einem Kunden nie zu viel abgebucht wird.
+- **Gegeben** eine gewogene Zeile, **wenn** das Gewicht außerhalb von ±10 % des bestellten Gewichts liegt, **dann** wird das Feld rot und *Bereit* ist gesperrt.
+- **Gegeben** der Warenwert läge über +15 % der Bestellung, **dann** ist *Bereit* gesperrt – auch mit Zustimmung des Kunden.
+
+### US-45 – Fehlende Produkte mit Zustimmung des Kunden entfernen · M
+*Als* Filialmitarbeiter *möchte ich* eine Bestellung ohne fehlende Produkte abschließen, nachdem ich mit dem Kunden gesprochen habe, *damit* er den Rest trotzdem bekommt.
+- **Gegeben** ein Produkt fehlt oder der Betrag sinkt um mehr als 15 %, **dann** braucht *Bereit* den Haken *„Kunde informiert und einverstanden“*; die Uhrzeit wird mit der Bestellung gespeichert.
+
+### US-46 – Bestellungen über der Kurierkapazität teilen · M
+*Als* Filialmitarbeiter *möchte ich*, dass Bestellungen über 20 Liter automatisch geteilt werden, *damit* jeder Kurier seinen Teil tragen kann.
+- **Gegeben** eine Bestellung über 20 L, **dann** wird sie in möglichst wenige Teile geteilt, jeder Teil ≤ 20 L, Liter gleichmäßig verteilt, jedes Produkt nur in einem Teil.
+- **Gegeben** eine geteilte Bestellung, **dann** behält jeder Teil die Bestellnummer mit *„(automatisch geteilte Bestellung · Teil n)“*, wartet als eigene Zeile und wird separat kommissioniert; Berichte zählen sie als eine Bestellung.
+
+### US-47 – Nur einige Produkte zurückgeben · M
+*Als* Filialmitarbeiter *möchte ich* genau sehen, welche Produkte in welcher Menge zurückkommen, *damit* ich richtig prüfe und erstatte.
+- **Gegeben** eine Retoure, **dann** ist jedes zurückgeschickte Produkt mit Foto und Menge aufgeführt; die Erstattung ist Menge × Preis der Bestellzeile.
+
+### US-48 – Retouren mit QR-Code annehmen · M
+*Als* Filialmitarbeiter *möchte ich* die Übergabe mit einem QR-Code bestätigen, *damit* Kurier und Filiale sich einig sind, was zurückgebracht wurde.
+- **Gegeben** eine genehmigte Retoure, **wenn** der Kurier sie bringt, **dann** hake ich jedes Produkt ab und erstelle einen Einmal-QR-Code.
+- **Gegeben** der Kurier scannt den Code (Kurier-App; vorerst jedes Handy), **dann** wird die Retoure *angenommen*.
+
+### US-49 – Erstattung nach Annahme der Retoure · M
+*Als* Kunde *möchte ich* mein Geld zurück, sobald die Filiale meine Produkte hat, *damit* ich nicht warten muss.
+- **Gegeben** eine Retoure ist angenommen, **dann** geht die Erstattung über den Kanal auf die Karte des Kunden und wird mit Uhrzeit an der Retoure angezeigt.
+
+### US-50 – Gründe sehen und filtern · S
+*Als* Filialmitarbeiter *möchte ich* den Grund jeder Retoure und Stornierung in der Liste sehen, *damit* ich Probleme schnell verstehe.
+- **Gegeben** die Retourenliste, **dann** zeigt jede Retoure ihren Grund und die Notiz des Kunden; ein Tipp auf den Grund öffnet die Bestellung, die Grund-Chips filtern die Liste.
+- **Gegeben** der Reiter *Storniert*, **dann** zeigt jede Bestellung ihren Grund und ob sie für die Filialbewertung zählt.
+
+### US-51 – Kundenbewertungen sehen · S
+*Als* Händler *möchte ich* die Bewertungen der Kanäle sehen, *damit* ich weiß, wie Kunden Service, Geschmack und Lieferung beurteilen.
+- **Gegeben** die Startseite, **dann** zeigt jeder Kanal den Durchschnitt und die Zahl der Bewertungen; ein Tipp öffnet die Bewertungen.
+- **Gegeben** die Bewertungsseite, **dann** sehe ich Durchschnitt, Sternverteilung, die drei Kriterien und die neuesten Bewertungen mit gefüllten Sternkästen.
+
+### US-52 – Verkaufsbericht pro Tag, Woche, Monat, Jahr · S
+*Als* Händler *möchte ich* den Verkaufsbericht zwischen Zeiträumen wechseln, *damit* ich kurz- und langfristige Trends sehe.
+- **Gegeben** ein Zeitraum-Reiter, **dann** zeigen Kästen, Diagramm, Detailtabelle und Meistverkauftes diesen Zeitraum; ein Datums-Chip benennt ihn.
+- **Gegeben** die Tagesansicht, **dann** öffnen die Kästen *Bestellungen, Umsatz, Stornierungen, Retouren* die Liste hinter der Zahl; die Zahlen von heute entsprechen der Startseite.
+
+### US-53 – Tag- und Nachtmodus · C
+*Als* Nutzer *möchte ich* zwischen heller und dunkler Darstellung wechseln, *damit* der Bildschirm in Nachtschichten angenehm ist.
+- **Gegeben** der Sonne-/Mond-Button, **dann** wechseln alle Seiten; Statusfarben behalten ihre Bedeutung, und die Wahl wird auf dem Gerät gespeichert.

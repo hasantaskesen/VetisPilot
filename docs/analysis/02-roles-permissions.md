@@ -28,7 +28,7 @@ A user has exactly one role. A branch employee belongs to exactly one branch.
 | Orders – status *Picking / Ready* | U | U (own) | U (own branch) | – |
 | Orders – picking: replace product, enter weight, number of bags | U | U (own) | U (own branch) | – |
 | Orders – status *On the way / Delivered* | – | – | – | U |
-| Orders – cancel (until *Ready*, only after contacting the customer – R6) | U | U (own) | U (own branch) | U |
+| Orders – cancel (until *Ready*, reason required – R6) | U | U (own) | U (own branch) | U |
 | Returns – request | – | – | – | C |
 | Returns – approve / reject | U | U (own) | U (own branch) | – |
 | Dashboard | R (all) | R (own) | R (own branch) | – |
@@ -41,4 +41,4 @@ A user has exactly one role. A branch employee belongs to exactly one branch.
 - **R3 – No deletion of orders:** orders are never deleted, only cancelled. This keeps reports and the audit trail correct.
 - **R4 – Audit:** changes to products, prices, stock, order status, returns and users are written to the audit log (who, when, what, old value, new value).
 - **R5 – Channel access:** channels do not log in with a password. Each request is signed with a secret key (HMAC); unsigned or wrongly signed requests are rejected.
-- **R6 – No cancellation without the customer:** the branch can cancel only after a logged call in which the customer agreed, or after 2 unanswered calls. The database checks this itself (trigger), so the rule holds even if the code has a bug.
+- **R6 – No cancellation without a reason and a check:** the branch must choose a reason before it can cancel. *Customer unreachable* and *item out of stock* are allowed only after 2 logged calls (2 minutes apart); *branch overloaded* is allowed at once but counts against the store score; *customer cancelled* and *wrong address* come only from the channel. The database checks this itself (trigger), so the rule holds even if the code has a bug. Details: [06 §4](06-prototype-decisions.md).

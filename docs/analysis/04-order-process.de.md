@@ -201,27 +201,34 @@ flowchart TD
 | E14 | Mehr Stück gescannt als bestellt | Hinweis „bereits vollständig“, nichts gezählt | US-37 |
 
 ## 9. Stornierung durch die Filiale und Filialbewertung
-Die Filiale kann eine Bestellung nicht eigenmächtig stornieren (A11, Regel R6). Jede Stornierung durch die Filiale braucht protokollierte Anrufe (US-35), und die Datenbank prüft das selbst mit einem Trigger.
+*Aktualisiert nach dem Prototyp-Test (v1.0.1) – siehe [06 – Prototyp-Entscheidungen §4](06-prototype-decisions.de.md).* Die Filiale muss zuerst einen Grund wählen; nichts ist vorausgewählt. Die Datenbank prüft die Regel selbst mit einem Trigger (Regel R6).
 
 ```mermaid
 flowchart TD
-    A(["Filiale möchte stornieren"]) --> B["Kunden anrufen<br/>Versuch 1 von 2"]
-    B --> C{"Kunde erreicht?"}
-    C -->|nein| D{"2 unbeantwortete Anrufe?"}
-    D -->|"nein, 2 Min. warten"| B
-    D -->|ja| E(["System storniert: Kunde nicht erreichbar<br/>Filialbewertung NICHT betroffen"])
-    C -->|ja| F{"Stimmt der Kunde der Stornierung zu?"}
-    F -->|nein| G(["Bestellung bleibt<br/>stattdessen Artikel ersetzen oder entfernen"])
-    F -->|ja| H{"Wer hat es verursacht?"}
-    H -->|"der Kunde wollte es"| I(["Storniert: Kunde hat storniert<br/>Filialbewertung NICHT betroffen"])
-    H -->|"die Filiale: Artikel fehlt, überlastet"| J(["Von der Filiale storniert<br/>zählt gegen die Filialbewertung"])
+    A(["Filiale möchte stornieren"]) --> B{"Welcher Grund?"}
+    B -->|"Filiale überlastet"| C(["Sofort storniert<br/>zählt für die Filialbewertung"])
+    B -->|"Kunde nicht erreichbar / Artikel nicht vorrätig"| D["Kunden anrufen<br/>2 Anrufe, 2 Minuten Abstand"]
+    D --> E{"2 Anrufe protokolliert?"}
+    E -->|nein| D
+    E -->|"ja – Kunde nicht erreichbar"| F(["Storniert<br/>Filialbewertung NICHT betroffen"])
+    E -->|"ja – Artikel nicht vorrätig"| G(["Storniert<br/>zählt für die Filialbewertung"])
+    H(["Kanal: Kunde hat storniert<br/>oder Adresse fehlerhaft"]) --> I(["Storniert<br/>Filialbewertung NICHT betroffen"])
 ```
 
 | Wer / warum | Erlaubt, wenn | Filialbewertung |
 |---|---|---|
-| Kanal – der Kunde hat in der App storniert | Vor *Bereit* | Nicht betroffen |
-| Filiale – Kunde nicht erreichbar | 2 unbeantwortete Anrufe sind protokolliert | Nicht betroffen |
-| Filiale – der Kunde wollte am Telefon stornieren | Ein protokollierter Anruf, in dem der Kunde zugestimmt hat | Nicht betroffen |
-| Filiale – Artikel fehlt, Filiale überlastet, Sonstiges | Ein protokollierter Anruf, in dem der Kunde zugestimmt hat | **Zählt** |
+| Kanal – Kunde hat in der App storniert, Adresse fehlerhaft | Vor *Bereit* | Nicht betroffen |
+| Filiale – Filiale überlastet | Sofort, kein Anruf nötig | **Zählt** |
+| Filiale – Kunde nicht erreichbar | 2 protokollierte Anrufe | Nicht betroffen |
+| Filiale – Artikel nicht vorrätig | 2 protokollierte Anrufe | **Zählt** |
 
 **Filialbewertung** = von der Filiale verursachte Stornierungen ÷ alle Bestellungen der letzten 30 Tage, pro Filiale und Kanal; Ziel ≤ 2 % (G5, US-36).
+
+## 10. Betragsschutz beim Kommissionieren
+Bevor eine Bestellung *Bereit* sein kann, prüft das Panel die Beträge (US-44, US-45; Details in [06 §2](06-prototype-decisions.de.md)):
+- jede gewogene Zeile innerhalb von **±10 %** des bestellten Gewichts;
+- Warenwert höchstens **+15 %** des Bestellwerts – feste Grenze, auch mit Zustimmung des Kunden;
+- fehlende Produkte oder ein Rückgang über **15 %** nur, wenn „Kunde informiert und einverstanden“ abgehakt ist.
+
+## 11. Kurierkapazität und geteilte Bestellungen
+Ein Kurier trägt höchstens **20 Liter**. Eine Bestellung über 20 L wird automatisch in möglichst wenige Teile geteilt, die Liter gleichmäßig verteilt und jedes Produkt in einem Teil gehalten (US-46; Details in [06 §3](06-prototype-decisions.de.md)). Jeder Teil durchläuft diesen Prozess für sich (annehmen, kommissionieren, bereit); Berichte zählen ihn als eine Bestellung.

@@ -201,27 +201,34 @@ flowchart TD
 | E14 | More pieces scanned than ordered | Warning "already complete", nothing counted | US-37 |
 
 ## 9. Cancellation by the branch and store score
-The branch cannot cancel an order on its own (A11, rule R6). Every branch cancellation needs logged calls (US-35), and the database checks this itself with a trigger.
+*Updated after the prototype test (v1.0.1) – see [06 – Prototype decisions §4](06-prototype-decisions.md).* The branch must choose a reason first; nothing is pre-selected. The database checks the rule itself with a trigger (rule R6).
 
 ```mermaid
 flowchart TD
-    A(["Branch wants to cancel"]) --> B["Call the customer<br/>attempt 1 of 2"]
-    B --> C{"Customer reached?"}
-    C -->|no| D{"2 unanswered calls?"}
-    D -->|"no, wait 2 min"| B
-    D -->|yes| E(["System cancels: customer unreachable<br/>store score NOT affected"])
-    C -->|yes| F{"Customer agrees to cancel?"}
-    F -->|no| G(["Order stays<br/>replace or remove items instead"])
-    F -->|yes| H{"Who caused it?"}
-    H -->|"the customer wanted it"| I(["Cancelled: customer cancelled<br/>store score NOT affected"])
-    H -->|"the store: item missing, overloaded"| J(["Cancelled by the store<br/>counts against the store score"])
+    A(["Branch wants to cancel"]) --> B{"Which reason?"}
+    B -->|"branch overloaded"| C(["Cancelled at once<br/>counts against the store score"])
+    B -->|"customer unreachable / item out of stock"| D["Call the customer<br/>2 calls, 2 minutes apart"]
+    D --> E{"2 calls logged?"}
+    E -->|no| D
+    E -->|"yes – customer unreachable"| F(["Cancelled<br/>store score NOT affected"])
+    E -->|"yes – item out of stock"| G(["Cancelled<br/>counts against the store score"])
+    H(["Channel: customer cancelled<br/>or wrong address"]) --> I(["Cancelled<br/>store score NOT affected"])
 ```
 
 | Who / why | Allowed when | Store score |
 |---|---|---|
-| Channel – the customer cancelled in the app | Before *Ready* | Not affected |
-| Branch – customer unreachable | 2 unanswered calls are logged | Not affected |
-| Branch – the customer asked to cancel on the phone | A logged call in which the customer agreed | Not affected |
-| Branch – item missing, branch overloaded, other | A logged call in which the customer agreed | **Counts** |
+| Channel – customer cancelled in the app, wrong address | Before *Ready* | Not affected |
+| Branch – branch overloaded | At once, no call needed | **Counts** |
+| Branch – customer unreachable | 2 logged calls | Not affected |
+| Branch – item out of stock | 2 logged calls | **Counts** |
 
 **Store score** = store-caused cancellations ÷ all orders of the last 30 days, per branch and channel; target ≤ 2 % (G5, US-36).
+
+## 10. Amount protection when picking
+Before an order can be *Ready*, the panel checks the amounts (US-44, US-45; details in [06 §2](06-prototype-decisions.md)):
+- every weighed line within **±10 %** of the ordered weight;
+- products at most **+15 %** of the ordered value – a hard limit, also with the customer's approval;
+- missing products or a drop of more than **15 %** only after the employee ticks *"customer informed and agreed"*.
+
+## 11. Courier capacity and split orders
+One courier carries at most **20 litres**. An order above 20 L is split automatically into as few parts as possible, the litres shared evenly and every product kept in one part (US-46; details in [06 §3](06-prototype-decisions.md)). Each part follows this process on its own (accept, pick, ready); reports count it as one order.

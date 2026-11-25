@@ -200,28 +200,35 @@ flowchart TD
 | E13 | Barkod okunmuyor (bozuk) | + ile elle sayılır; manuel sayım olarak kaydedilir ve toplama kalitesi raporunda görünür | US-37, US-38 |
 | E14 | Sipariş edilenden fazla okutuldu | "zaten tamamlandı" uyarısı, hiçbir şey sayılmaz | US-37 |
 
-## 9. Şube tarafından iptal ve mağaza puanı
-Şube bir siparişi kendi başına iptal edemez (A11, kural R6). Şubenin yaptığı her iptal kayıtlı aramalara dayanmalıdır (US-35); bunu veritabanı bir trigger ile kendisi kontrol eder.
+## 9. Şubenin iptal etmesi ve mağaza puanı
+*Prototip testinden (v1.0.1) sonra güncellendi – bkz. [06 – Prototip kararları §4](06-prototype-decisions.tr.md).* Şube önce bir neden seçmek zorundadır; hiçbiri önceden seçili gelmez. Veritabanı kuralı bir trigger ile kendisi kontrol eder (kural R6).
 
 ```mermaid
 flowchart TD
-    A(["Şube siparişi iptal etmek istiyor"]) --> B["Müşteriyi ara<br/>deneme 1 / 2"]
-    B --> C{"Müşteriye ulaşıldı mı?"}
-    C -->|hayır| D{"2 cevapsız arama oldu mu?"}
-    D -->|"hayır, 2 dk bekle"| B
-    D -->|evet| E(["Sistem iptal eder: müşteriye ulaşılamadı<br/>mağaza puanı ETKİLENMEZ"])
-    C -->|evet| F{"Müşteri iptale onay veriyor mu?"}
-    F -->|hayır| G(["Sipariş devam eder<br/>bunun yerine ürün değiştir ya da çıkar"])
-    F -->|evet| H{"Sebep kim?"}
-    H -->|"müşteri kendisi istedi"| I(["İptal: müşteri istedi<br/>mağaza puanı ETKİLENMEZ"])
-    H -->|"mağaza: ürün eksik, yoğunluk"| J(["Mağaza kaynaklı iptal<br/>mağaza puanını etkiler"])
+    A(["Şube iptal etmek istiyor"]) --> B{"Hangi neden?"}
+    B -->|"şube çok yoğun"| C(["Hemen iptal edilir<br/>mağaza puanını etkiler"])
+    B -->|"müşteriye ulaşılamadı / ürün stokta yok"| D["Müşteri aranır<br/>2 arama, 2 dakika arayla"]
+    D --> E{"2 arama kayıtlı mı?"}
+    E -->|hayır| D
+    E -->|"evet – müşteriye ulaşılamadı"| F(["İptal edildi<br/>mağaza puanını ETKİLEMEZ"])
+    E -->|"evet – ürün stokta yok"| G(["İptal edildi<br/>mağaza puanını etkiler"])
+    H(["Kanal: müşteri iptal etti<br/>veya adres hatalı"]) --> I(["İptal edildi<br/>mağaza puanını ETKİLEMEZ"])
 ```
 
 | Kim / neden | Ne zaman izinli | Mağaza puanı |
 |---|---|---|
-| Kanal – müşteri uygulamada iptal etti | *Hazır*'dan önce | Etkilenmez |
-| Şube – müşteriye ulaşılamadı | 2 cevapsız arama kayıtlı | Etkilenmez |
-| Şube – müşteri telefonda iptal istedi | Müşterinin onay verdiği kayıtlı bir arama | Etkilenmez |
-| Şube – ürün eksik, şube yoğun, diğer | Müşterinin onay verdiği kayıtlı bir arama | **Etkiler** |
+| Kanal – müşteri uygulamada iptal etti, adres hatalı | *Hazır*'dan önce | Etkilenmez |
+| Şube – şube çok yoğun | Hemen, arama gerekmez | **Etkiler** |
+| Şube – müşteriye ulaşılamadı | 2 kayıtlı arama | Etkilenmez |
+| Şube – ürün stokta yok | 2 kayıtlı arama | **Etkiler** |
 
 **Mağaza puanı** = son 30 gündeki mağaza kaynaklı iptaller ÷ tüm siparişler, şube ve kanal bazında; hedef ≤ %2 (G5, US-36).
+
+## 10. Toplarken tutar koruması
+Bir sipariş *Hazır* olmadan önce panel tutarları kontrol eder (US-44, US-45; ayrıntılar [06 §2](06-prototype-decisions.tr.md)):
+- her tartılı satır sipariş edilen ağırlığın **±%10**'u içinde;
+- ürün tutarı sipariş tutarının en fazla **+%15**'i – kesin sınır, müşteri onayıyla da aşılamaz;
+- eksik ürün ya da **%15**'ten fazla düşüş ancak çalışan *"müşteri bilgilendirildi ve onayladı"* kutusunu işaretlerse.
+
+## 11. Kurye kapasitesi ve bölünen siparişler
+Bir kurye en fazla **20 litre** taşır. 20 L'yi aşan sipariş otomatik olarak olabildiğince az kısma bölünür; litreler eşit paylaşılır ve her ürün tek kısımda kalır (US-46; ayrıntılar [06 §3](06-prototype-decisions.tr.md)). Her kısım bu süreci kendi başına izler (kabul, toplama, hazır); raporlar onu tek sipariş sayar.

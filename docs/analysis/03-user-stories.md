@@ -50,6 +50,20 @@
 | US-37 | Picking | Check every scanned barcode | Branch employee | M | G2 |
 | US-38 | Reports | Picking quality report | Seller, Admin | S | G2 |
 | US-39 | Access | Choose the channel when entering the panel | Branch employee, Seller | M | G1 |
+| US-40 | Products | Open or close a product for sale per channel | Branch employee | M | G3 |
+| US-41 | Orders | Get a new-order alert with sound | Branch employee | M | G1 |
+| US-42 | Orders | See how long orders wait | Branch employee | M | G1 |
+| US-43 | Orders | WhatsApp reminder for waiting orders | Branch manager | S | G1 |
+| US-44 | Picking | Protect the final amount | Seller, Branch employee | M | G4 |
+| US-45 | Picking | Remove missing products with the customer's approval | Branch employee | M | G4 |
+| US-46 | Picking | Split orders over the courier capacity | Branch employee | M | G2 |
+| US-47 | Returns | Return only some products | Branch employee | M | G4 |
+| US-48 | Returns | Receive returned products with a QR code | Branch employee, Courier | M | G4 |
+| US-49 | Returns | Refund after the return is accepted | Customer (via channel) | M | G4 |
+| US-50 | Returns | See and filter reasons | Branch employee | S | G4 |
+| US-51 | Dashboard | See customer ratings | Seller, Branch employee | S | G5 |
+| US-52 | Reports | Sales report per day, week, month, year | Seller | S | G4 |
+| US-53 | Access | Day and night mode | All users | C | – |
 
 ---
 
@@ -126,7 +140,7 @@
 - **Given** an order in status *Pending* or *Picking*, **when** the channel cancels it, **then** the status becomes *Cancelled* and the branch sees a notification.
 - **Given** an order in status *Ready* or later, **then** it can no longer be cancelled.
 - Orders are never deleted (rule R3).
-- **Given** the branch wants to cancel, **then** the button is only active after the customer was contacted (US-35): the customer was reached and agreed, or 2 calls got no answer (rule R6).
+- **Given** the branch wants to cancel, **then** a reason must be chosen first (nothing is pre-selected) and the button turns from grey to red. *Branch overloaded* is allowed at once; *customer unreachable* and *item out of stock* only after 2 logged calls (rule R6, updated – see [06 §4](06-prototype-decisions.md)).
 - **Given** 2 calls got no answer, **then** the system cancels with reason *customer unreachable*, and the cancellation does **not** count against the store score (US-36). Cancellations for other reasons do count.
 
 ## Epic 3 – Products and stock
@@ -299,3 +313,71 @@
 - **Given** I want the other channel, **then** "Switch channel" in the top bar brings me back to the selection; the last choice is remembered.
 - **Given** a new order arrives in the channel I am not viewing, **then** a notification with that channel's name and color appears, so it is not missed (G1).
 - Reports (S-12 – S-14, S-18) can still compare both channels side by side.
+
+## Epic 13 – Findings from the clickable prototype
+These stories come from testing the prototype (v1.0.1). Background, examples and reasons: [06 – Prototype decisions](06-prototype-decisions.md).
+
+### US-40 – Open or close a product for sale per channel · M
+*As a* branch employee *I want* to open or close a product for sale in HTGO Market and GK Market separately *so that* customers only see what we can really deliver.
+- **Given** a product, **then** I see one switch per channel; closing it hides the product from that channel's customers.
+- **Given** the stock is 0, **then** the product is closed in both channels automatically and the switch cannot be turned on.
+
+### US-41 – Get a new-order alert with sound · M
+*As a* branch employee *I want* a sound and a banner when an order arrives *so that* I notice it even when I am not looking at the screen.
+- **Given** a new order, **then** a 3-second banner shows *"New order · channel"*, the order number and the number of waiting orders, in the channel's colours and logo.
+- **Given** HTGO or GK, **then** each channel has its own sound. In the mobile app this is a push notification, also on a locked phone.
+
+### US-42 – See how long orders wait · M
+*As a* branch employee *I want* waiting orders labelled by waiting time *so that* I accept the oldest first.
+- **Given** the *Pending* tab, **then** each order shows the minutes and a label next to its time: *New* (< 2 min), *Waiting* (2 – 5), *Late* (6 – 11), *Very late* (≥ 12).
+
+### US-43 – WhatsApp reminder for waiting orders · S
+*As a* branch manager *I want* staff on shift to get a WhatsApp reminder *so that* no order waits too long.
+- **Given** orders wait 2 minutes or more, **then** every 2 minutes a message is sent; from 6 minutes it says *late*, from 12 minutes *very late*.
+- **Given** an employee did not agree or is not on shift, **then** no message is sent to them (GDPR, see 06 §8).
+
+### US-44 – Protect the final amount · M
+*As a* seller *I want* wrong weights and totals to be blocked *so that* a customer is never charged too much.
+- **Given** a weighed line, **when** the weight is outside ±10 % of the ordered weight, **then** the field turns red and *Ready* is blocked.
+- **Given** the products would cost more than +15 % of the order, **then** *Ready* is blocked – also with the customer's approval.
+
+### US-45 – Remove missing products with the customer's approval · M
+*As a* branch employee *I want* to finish an order without missing products after talking to the customer *so that* the customer still gets the rest.
+- **Given** a product is missing or the total drops by more than 15 %, **then** *Ready* needs the tick *"customer informed and agreed"*; the time is stored with the order.
+
+### US-46 – Split orders over the courier capacity · M
+*As a* branch employee *I want* orders over 20 litres to be split automatically *so that* every courier can carry their part.
+- **Given** an order above 20 L, **then** it is split into as few parts as possible, each part ≤ 20 L, litres shared evenly, each product in only one part.
+- **Given** a split order, **then** every part keeps the order number with *"(automatically split order · part n)"*, waits as its own row and is picked separately; reports count it as one order.
+
+### US-47 – Return only some products · M
+*As a* branch employee *I want* to see exactly which products and how many are returned *so that* I check and refund the right amount.
+- **Given** a return, **then** every returned product is listed with photo and quantity; the refund is quantity × price on the order line.
+
+### US-48 – Receive returned products with a QR code · M
+*As a* branch employee *I want* to confirm the handover with a QR code *so that* courier and store agree on what was brought back.
+- **Given** an approved return, **when** the courier brings it, **then** I tick every product and create a one-time QR code.
+- **Given** the courier scans the code (courier app; for now any phone), **then** the return becomes *Return accepted*.
+
+### US-49 – Refund after the return is accepted · M
+*As a* customer *I want* my money back as soon as the store has my products *so that* I do not have to wait.
+- **Given** a return is accepted, **then** the refund is sent to the customer's card through the channel and shown with time on the return.
+
+### US-50 – See and filter reasons · S
+*As a* branch employee *I want* the reason of every return and cancellation in the list *so that* I understand problems quickly.
+- **Given** the returns list, **then** each return shows its reason and the customer's note; tapping the reason opens the order, reason chips filter the list.
+- **Given** the *Cancelled* tab, **then** each order shows its reason and whether it counts against the store score.
+
+### US-51 – See customer ratings · S
+*As a* seller *I want* to see the channel ratings *so that* I know how customers judge service, taste and delivery.
+- **Given** the home page, **then** each channel shows its average and number of reviews; tapping it opens the reviews.
+- **Given** the reviews page, **then** I see the average, the star distribution, the three criteria and the latest reviews with filled star boxes.
+
+### US-52 – Sales report per day, week, month, year · S
+*As a* seller *I want* to switch the sales report between periods *so that* I see short- and long-term trends.
+- **Given** a period tab, **then** the boxes, the chart, the detail table and the best sellers show that period; a date chip names it.
+- **Given** the daily view, **then** the boxes *Orders, Revenue, Cancellations, Returns* open the list behind the number; today's numbers equal the home page.
+
+### US-53 – Day and night mode · C
+*As a* user *I want* to switch between a light and a dark look *so that* the screen is comfortable on night shifts.
+- **Given** the sun / moon button, **then** all pages switch; status colours keep their meaning, and the choice is remembered on the device.

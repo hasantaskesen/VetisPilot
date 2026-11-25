@@ -28,7 +28,7 @@ Bir kullanıcının tam olarak bir rolü vardır. Bir şube çalışanı tam ola
 | Siparişler – durum *Toplanıyor / Hazır* | U | U (kendi) | U (kendi şubesi) | – |
 | Siparişler – toplama: ürün değişimi, ağırlık, poşet sayısı | U | U (kendi) | U (kendi şubesi) | – |
 | Siparişler – durum *Yolda / Teslim edildi* | – | – | – | U |
-| Siparişler – iptal (*Hazır*'a kadar, sadece müşteriyle iletişimden sonra – R6) | U | U (kendi) | U (kendi şubesi) | U |
+| Siparişler – iptal (*Hazır*'a kadar, neden seçilerek – R6) | U | U (kendi) | U (kendi şubesi) | U |
 | İadeler – talep | – | – | – | C |
 | İadeler – onay / ret | U | U (kendi) | U (kendi şubesi) | – |
 | Dashboard | R (tümü) | R (kendi) | R (kendi şubesi) | – |
@@ -41,4 +41,4 @@ Bir kullanıcının tam olarak bir rolü vardır. Bir şube çalışanı tam ola
 - **R3 – Siparişler silinmez:** Siparişler silinmez, sadece iptal edilir. Böylece raporlar ve denetim izi doğru kalır.
 - **R4 – Audit:** Ürünlerde, fiyatlarda, stokta, sipariş durumunda, iadelerde ve kullanıcılarda yapılan değişiklikler audit log'a yazılır (kim, ne zaman, ne, eski değer, yeni değer).
 - **R5 – Kanal erişimi:** Kanallar şifreyle giriş yapmaz. Her istek gizli bir anahtarla imzalanır (HMAC); imzasız ya da yanlış imzalı istekler reddedilir.
-- **R6 – Müşteri olmadan iptal yok:** Şube ancak müşterinin onay verdiği kayıtlı bir aramadan ya da 2 cevapsız aramadan sonra iptal edebilir. Bunu veritabanı kendisi kontrol eder (trigger), yani kodda hata olsa bile kural geçerlidir.
+- **R6 – Nedensiz ve kontrolsüz iptal yok:** Şube iptal etmeden önce bir neden seçmek zorundadır. *Müşteriye ulaşılamadı* ve *ürün stokta yok* ancak 2 kayıtlı aramadan (2 dakika arayla) sonra seçilebilir; *şube çok yoğun* hemen seçilebilir ama mağaza puanını etkiler; *müşteri iptal etti* ve *adres hatalı* sadece kanaldan gelir. Veritabanı bunu kendisi kontrol eder (trigger), böylece kodda hata olsa bile kural geçerli kalır. Ayrıntılar: [06 §4](06-prototype-decisions.tr.md).

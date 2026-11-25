@@ -5,7 +5,8 @@
 Bu belge, satıcı panelindeki tüm ekranları, kimin açabileceğini ve hangi user story'leri karşıladıklarını listeler ([03 – User Story'ler](03-user-stories.tr.md)). Wireframe'ler yerleşimin kaba taslağıdır, son tasarım değildir.
 
 ## 1. Her ekrandaki ortak yapı
-- **Üst çubuk:** VetisPilot logosu · seçili kanal (HTGO Market ya da GK Market) ve **Kanal değiştir** · şube seçici (satıcı ve admin) · 🔔 bildirimler · dil seçici 🇬🇧 EN · 🇩🇪 DE · 🇹🇷 TR · kullanıcı menüsü (profil, çıkış)
+- **Üst çubuk:** VetisPilot logosu · seçili kanal (HTGO Market ya da GK Market) ve **Kanal değiştir** · şube seçici (satıcı ve admin) · 🔔 bildirimler · ☀️ / 🌙 gündüz ve gece modu (US-53) · dil seçici 🇬🇧 EN · 🇩🇪 DE · 🇹🇷 TR · kullanıcı menüsü (profil, çıkış)
+- **Yeni sipariş uyarısı:** her ekranda kanalın kendi sesi ve kanal renginde 3 saniyelik üst bildirim (US-41)
 - **Yan menü:** sadece kullanıcının rolünün açabileceği bölümler (bkz. bölüm 3)
 - **Canlı güncelleme:** sipariş sayaçları, dashboard rakamları ve bildirimler sayfa yenilenmeden güncellenir (US-06, US-20)
 - **Kanal renkleri:** kanal seçildikten sonra (S-17) panel o kanalın renklerini kullanır – HTGO Market mavi, GK Market kahverengi
@@ -24,13 +25,18 @@ Bu belge, satıcı panelindeki tüm ekranları, kimin açabileceğini ve hangi u
 | S-09 | Şubeler | Şube bilgileri, çalışma saatleri, açık / kapalı, poşet ücreti | ✔ | ✔ kendi | – | US-21, US-33 | M |
 | S-10 | Kullanıcılar | Şube çalışanı oluşturma, düzenleme, pasifleştirme | ✔ | ✔ kendi şubeleri | – | US-22 | M |
 | S-11 | Profilim | Ad, dil, şifre | ✔ | ✔ | ✔ | US-03, US-23 | M |
-| S-12 | Rapor: kanal satışları | HTGO ve GK karşılaştırması: sipariş, ciro, ortalama sepet, iptal, iade | ✔ | ✔ | – | US-26, US-28 | S |
+| S-12 | Rapor: kanal satışları | Günlük / haftalık / aylık / yıllık sekmeler: sipariş, ciro, ortalama sepet, iptal, iade, grafik ve ayrıntı tablosu; günlük görünümde kutular rakamın arkasındaki listeyi açar | ✔ | ✔ | – | US-26, US-28, US-52 | S |
 | S-13 | Rapor: ürünler | En çok ve en az satanlar, kanal payı, stoksuz kalma sayısı | ✔ | ✔ | – | US-27, US-28 | S |
 | S-14 | Rapor: iptal sebepleri | Sebep başına iptaller grafikte, kanal ve şube bazında | ✔ | ✔ | – | US-30, US-28 | S |
 | S-15 | Admin: satıcılar | Satıcıları ve şubelerini oluşturma, düzenleme, pasifleştirme | ✔ | – | – | US-24 | S |
 | S-16 | Admin: audit log | Kim neyi ne zaman değiştirdi; sadece okuma | ✔ | – | – | US-25 | M |
 | S-17 | Kanal seçimi | Girişten sonra HTGO Market ya da GK Market seçilir; kanal başına bekleyen siparişleri gösterir | ✔ | ✔ | ✔ | US-39 | M |
 | S-18 | Rapor: toplama kalitesi | Şube ve çalışan bazında okutmalar, elle sayımlar ve yanlış okutmalar | ✔ | ✔ | – | US-38 | S |
+| S-19 | Satış durumu | Her ürün ve kanal için bir anahtar (HTGO / GK); stok 0 ise otomatik kapanır | ✔ | ✔ | ✔ | US-40 | M |
+| S-20 | Bildirimler ve WhatsApp | Hatırlatma kuralları, WhatsApp izni olan alıcılar, gönderilen hatırlatmalar, demo düğmeleri | ✔ | ✔ | ✔ okuma | US-41 – US-43 | S |
+| S-21 | İade teslim alma | Gelen ürünleri işaretleme, QR kod oluşturma, kabul edilen iadeleri ve para iadelerini görme | ✔ okuma | ✔ | ✔ | US-48, US-49 | M |
+| S-22 | Kurye onayı | QR kod okutulunca açılır, giriş gerekmez; kurye teslimi onaylar | – | – | – (kurye) | US-48 | M |
+| S-23 | Değerlendirmeler | Ortalama, yıldız dağılımı, servis / lezzet / teslimat, son yorumlar | ✔ | ✔ | ✔ | US-51 | S |
 
 Kanal simülatörünün (US-29) panelde ekranı yoktur; ayrı bir servis olarak çalışır ve bir ayar dosyasıyla yapılandırılır.
 

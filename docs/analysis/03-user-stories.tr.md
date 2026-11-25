@@ -50,6 +50,20 @@
 | US-37 | Toplama | Okutulan her barkodu kontrol etmek | Şube çalışanı | M | G2 |
 | US-38 | Raporlar | Toplama kalitesi raporu | Satıcı, Admin | S | G2 |
 | US-39 | Erişim | Panele girerken kanalı seçmek | Şube çalışanı, Satıcı | M | G1 |
+| US-40 | Ürünler | Ürünü kanal başına satışa açmak veya kapatmak | Şube çalışanı | M | G3 |
+| US-41 | Siparişler | Sesli yeni sipariş uyarısı almak | Şube çalışanı | M | G1 |
+| US-42 | Siparişler | Siparişlerin ne kadar beklediğini görmek | Şube çalışanı | M | G1 |
+| US-43 | Siparişler | Bekleyen siparişler için WhatsApp hatırlatması | Şube müdürü | S | G1 |
+| US-44 | Toplama | Son tutarı korumak | Satıcı, Şube çalışanı | M | G4 |
+| US-45 | Toplama | Eksik ürünleri müşteri onayıyla çıkarmak | Şube çalışanı | M | G4 |
+| US-46 | Toplama | Kurye kapasitesini aşan siparişleri bölmek | Şube çalışanı | M | G2 |
+| US-47 | İadeler | Sadece bazı ürünleri iade etmek | Şube çalışanı | M | G4 |
+| US-48 | İadeler | İade ürünlerini QR kodla teslim almak | Şube çalışanı, Kurye | M | G4 |
+| US-49 | İadeler | İade kabul edilince para iadesi | Müşteri (kanal üzerinden) | M | G4 |
+| US-50 | İadeler | Nedenleri görmek ve süzmek | Şube çalışanı | S | G4 |
+| US-51 | Gösterge paneli | Müşteri değerlendirmelerini görmek | Satıcı, Şube çalışanı | S | G5 |
+| US-52 | Raporlar | Günlük, haftalık, aylık, yıllık satış raporu | Satıcı | S | G4 |
+| US-53 | Erişim | Gündüz ve gece modu | Tüm kullanıcılar | C | – |
 
 ---
 
@@ -126,7 +140,7 @@ Bir şube çalışanı ya da kanal *olarak* siparişi hazır olmadan iptal etmek
 - **Verilen** *Bekliyor* ya da *Toplanıyor* durumunda bir sipariş, **ne zaman** kanal iptal ederse, **o zaman** durum *İptal* olur ve şube bir bildirim görür.
 - **Verilen** *Hazır* ya da sonraki bir durumdaki sipariş, **o zaman** artık iptal edilemez.
 - Siparişler asla silinmez (kural R3).
-- **Verilen** şube siparişi iptal etmek istiyor, **o zaman** düğme ancak müşteriyle iletişime geçildikten sonra aktif olur (US-35): müşteriye ulaşıldı ve onay verdi ya da 2 arama cevapsız kaldı (kural R6).
+- **Verilen** şube siparişi iptal etmek istiyor, **o zaman** önce bir neden seçilmelidir (hiçbiri önceden seçili gelmez) ve düğme griden kırmızıya döner. *Şube çok yoğun* hemen seçilebilir; *müşteriye ulaşılamadı* ve *ürün stokta yok* ancak 2 kayıtlı aramadan sonra (kural R6, güncellendi – bkz. [06 §4](06-prototype-decisions.tr.md)).
 - **Verilen** 2 arama cevapsız kaldı, **o zaman** sistem siparişi *müşteriye ulaşılamadı* sebebiyle iptal eder ve bu iptal mağaza puanını **etkilemez** (US-36). Başka sebeplerle yapılan iptaller puanı etkiler.
 
 ## Epic 3 – Ürünler ve stok
@@ -299,3 +313,71 @@ Bir şube çalışanı ya da satıcı *olarak* panele girerken HTGO Market ya da
 - **Verilen** diğer kanala geçmek istiyorum, **o zaman** üst çubuktaki "Kanal değiştir" beni seçim ekranına geri götürür; son seçim hatırlanır.
 - **Verilen** bakmadığım kanala yeni bir sipariş geldi, **o zaman** o kanalın adı ve rengiyle bir bildirim çıkar, böylece sipariş kaçmaz (G1).
 - Raporlar (S-12 – S-14, S-18) iki kanalı yine yan yana karşılaştırabilir.
+
+## Epic 13 – Tıklanabilir prototipten çıkan bulgular
+Bu hikâyeler prototip (v1.0.1) denenirken ortaya çıktı. Arka plan, örnekler ve gerekçeler: [06 – Prototip kararları](06-prototype-decisions.tr.md).
+
+### US-40 – Ürünü kanal başına satışa açmak veya kapatmak · M
+*Bir* şube çalışanı *olarak* bir ürünü HTGO Market ve GK Market'te ayrı ayrı satışa açıp kapatmak *istiyorum*, *böylece* müşteriler sadece gerçekten teslim edebileceğimiz ürünleri görür.
+- **Verilen** bir ürün, **o zaman** her kanal için bir anahtar görürüm; kapatınca o kanalın müşterileri ürünü görmez.
+- **Verilen** stok 0, **o zaman** ürün iki kanalda da otomatik kapanır ve anahtar açılamaz.
+
+### US-41 – Sesli yeni sipariş uyarısı almak · M
+*Bir* şube çalışanı *olarak* sipariş gelince ses ve üst bildirim *istiyorum*, *böylece* ekrana bakmıyorken de fark ederim.
+- **Verilen** yeni bir sipariş, **o zaman** kanalın renginde ve logosuyla 3 saniyelik bir bildirim *"Yeni sipariş var · kanal"*, sipariş numarasını ve bekleyen sipariş sayısını gösterir.
+- **Verilen** HTGO ya da GK, **o zaman** her kanalın kendi sesi vardır. Mobil uygulamada bu, telefon kilitliyken de gelen anlık bildirimdir.
+
+### US-42 – Siparişlerin ne kadar beklediğini görmek · M
+*Bir* şube çalışanı *olarak* bekleyen siparişleri bekleme süresine göre etiketli görmek *istiyorum*, *böylece* en eskisini önce kabul ederim.
+- **Verilen** *Bekliyor* sekmesi, **o zaman** her sipariş dakikayı ve saatin yanında bir etiket gösterir: *Yeni* (< 2 dk), *Kabul bekliyor* (2 – 5), *Gecikmede* (6 – 11), *Çok gecikmiş* (≥ 12).
+
+### US-43 – Bekleyen siparişler için WhatsApp hatırlatması · S
+*Bir* şube müdürü *olarak* vardiyadaki personele WhatsApp hatırlatması gitmesini *istiyorum*, *böylece* hiçbir sipariş fazla beklemez.
+- **Verilen** siparişler 2 dakika ya da daha fazla bekliyor, **o zaman** her 2 dakikada bir mesaj gider; 6 dakikadan sonra *gecikmede*, 12 dakikadan sonra *çok gecikmiş* yazar.
+- **Verilen** bir çalışan izin vermedi ya da vardiyada değil, **o zaman** ona mesaj gitmez (DSGVO, bkz. 06 §8).
+
+### US-44 – Son tutarı korumak · M
+*Bir* satıcı *olarak* yanlış ağırlık ve tutarların engellenmesini *istiyorum*, *böylece* müşteriden asla fazla para çekilmez.
+- **Verilen** tartılı bir satır, **ne zaman** ağırlık sipariş edilenin ±%10'u dışında, **o zaman** kutu kırmızı olur ve *Hazır* engellenir.
+- **Verilen** ürünler siparişten +%15'ten fazla tutacak, **o zaman** *Hazır* engellenir – müşteri onayıyla da.
+
+### US-45 – Eksik ürünleri müşteri onayıyla çıkarmak · M
+*Bir* şube çalışanı *olarak* müşteriyle konuştuktan sonra siparişi eksik ürünler olmadan tamamlamak *istiyorum*, *böylece* müşteri geri kalanını yine alır.
+- **Verilen** bir ürün eksik ya da tutar %15'ten fazla düşüyor, **o zaman** *Hazır* için *"müşteri bilgilendirildi ve onayladı"* işareti gerekir; saat siparişle birlikte kaydedilir.
+
+### US-46 – Kurye kapasitesini aşan siparişleri bölmek · M
+*Bir* şube çalışanı *olarak* 20 litreyi aşan siparişlerin otomatik bölünmesini *istiyorum*, *böylece* her kurye kendi kısmını taşıyabilir.
+- **Verilen** 20 L'yi aşan bir sipariş, **o zaman** olabildiğince az kısma bölünür; her kısım ≤ 20 L, litreler eşit paylaşılır, her ürün tek kısımda olur.
+- **Verilen** bölünmüş bir sipariş, **o zaman** her kısım sipariş numarasını *"(otomatik bölünmüş sipariş · n. kısım)"* notuyla korur, ayrı satırda bekler ve ayrı toplanır; raporlar onu tek sipariş sayar.
+
+### US-47 – Sadece bazı ürünleri iade etmek · M
+*Bir* şube çalışanı *olarak* hangi üründen kaç tane iade edildiğini tam görmek *istiyorum*, *böylece* doğru kontrol eder ve doğru tutarı iade ederim.
+- **Verilen** bir iade, **o zaman** iade edilen her ürün fotoğrafı ve adediyle listelenir; iade tutarı adet × sipariş satırındaki fiyattır.
+
+### US-48 – İade ürünlerini QR kodla teslim almak · M
+*Bir* şube çalışanı *olarak* teslimi QR kodla onaylamak *istiyorum*, *böylece* kurye ve mağaza neyin geri getirildiği konusunda anlaşır.
+- **Verilen** onaylanmış bir iade, **ne zaman** kurye getirir, **o zaman** her ürünü işaretler ve tek kullanımlık bir QR kod oluştururum.
+- **Verilen** kurye kodu okutur (kurye uygulaması; şimdilik herhangi bir telefon), **o zaman** iade *kabul edildi* olur.
+
+### US-49 – İade kabul edilince para iadesi · M
+*Bir* müşteri *olarak* mağaza ürünlerimi alır almaz paramı geri *istiyorum*, *böylece* beklemem.
+- **Verilen** iade kabul edildi, **o zaman** para iadesi kanal üzerinden müşterinin kartına gönderilir ve iadede saatiyle görünür.
+
+### US-50 – Nedenleri görmek ve süzmek · S
+*Bir* şube çalışanı *olarak* her iadenin ve iptalin nedenini listede görmek *istiyorum*, *böylece* sorunları hızlı anlarım.
+- **Verilen** iade listesi, **o zaman** her iade nedenini ve müşterinin notunu gösterir; nedene basınca sipariş açılır, neden düğmeleri listeyi süzer.
+- **Verilen** *İptal* sekmesi, **o zaman** her sipariş nedenini ve mağaza puanını etkileyip etkilemediğini gösterir.
+
+### US-51 – Müşteri değerlendirmelerini görmek · S
+*Bir* satıcı *olarak* kanalların değerlendirmelerini görmek *istiyorum*, *böylece* müşterilerin servis, lezzet ve teslimatı nasıl bulduğunu bilirim.
+- **Verilen** ana sayfa, **o zaman** her kanal ortalamasını ve yorum sayısını gösterir; basınca değerlendirmeler açılır.
+- **Verilen** değerlendirme sayfası, **o zaman** ortalamayı, yıldız dağılımını, üç kriteri ve dolu yıldız kutularıyla son yorumları görürüm.
+
+### US-52 – Günlük, haftalık, aylık, yıllık satış raporu · S
+*Bir* satıcı *olarak* satış raporunu dönemler arasında değiştirmek *istiyorum*, *böylece* kısa ve uzun vadeli eğilimleri görürüm.
+- **Verilen** bir dönem sekmesi, **o zaman** kutular, grafik, ayrıntı tablosu ve en çok satanlar o dönemi gösterir; bir tarih etiketi dönemi belirtir.
+- **Verilen** günlük görünüm, **o zaman** *Sipariş, Ciro, İptaller, İadeler* kutuları rakamın arkasındaki listeyi açar; bugünün rakamları ana sayfayla aynıdır.
+
+### US-53 – Gündüz ve gece modu · C
+*Bir* kullanıcı *olarak* açık ve koyu görünüm arasında geçiş yapmak *istiyorum*, *böylece* gece vardiyasında ekran göz yormaz.
+- **Verilen** güneş / ay düğmesi, **o zaman** bütün sayfalar değişir; durum renklerinin anlamı korunur ve seçim cihazda hatırlanır.

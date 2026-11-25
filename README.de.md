@@ -6,7 +6,7 @@
 
 VetisPilot ist ein Multi-Channel-Bestellmanagementsystem. Ein Lebensmittelgeschäft oder Restaurant erhält Bestellungen über zwei (fiktive) Lieferplattformen, **HTGO Market** und **GK Market**, und verwaltet sie alle in einem einzigen Panel: Bestellungen, Produkte, Filialen, Retouren und Verkaufsberichte.
 
-> 🚧 In Arbeit – Phase 1 (Analyse) abgeschlossen, aktuell in **Phase 2: Datenbankdesign**.
+> 🚧 In Arbeit – Phase 1 (Analyse) abgeschlossen, klickbarer Prototyp **v1.0.1** getestet, aktuell in **Phase 2: Datenbankdesign**.
 
 ## Geplante Funktionen
 - **Dashboard:** Tagesumsatz, aktive Bestellungen, offene Retouren
@@ -24,8 +24,9 @@ VetisPilot ist ein Multi-Channel-Bestellmanagementsystem. Ein Lebensmittelgesch�
 - [03 – User Stories](docs/analysis/03-user-stories.de.md)
 - [04 – Bestellprozess](docs/analysis/04-order-process.de.md)
 - [05 – Bildschirmliste](docs/analysis/05-screens.de.md)
+- [06 – Entscheidungen aus dem klickbaren Prototyp](docs/analysis/06-prototype-decisions.de.md)
 - [Datenbank – Datenmodell (ER)](docs/database/01-er-model.de.md)
-- [Klickbarer Prototyp des Panels](prototype/panel.html) – Anmeldung, Bestellungen, Kommissionierung, Produkte, Retouren, Berichte (Beispieldaten; Datei im Browser öffnen)
+- [Klickbarer Prototyp des Panels](prototype/panel.html) (v1.0.1) – Anmeldung, Bestellungen mit Hinweisen und geteilten Bestellungen, Kommissionierung mit Betragsschutz, Produkte und Verkaufsstatus, Retouren mit QR-Übergabe, Berichte, Bewertungen, Tag-/Nachtmodus (Beispieldaten; Datei im Browser öffnen)
 
 ## Technologie
 | Schicht | Technologie |

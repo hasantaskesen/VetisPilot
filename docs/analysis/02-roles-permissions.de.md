@@ -28,7 +28,7 @@ Ein Benutzer hat genau eine Rolle. Ein Filialmitarbeiter gehört zu genau einer 
 | Bestellungen – Status *In Kommissionierung / Bereit* | U | U (eigene) | U (eigene Filiale) | – |
 | Bestellungen – Kommissionierung: Ersatz, Gewicht, Tütenanzahl | U | U (eigene) | U (eigene Filiale) | – |
 | Bestellungen – Status *Unterwegs / Zugestellt* | – | – | – | U |
-| Bestellungen – stornieren (bis *Bereit*, nur nach Kontakt mit dem Kunden – R6) | U | U (eigene) | U (eigene Filiale) | U |
+| Bestellungen – stornieren (bis *Bereit*, nur mit Grund – R6) | U | U (eigene) | U (eigene Filiale) | U |
 | Retouren – beantragen | – | – | – | C |
 | Retouren – genehmigen / ablehnen | U | U (eigene) | U (eigene Filiale) | – |
 | Dashboard | R (alle) | R (eigene) | R (eigene Filiale) | – |
@@ -41,4 +41,4 @@ Ein Benutzer hat genau eine Rolle. Ein Filialmitarbeiter gehört zu genau einer 
 - **R3 – Bestellungen werden nie gelöscht:** Bestellungen werden nur storniert, nicht gelöscht. So bleiben Berichte und Audit-Trail korrekt.
 - **R4 – Audit:** Änderungen an Produkten, Preisen, Bestand, Bestellstatus, Retouren und Benutzern werden im Audit-Log gespeichert (wer, wann, was, alter Wert, neuer Wert).
 - **R5 – Kanalzugriff:** Kanäle melden sich nicht mit Passwort an. Jede Anfrage wird mit einem geheimen Schlüssel signiert (HMAC); unsignierte oder falsch signierte Anfragen werden abgelehnt.
-- **R6 – Keine Stornierung ohne den Kunden:** Die Filiale kann nur nach einem protokollierten Anruf mit Zustimmung des Kunden oder nach 2 unbeantworteten Anrufen stornieren. Die Datenbank prüft das selbst (Trigger), die Regel gilt also auch bei einem Fehler im Code.
+- **R6 – Keine Stornierung ohne Grund und Prüfung:** Die Filiale muss vor dem Stornieren einen Grund wählen. *Kunde nicht erreichbar* und *Artikel nicht vorrätig* sind erst nach 2 protokollierten Anrufen (2 Minuten Abstand) erlaubt; *Filiale überlastet* ist sofort erlaubt, zählt aber für die Filialbewertung; *Kunde hat storniert* und *Adresse fehlerhaft* kommen nur vom Kanal. Die Datenbank prüft das selbst (Trigger), sodass die Regel auch bei einem Fehler im Code gilt. Details: [06 §4](06-prototype-decisions.de.md).

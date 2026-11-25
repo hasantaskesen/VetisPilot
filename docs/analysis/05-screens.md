@@ -5,7 +5,8 @@
 This document lists every screen of the seller panel, who can open it and which user stories it covers ([03 – User Stories](03-user-stories.md)). The wireframes are rough sketches of the layout, not the final design.
 
 ## 1. Layout on every screen
-- **Top bar:** VetisPilot logo · current channel (HTGO Market or GK Market) with **Switch channel** · branch selector (seller and admin) · 🔔 notifications · language switch 🇬🇧 EN · 🇩🇪 DE · 🇹🇷 TR · user menu (profile, log out)
+- **Top bar:** VetisPilot logo · current channel (HTGO Market or GK Market) with **Switch channel** · branch selector (seller and admin) · 🔔 notifications · ☀️ / 🌙 day and night mode (US-53) · language switch 🇬🇧 EN · 🇩🇪 DE · 🇹🇷 TR · user menu (profile, log out)
+- **New-order alert:** sound per channel and a 3-second banner in the channel's colours on every screen (US-41)
 - **Side menu:** only the entries the user's role may open (see section 3)
 - **Live updates:** order counts, dashboard numbers and notifications update without reloading (US-06, US-20)
 - **Channel colors:** after choosing a channel (S-17) the panel uses its colors – HTGO Market blue, GK Market brown
@@ -24,13 +25,18 @@ This document lists every screen of the seller panel, who can open it and which 
 | S-09 | Branches | Branch details, opening hours, open / closed, bag fee | ✔ | ✔ own | – | US-21, US-33 | M |
 | S-10 | Users | Create, edit, deactivate branch employees | ✔ | ✔ own branches | – | US-22 | M |
 | S-11 | My profile | Name, language, password | ✔ | ✔ | ✔ | US-03, US-23 | M |
-| S-12 | Report: channel sales | HTGO vs GK: orders, revenue, average order value, cancellations, returns | ✔ | ✔ | – | US-26, US-28 | S |
+| S-12 | Report: channel sales | Tabs day / week / month / year: orders, revenue, average order value, cancellations, returns, chart and detail table; in the daily view the boxes open the list behind the number | ✔ | ✔ | – | US-26, US-28, US-52 | S |
 | S-13 | Report: products | Best and worst sellers, share per channel, out-of-stock count | ✔ | ✔ | – | US-27, US-28 | S |
 | S-14 | Report: cancellation reasons | Cancellations per reason as a chart, per channel and branch | ✔ | ✔ | – | US-30, US-28 | S |
 | S-15 | Admin: sellers | Create, edit, deactivate sellers and their branches | ✔ | – | – | US-24 | S |
 | S-16 | Admin: audit log | Who changed what and when; read only | ✔ | – | – | US-25 | M |
 | S-17 | Channel selection | Choose HTGO Market or GK Market after login; shows pending orders per channel | ✔ | ✔ | ✔ | US-39 | M |
 | S-18 | Report: picking quality | Scans, manual counts and wrong scans per branch and employee | ✔ | ✔ | – | US-38 | S |
+| S-19 | Sale status | One switch per product and channel (HTGO / GK); stock 0 closes automatically | ✔ | ✔ | ✔ | US-40 | M |
+| S-20 | Notifications & WhatsApp | Reminder rules, recipients with WhatsApp consent, sent reminders, demo buttons | ✔ | ✔ | ✔ read | US-41 – US-43 | S |
+| S-21 | Return handover | Tick returned products, create the QR code, see accepted returns and refunds | ✔ read | ✔ | ✔ | US-48, US-49 | M |
+| S-22 | Courier confirmation | Opened by scanning the QR code, no login; courier confirms the handover | – | – | – (courier) | US-48 | M |
+| S-23 | Reviews | Average, star distribution, service / taste / delivery, latest reviews | ✔ | ✔ | ✔ | US-51 | S |
 
 The channel simulator (US-29) has no screen in the panel; it runs as a separate service and is configured by a settings file.
 

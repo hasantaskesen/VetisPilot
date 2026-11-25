@@ -6,7 +6,7 @@
 
 VetisPilot is a multi-channel order management system. A grocery store or restaurant receives orders from two (fictional) delivery platforms, **HTGO Market** and **GK Market**, and manages all of them from a single panel: orders, products, branches, returns and sales reports.
 
-> 🚧 Work in progress – Phase 1 (analysis) done, currently in **Phase 2: Database design**.
+> 🚧 Work in progress – Phase 1 (analysis) done, clickable prototype **v1.0.1** tested, currently in **Phase 2: Database design**.
 
 ## Planned features
 - **Dashboard:** daily revenue, active orders, pending returns
@@ -24,8 +24,9 @@ VetisPilot is a multi-channel order management system. A grocery store or restau
 - [03 – User Stories](docs/analysis/03-user-stories.md)
 - [04 – Order Process](docs/analysis/04-order-process.md)
 - [05 – Screen List](docs/analysis/05-screens.md)
+- [06 – Decisions from the clickable prototype](docs/analysis/06-prototype-decisions.md)
 - [Database – Data Model (ER)](docs/database/01-er-model.md)
-- [Clickable prototype of the panel](prototype/panel.html) – login, orders, picking, products, returns, reports (sample data; open the file in a browser)
+- [Clickable prototype of the panel](prototype/panel.html) (v1.0.1) – login, orders with alerts and split orders, picking with amount protection, products and sale status, returns with QR handover, reports, reviews, day / night mode (sample data; open the file in a browser)
 
 ## Tech stack
 | Layer | Technology |
