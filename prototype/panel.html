@@ -468,6 +468,49 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
 .limit-msg{font-size:13px;font-weight:700} .limit.over .limit-msg{color:#991B1B} .limit.low .limit-msg{color:#92400E}
 .cust-ok{margin:0;font-size:13px;align-items:flex-start} .cust-ok input{flex-shrink:0;margin-top:1px}
 @media (max-width:640px){.rrow > .nm{grid-column:1 / -1} .qr-box{justify-content:center} .qr-box canvas{width:200px;height:200px}}
+/* ---------- day / night button (next to the profile letters) ---------- */
+.profile{display:flex;align-items:center;gap:8px}
+.theme-btn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#FDE68A;display:grid;place-items:center;padding:0}
+.theme-btn:hover{background:rgba(255,255,255,.16)} .theme-btn:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.theme-btn svg{width:21px;height:21px} .theme-btn .sun{display:none}
+body.dark .theme-btn .sun{display:block} body.dark .theme-btn .moon{display:none}
+/* ---------- night mode: deep navy page, dark cards, light text; channel and status colours stay ---------- */
+body.dark{--page:#0D0E1A;--line:#2A2D47;--muted:#A3A8C5;--surf:#181A2D;--surf2:#21243C;--txt:#E8EAF6;color:var(--txt);background:var(--page);color-scheme:dark}
+body.dark :is(.dropdown,.drawer,.daily-col,.tab,.list,.row,.card,.modal,.btn.ghost,.editbtn,.filter,.sale-sum div,.kpi,.chart,.demo-list,.plat,.date-chip,.period-chip,.reason-sum button,.langs button,.bubble,.qr-box,.srow.closed,.ho-item,.login-card,.courier-card){background-color:var(--surf);color:var(--txt)}
+body.dark :is(.row.head,.prow.head,.srow.head,.rrow.head,.rtable thead th,.tab .n,.calllog,.clock,.counter button,code.cols,.rv-bar,.weight-in:disabled,.prow img.ph,.srow img.ph,.ret-item img,.ho-item img){background-color:var(--surf2);color:var(--txt)}
+body.dark .ch-card.htgo{background:linear-gradient(180deg,#15244A,var(--surf) 72%)} body.dark .ch-card.gk{background:linear-gradient(180deg,#2C1F13,var(--surf) 72%)}
+body.dark .ch-card .kv-returns.zero{background:#2A2D47;color:var(--muted)}
+body.dark :is(.nav-item,.sub button,.drow,.kv,.demo-opt b,.person b,.it .nm b,.prow .nm b,.srow .nm b,.ret-item b,.ho-item b,.form label,.remember,.login-card > label,.limit-row,.vol,.rtable td,.rv-crit,.rv-text,.tab,.picker,.rv-head div b,.no,.sum,.dropdown .who b,.cust-ok,.cx-box,.courier-card h2,.login-head h2){color:var(--txt)}
+body.dark .ch-head{box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+body.dark :is(.nav-item:hover,.nav-item.active,.sub button:hover,.demo-opt:hover,.demo-opt:focus-visible,.row[data-order]:hover,.rtable tr.click:hover td,.langs button[aria-pressed="true"],.kpi-btn[aria-pressed="true"]){background:#2A2650}
+body.dark .nav-item.active,body.dark .nav-item:hover{color:#C4B5FD}
+body.dark .tab[aria-selected="true"]{background:var(--c);border-color:var(--c);color:#fff}
+body.dark :is(input,select,textarea){background:var(--surf2);color:var(--txt);border-color:var(--line)}
+body.dark :is(.rtable tfoot td,.rtable tr.sumrow td){background:#262245;color:var(--txt)}
+body.dark .rtable-wrap,body.dark .rtable td,body.dark .rtable th{border-color:var(--line)}
+body.dark .errbox{background:#3A1717;color:#FCA5A5} body.dark .okbox{background:#0F2E22;color:#6EE7B7}
+body.dark .refund{background:#13223F;border-color:#1E3A8A;color:#BFDBFE} body.dark .refund .note{color:#93C5FD}
+body.dark .split-note{background:#221B44;border-color:#3B2F7A;color:#DDD6FE} body.dark .split-note .orderlink{color:#C4B5FD}
+body.dark .limit.ok{background:#0F2A1C;border-color:#14532D} body.dark .limit.low{background:#33270B;border-color:#92400E} body.dark .limit.over{background:#3A1414;border-color:#991B1B}
+body.dark .limit.ok .limit-row b{color:#4ADE80} body.dark .limit.over .limit-row b,body.dark .limit.over .limit-msg{color:#FCA5A5} body.dark .limit.low .limit-row b,body.dark .limit.low .limit-msg{color:#FCD34D}
+body.dark .limit-meta,body.dark .it .wrange{color:var(--muted)}
+body.dark .ho-item.ok{background:#10291B;border-color:#166534}
+body.dark .it.missing{background:#3A1717} body.dark .it.returned{background:#33240F;outline-color:#9A3412}
+body.dark .bubble.lv-late{background:#33240F} body.dark .bubble.lv-verylate{background:#3A1717} body.dark .bubble .ords span{background:var(--surf2);color:var(--txt)} body.dark .chat{background:#11121F}
+body.dark .cx-box{background:#3A1717} body.dark .srow.closed{background:#241622}
+body.dark .rv-bar{background:var(--surf2)} body.dark .rv-ov{color:var(--txt)} body.dark .ret-item em,body.dark .ho-item em{background:#3A2614;color:#FDBA74}
+body.dark .switch.on,body.dark .chip.on{background:#14532D;color:#BBF7D0} body.dark .switch.off,body.dark .chip.off{background:#4C1D1D;color:#FECACA} body.dark .chip.nostock{background:var(--surf2);color:var(--muted)}
+body.dark .tgl{background:#3A3F5C}
+body.dark .orderlink{color:#93C5FD}
+body.dark .theme-gk .orderlink{color:#E8C9A0}
+body.dark .rating-link{background:var(--surf2);color:var(--txt);border-color:var(--line)}
+body.dark .bar small,body.dark .bar em{color:var(--muted)} body.dark .bar.off i{background:var(--surf2)}
+body.dark .modal-head .split-tag{color:#E9D5FF}
+/* channel colours are too dark as TEXT on the night background: lighter tones for titles and numbers */
+body.dark :is(.ch-card.htgo .ch-title,.daily-col.htgo h3,.daily-col.htgo .drow b,.theme-htgo .kpi b,.theme-htgo .rv-big,.theme-htgo .kpi-btn em,.theme-htgo .sum[style]){color:#8DB0FF}
+body.dark :is(.ch-card.gk .ch-title,.daily-col.gk h3,.daily-col.gk .drow b,.theme-gk .kpi b,.theme-gk .rv-big,.theme-gk .kpi-btn em,.theme-gk .sum[style]){color:#E6B07A}
+body.dark .daily h2{color:#C7CAE0} body.dark .daily-col .go{color:var(--muted)}
+body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
 </style>
 </head>
 <body>
@@ -530,6 +573,11 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     <div><small data-t="branch"></small>Berlin-Spandau</div>
   </div>
   <div class="profile">
+    <!-- day / night mode: shows the moon in day mode and the sun in night mode -->
+    <button id="themeBtn" class="theme-btn" type="button" aria-pressed="false">
+      <svg class="i moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      <svg class="i sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+    </button>
     <button id="profileBtn" class="avatar" aria-haspopup="true" aria-expanded="false" aria-label="Profile"><span id="userInitials">NB</span></button>
     <div id="dropdown" class="dropdown" hidden>
       <div class="who"><b id="userName">Nadia Brenner</b><span id="userRole"></span></div>
@@ -694,7 +742,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
       reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
       refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı",
-      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
+      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", nightMode:"Gece modu", dayMode:"Gündüz modu", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
       recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.1)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
@@ -764,7 +812,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
       reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
       refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet",
-      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
+      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", nightMode:"Nachtmodus", dayMode:"Tagmodus", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
       recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.1)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
@@ -834,7 +882,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
       reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
       refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded",
-      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
+      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", nightMode:"Night mode", dayMode:"Day mode", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
       recentReviews:"Latest reviews", todayWord:"today", yesterday:"yesterday", daysAgo:"{n} days ago", reviewsNote:"Customers give 1–5 stars in the channel app after delivery (service, taste, delivery). The panel only shows the reviews."}
   };
   var lang = "tr";
@@ -2007,6 +2055,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   }
   function applyStaticTexts() {
     document.documentElement.lang = lang;
+    if (themeBtn) applyTheme(document.body.classList.contains("dark"));   // button label in the current language
     document.querySelectorAll("[data-t]").forEach(function (el) { el.textContent = t(el.dataset.t); });
     document.querySelectorAll(".langs").forEach(function (box, n) {
       box.innerHTML = ["en","de","tr"].map(function (l) {
@@ -2080,6 +2129,15 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   var drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim"), menuBtn = document.getElementById("menuBtn");
   function setMenu(open) { drawer.classList.toggle("open", open); scrim.hidden = !open; menuBtn.setAttribute("aria-expanded", String(open)); }
   var dropdown = document.getElementById("dropdown"), profileBtn = document.getElementById("profileBtn");
+  // day / night mode: remembered on this device only (a convenience, not shared data)
+  var themeBtn = document.getElementById("themeBtn");
+  function applyTheme(dark) {
+    document.body.classList.toggle("dark", dark);
+    themeBtn.setAttribute("aria-pressed", String(dark));
+    themeBtn.setAttribute("aria-label", t(dark ? "dayMode" : "nightMode")); themeBtn.title = t(dark ? "dayMode" : "nightMode");
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem("vp-proto-theme"); } catch (x) {}
+  applyTheme(savedTheme === "dark");
   function setDropdown(open) { dropdown.hidden = !open; profileBtn.setAttribute("aria-expanded", String(open)); }
 
   document.addEventListener("click", function (e) {
@@ -2096,6 +2154,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       return;
     }
     if (el === menuBtn) { setMenu(!drawer.classList.contains("open")); return; }
+    if (el === themeBtn) { var dk = !document.body.classList.contains("dark"); applyTheme(dk); try { localStorage.setItem("vp-proto-theme", dk ? "dark" : "light"); } catch (x) {} return; }
     if (el === profileBtn) { setDropdown(dropdown.hidden); return; }
     if (!el.closest(".profile")) setDropdown(false);
     var d = el.dataset;
