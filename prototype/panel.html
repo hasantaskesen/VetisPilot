@@ -375,6 +375,28 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .done-check{width:84px;height:84px;border-radius:50%;background:#16A34A;color:#fff;display:grid;place-items:center;font-size:44px;margin:6px auto 0;box-shadow:0 10px 24px rgba(22,163,74,.4)}
 .courier-card .center{text-align:center}
 .btn.big{width:100%;padding:14px;font-size:16px;background:#15803D}
+/* refund line */
+.refund{display:flex;gap:10px;align-items:flex-start;background:#EFF6FF;border:1px solid #BFDBFE;color:#1E3A8A;border-radius:10px;padding:10px 12px;font-size:13px}
+.refund > span{display:flex;flex-direction:column;gap:2px} .refund .note{color:#1E40AF}
+.ho-PAID{background:#DBEAFE;color:#1E3A8A}
+/* home: daily boxes are buttons to the report */
+button.daily-col{border-top:0;border-right:0;border-bottom:0;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;transition:box-shadow .15s}
+button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.daily-col h3{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.daily-col .go{font-size:12px;font-weight:700;color:var(--muted)}
+.date-chip{font-size:12px;font-weight:700;letter-spacing:0;text-transform:none;color:#374151;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin-left:6px;white-space:nowrap}
+/* report periods */
+.period-tabs{margin-bottom:10px}
+.period-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--c);color:#111827;font-weight:800;font-size:15px;border-radius:12px;padding:8px 14px;margin-bottom:14px;max-width:100%}
+.bars.many{gap:3px} .bars.many small{font-size:10px}
+.bar.off i{background:#E5E7EB}
+.rtable-wrap{max-height:360px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.rtable{width:100%;border-collapse:collapse;font-size:14px}
+.rtable th,.rtable td{padding:8px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+.rtable th:first-child,.rtable td:first-child{text-align:left}
+.rtable thead th{position:sticky;top:0;background:#F9FAFB;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#6B7280}
+.rtable tfoot td{position:sticky;bottom:0;background:#F5F3FF;font-weight:800;border-bottom:0}
+.rtable tr.closed td{color:#9CA3AF;font-style:italic}
 /* amount check in the picking modal */
 .weight-in.bad{border-color:#DC2626;background:#FEF2F2;color:#991B1B;font-weight:700}
 .weight-in:disabled{background:#F3F4F6}
@@ -568,7 +590,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       readyBlocked2:"Hazır yapılamıyor:", weightRange:"İzin verilen: {a}–{b} kg", weightOut:"Ağırlık izin verilen aralığın dışında", errWeightOut:"{p}: {k} kg girildi, izin verilen {a}–{b} kg (±%10)",
       errOver:"Ürün tutarı {f}, en fazla {m} olabilir (+%15)", errNeedOk:"Eksik ürün var ya da tutar %15'ten fazla düştü: müşteri onayını işaretle",
       limitTitle:"Ürün tutarı (son)", limitOrder:"Sipariş", limitMax:"En fazla (+%15)", limitOver:"Üst sınır aşıldı! Müşterinin kartından en fazla {m} çekilebilir. Ağırlıkları ve adetleri kontrol et.",
-      limitLow:"Tutar siparişten %15'ten fazla düşük ({l} altı). Müşteri bilgilendirilmeli.", custOk:"Müşteriyle konuştum: eksik ürünlerin çıkarılmasını ve yeni tutarı onayladı",
+      limitLow:"Tutar siparişten %15'ten fazla düşük olduğunda ({l} altı), müşteri bilgilendirilmeli.", custOk:"Müşteriyle konuştum: eksik ürünlerin çıkarılmasını ve yeni tutarı onayladı",
       readyHelp:"Eksik ürünleri + ile say, tartılı ürünlere ağırlık gir (ör. 1,10). Ürün yoksa müşteriyi ara.",
       listedCount:"Listelenen ürün sayısı", totalCount:"Toplam ürün sayısı", searchHint:"Ürün adı, marka, SKU ya da barkod ara…",
       newProduct:"Yeni ürün", importProducts:"İçe aktar", edit:"Düzenle", editProduct:"Ürünü düzenle", photo:"Resim",
@@ -603,7 +625,12 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       demoScan:"Demo: bu cihazda okut", receivedAt:"teslim alındı: {time}", noHandover:"Teslim alınacak iade yok.", doneList:"Teslim alınanlar", amountRefund:"İade tutarı",
       liveSync:"Canlı bağlantı açık: QR telefonda okutulunca bu ekran kendiliğinden güncellenir.", localOnly:"Bu görünümde canlı bağlantı yok. QR okutulduktan sonra \"Demo: bu cihazda okut\" düğmesine bas.", resetDemo:"Demoyu sıfırla", hoToast:"{id}: kurye QR kodu okuttu, iade kabul edildi",
       courierTitle:"Kurye · İade teslimi", courierConfirm:"✓ Ürünleri teslim ettim – onayla", courierDone:"İade kabul edildi", courierDoneSub:"Mağaza ürünleri teslim aldı · {time}", courierInvalid:"QR kodu geçersiz ya da artık kullanılamıyor.",
-      courierNote:"Prototip: gerçek uygulamada bu ekran kurye uygulamasının içinde açılır.", courierSynced:"Onay satıcı paneline iletildi.", courierNotSynced:"Demo: Bu telefonda claude.ai oturumu açık değilse onay satıcı ekranına otomatik gitmez; satıcı \"Demo: bu cihazda okut\" düğmesini kullanabilir.", courierOrder:"Sipariş {no} · {ch}"},
+      courierNote:"Prototip: gerçek uygulamada bu ekran kurye uygulamasının içinde açılır.", courierSynced:"Onay satıcı paneline iletildi.", courierNotSynced:"Demo: Bu telefonda claude.ai oturumu açık değilse onay satıcı ekranına otomatik gitmez; satıcı \"Demo: bu cihazda okut\" düğmesini kullanabilir.", courierOrder:"Sipariş {no} · {ch}",
+      openReport:"Rapor", chipDay:"Bugün", chipWeek:"Son 7 gün", chipMonth:"Bu ay", chipYear:"Bu yıl", period_day:"Günlük", period_week:"Haftalık", period_month:"Aylık", period_year:"Yıllık",
+      chart_day:"Saatlik sipariş sayısı (bugün)", chart_week:"Günlük sipariş sayısı (son 7 gün)", chart_month:"Günlük sipariş sayısı (bu ay)", chart_year:"Aylık sipariş sayısı (bu yıl)",
+      tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
+      reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
+      refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı"},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
       management:"VERWALTUNG", productList:"Produktliste", returns:"Retouren", reports:"Berichte",
@@ -630,7 +657,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       readyBlocked2:"Nicht bereit:", weightRange:"Erlaubt: {a}–{b} kg", weightOut:"Gewicht außerhalb des erlaubten Bereichs", errWeightOut:"{p}: {k} kg eingegeben, erlaubt sind {a}–{b} kg (±10 %)",
       errOver:"Warenwert {f}, höchstens {m} möglich (+15 %)", errNeedOk:"Es fehlen Produkte oder der Betrag ist um mehr als 15 % gesunken: Zustimmung des Kunden abhaken",
       limitTitle:"Warenwert (final)", limitOrder:"Bestellung", limitMax:"Höchstens (+15 %)", limitOver:"Obergrenze überschritten! Von der Karte des Kunden dürfen höchstens {m} abgebucht werden. Gewichte und Mengen prüfen.",
-      limitLow:"Betrag liegt mehr als 15 % unter der Bestellung (unter {l}). Der Kunde muss informiert werden.", custOk:"Mit dem Kunden gesprochen: Er ist mit dem Entfernen der fehlenden Produkte und dem neuen Betrag einverstanden",
+      limitLow:"Wenn der Betrag mehr als 15 % unter der Bestellung liegt (unter {l}), muss der Kunde informiert werden.", custOk:"Mit dem Kunden gesprochen: Er ist mit dem Entfernen der fehlenden Produkte und dem neuen Betrag einverstanden",
       readyHelp:"Fehlende Artikel mit + zählen, bei Gewichtsartikeln das Gewicht eingeben (z. B. 1,10). Fehlt ein Artikel, den Kunden anrufen.",
       listedCount:"Angezeigte Produkte", totalCount:"Produkte gesamt", searchHint:"Produktname, Marke, SKU oder Barcode suchen …",
       newProduct:"Neues Produkt", importProducts:"Importieren", edit:"Bearbeiten", editProduct:"Produkt bearbeiten", photo:"Bild",
@@ -666,7 +693,12 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       demoScan:"Demo: auf diesem Gerät scannen", receivedAt:"angenommen: {time}", noHandover:"Keine Retouren anzunehmen.", doneList:"Angenommen", amountRefund:"Erstattungsbetrag",
       liveSync:"Live-Verbindung aktiv: Wird der QR-Code am Handy gescannt, aktualisiert sich diese Seite von selbst.", localOnly:"In dieser Ansicht gibt es keine Live-Verbindung. Nach dem Scan auf \"Demo: auf diesem Gerät scannen\" tippen.", resetDemo:"Demo zurücksetzen", hoToast:"{id}: Kurier hat den QR-Code gescannt, Retoure angenommen",
       courierTitle:"Kurier · Retourenübergabe", courierConfirm:"✓ Produkte übergeben – bestätigen", courierDone:"Retoure angenommen", courierDoneSub:"Die Filiale hat die Produkte erhalten · {time}", courierInvalid:"QR-Code ungültig oder nicht mehr verwendbar.",
-      courierNote:"Prototyp: In der echten App öffnet sich diese Seite in der Kurier-App.", courierSynced:"Bestätigung an das Verkäuferpanel gesendet.", courierNotSynced:"Demo: Ist auf diesem Handy keine claude.ai-Sitzung offen, erreicht die Bestätigung das Verkäuferpanel nicht automatisch; dort kann \"Demo: auf diesem Gerät scannen\" genutzt werden.", courierOrder:"Bestellung {no} · {ch}"},
+      courierNote:"Prototyp: In der echten App öffnet sich diese Seite in der Kurier-App.", courierSynced:"Bestätigung an das Verkäuferpanel gesendet.", courierNotSynced:"Demo: Ist auf diesem Handy keine claude.ai-Sitzung offen, erreicht die Bestätigung das Verkäuferpanel nicht automatisch; dort kann \"Demo: auf diesem Gerät scannen\" genutzt werden.", courierOrder:"Bestellung {no} · {ch}",
+      openReport:"Bericht", chipDay:"Heute", chipWeek:"Letzte 7 Tage", chipMonth:"Dieser Monat", chipYear:"Dieses Jahr", period_day:"Täglich", period_week:"Wöchentlich", period_month:"Monatlich", period_year:"Jährlich",
+      chart_day:"Bestellungen pro Stunde (heute)", chart_week:"Bestellungen pro Tag (letzte 7 Tage)", chart_month:"Bestellungen pro Tag (dieser Monat)", chart_year:"Bestellungen pro Monat (dieses Jahr)",
+      tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
+      reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
+      refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet"},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
       management:"MANAGEMENT", productList:"Product list", returns:"Returns", reports:"Reports",
@@ -693,7 +725,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       readyBlocked2:"Cannot mark as ready:", weightRange:"Allowed: {a}–{b} kg", weightOut:"Weight outside the allowed range", errWeightOut:"{p}: {k} kg entered, allowed {a}–{b} kg (±10%)",
       errOver:"Product total {f}, at most {m} is allowed (+15%)", errNeedOk:"Products are missing or the total dropped by more than 15%: tick the customer's approval",
       limitTitle:"Product total (final)", limitOrder:"Order", limitMax:"Maximum (+15%)", limitOver:"Upper limit exceeded! At most {m} may be charged to the customer's card. Check weights and quantities.",
-      limitLow:"Total is more than 15% below the order (under {l}). The customer must be informed.", custOk:"I talked to the customer: they agreed to removing the missing products and to the new total",
+      limitLow:"When the total is more than 15% below the order (under {l}), the customer must be informed.", custOk:"I talked to the customer: they agreed to removing the missing products and to the new total",
       readyHelp:"Count missing items with +, enter the weight of products sold by weight (e.g. 1.10). If an item is missing, call the customer.",
       listedCount:"Products listed", totalCount:"Products in total", searchHint:"Search product name, brand, SKU or barcode…",
       newProduct:"New product", importProducts:"Import", edit:"Edit", editProduct:"Edit product", photo:"Image",
@@ -729,7 +761,12 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       demoScan:"Demo: scan on this device", receivedAt:"received: {time}", noHandover:"No returns to receive.", doneList:"Received", amountRefund:"Refund amount",
       liveSync:"Live connection on: when the QR code is scanned on a phone, this page updates by itself.", localOnly:"No live connection in this view. After the scan, tap \"Demo: scan on this device\".", resetDemo:"Reset demo", hoToast:"{id}: the courier scanned the QR code, return accepted",
       courierTitle:"Courier · Return handover", courierConfirm:"✓ Products handed over – confirm", courierDone:"Return accepted", courierDoneSub:"The store received the products · {time}", courierInvalid:"QR code invalid or no longer usable.",
-      courierNote:"Prototype: in the real app this page opens inside the courier app.", courierSynced:"Confirmation sent to the seller panel.", courierNotSynced:"Demo: if this phone has no claude.ai session, the confirmation does not reach the seller panel automatically; the seller can use \"Demo: scan on this device\".", courierOrder:"Order {no} · {ch}"}
+      courierNote:"Prototype: in the real app this page opens inside the courier app.", courierSynced:"Confirmation sent to the seller panel.", courierNotSynced:"Demo: if this phone has no claude.ai session, the confirmation does not reach the seller panel automatically; the seller can use \"Demo: scan on this device\".", courierOrder:"Order {no} · {ch}",
+      openReport:"Report", chipDay:"Today", chipWeek:"Last 7 days", chipMonth:"This month", chipYear:"This year", period_day:"Daily", period_week:"Weekly", period_month:"Monthly", period_year:"Yearly",
+      chart_day:"Orders per hour (today)", chart_week:"Orders per day (last 7 days)", chart_month:"Orders per day (this month)", chart_year:"Orders per month (this year)",
+      tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
+      reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
+      refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded"}
   };
   var lang = "tr";
   try { var savedLang = localStorage.getItem("vp-proto-lang"); if (T[savedLang]) lang = savedLang; } catch (e) {}
@@ -1061,10 +1098,22 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
   function countStatus(ch, s) { return byCh(ch).filter(function (o) { return o.status === s; }).length; }
   function active(ch) { return byCh(ch).filter(function (o) { return ["PENDING","PICKING","READY"].indexOf(o.status) >= 0; }).length; }
   function pendingReturns(ch) { return returns.filter(function (r) { return r.ch === ch && r.status === "REQUESTED"; }).length; }
-  function daily(ch) {
+  // Today's totals = orders already delivered earlier today (summary) + the orders listed in the panel (live).
+  // Targets at start: HTGO 100 orders, GK 85 orders; average basket of a grocery delivery about 26–28 €.
+  var TODAY_TARGET = {htgo:{count:100, amount:2746.80, cancelled:4}, gk:{count:85, amount:2214.25, cancelled:3}};
+  function listedToday(ch) {
     var list = byCh(ch), live = list.filter(function (o) { return o.status !== "CANCELLED"; });
-    return {count:list.length, amount:live.reduce(function (s, o) { return s + shownTotal(o); }, 0),
-            cancelled:list.length - live.length, returns:returns.filter(function (r) { return r.ch === ch; }).length};
+    return {count:list.length, amount:live.reduce(function (s, o) { return s + shownTotal(o); }, 0), cancelled:list.length - live.length};
+  }
+  var TODAY_BASE = {};
+  ["htgo","gk"].forEach(function (ch) {
+    var l = listedToday(ch), g = TODAY_TARGET[ch];
+    TODAY_BASE[ch] = {count:g.count - l.count, amount:Math.round((g.amount - l.amount) * 100) / 100, cancelled:Math.max(0, g.cancelled - l.cancelled)};
+  });
+  function daily(ch) {
+    var l = listedToday(ch), b = TODAY_BASE[ch];
+    return {count:b.count + l.count, amount:b.amount + l.amount, cancelled:b.cancelled + l.cancelled,
+            returns:returns.filter(function (r) { return r.ch === ch; }).length};
   }
 
   // ======================= Pages =======================
@@ -1077,13 +1126,14 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
         '<div class="kvs"><div class="kv kv-active"><span class="lbl">' + SVG.bag + t("activeOrders") + ':</span><b>' + active(ch) + '</b></div>' +
         '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div></div></button>';
     });
-    html += '</div><section class="daily"><h2>' + t("daily") + '</h2><div class="daily-grid">';
+    html += '</div><section class="daily"><h2>' + t("daily") + ' <span class="date-chip">📅 ' + t("chipDay") + ' · ' + fmtDate(new Date(), {weekday:"long", day:"numeric", month:"long"}) + '</span></h2><div class="daily-grid">';
     ["htgo","gk"].forEach(function (ch) {
       var d = daily(ch);
-      html += '<div class="daily-col ' + ch + '"><h3>' + CH[ch].name + '</h3>' +
+      // tapping a channel's daily box opens its sales report
+      html += '<button class="daily-col ' + ch + '" data-go="#reports-' + ch + '"><h3>' + CH[ch].name + ' <span class="go">' + t("openReport") + ' ›</span></h3>' +
         '<div class="drow"><span>' + t("orderCount") + '</span><b>' + d.count + '</b></div>' +
         '<div class="drow"><span>' + t("orderAmount") + '</span><b>' + money(d.amount) + '</b></div>' +
-        '<div class="drow"><span>' + t("cancelledCount") + '</span><b>' + d.cancelled + '</b></div></div>';
+        '<div class="drow"><span>' + t("cancelledCount") + '</span><b>' + d.cancelled + '</b></div></button>';
     });
     return html + '</div></section><p class="note" style="margin-top:18px">' + t("prototype") + '</p>';
   }
@@ -1329,7 +1379,8 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
         return '<span class="ret-item"><img src="' + photoOf(p) + '" alt=""><span><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + '</span></span><em>×' + it[1] + '</em></span>';
       }).join("") + '</span>';
       var hs = r.status === "APPROVED" ? handoverStatus(r.id) : "";
-      var statusHtml = '<span class="pill s-' + r.status + '">' + t(r.status) + '</span>' + (hs ? '<span class="pill ho-' + hs + '" style="margin-top:4px">' + t("ho_" + hs) + '</span>' : '');
+      var statusHtml = '<span class="pill s-' + r.status + '">' + t(r.status) + '</span>' + (hs ? '<span class="pill ho-' + hs + '" style="margin-top:4px">' + t("ho_" + hs) + '</span>' : '') +
+        (hs === "RECEIVED" ? '<span class="pill ho-PAID" style="margin-top:4px">💳 ' + t("refundPill") + '</span>' : '');
       var reasonHtml = '<button class="reason"' + openAttr + '>' + t("RR_" + r.code) + ' ›</button><span class="reason-note">“' + esc(r.reason[lang]) + '”</span>' +
         (r.rejection ? '<span class="reason-note">↳ ' + esc(r.rejection) + '</span>' : '');
       html += '<div class="rrow"><span class="no"><button class="orderlink"' + openAttr + '>' + r.order + '</button><span class="note" style="display:block">' + r.id + ' · ' + t("returnItems").replace("{n}", returnQty(r)) + '</span></span><span class="nm">' + itemsHtml +
@@ -1419,7 +1470,10 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
         '<b class="qr-code">' + esc(handover[r.id].token) + '</b><p class="note" style="margin:0">' + t("qrHint") + '</p>' +
         '<button class="btn ghost" data-ho-scan="' + r.id + '">📱 ' + t("demoScan") + '</button></div></div>';
     } else {
-      html += '<div class="okbox">✓ ' + t("ho_RECEIVED") + ' · ' + t("receivedAt").replace("{time}", esc(handover[r.id].receivedAt || "")) + '</div>';
+      html += '<div class="okbox">✓ ' + t("ho_RECEIVED") + ' · ' + t("receivedAt").replace("{time}", esc(handover[r.id].receivedAt || "")) + '</div>' +
+        // last step: the refund goes back to the customer's card automatically through the channel
+        '<div class="refund">💳 <span><b>' + t("refundDone").replace("{a}", money(returnAmount(r))).replace("{time}", esc(handover[r.id].receivedAt || "")) + '</b>' +
+        '<span class="note">' + t("refundNote").replace("{ch}", CH[r.ch].name) + '</span></span></div>';
     }
     return html + '</div>';
   }
@@ -1455,6 +1509,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
         }).join("") + '</div><div class="sum" style="font-size:15px"><span>' + t("amountRefund") + '</span><span>' + money(returnAmount(r)) + '</span></div>';
       if (h && h.status === "RECEIVED") {
         html += '<div class="done-check" aria-hidden="true">✓</div><div class="center"><b style="font-size:20px">' + t("courierDone") + '</b><div class="note">' + t("courierDoneSub").replace("{time}", esc(h.receivedAt)) + '</div></div>' +
+          '<div class="refund">💳 <span><b>' + t("refundDone").replace("{a}", money(returnAmount(r))).replace("{time}", esc(h.receivedAt)) + '</b></span></div>' +
           (courierSynced === true || dbLive ? '<div class="okbox">' + t("courierSynced") + '</div>' : courierSynced === false || !db ? '<p class="note">' + t("courierNotSynced") + '</p>' : '');
       } else html += '<button class="btn big" data-courier-ok>' + t("courierConfirm") + '</button>';
     }
@@ -1462,23 +1517,103 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     applyStaticTexts();
   }
 
-  var WEEK = {htgo:[38,42,35,47,51,58,11], gk:[29,33,31,36,40,44,8]};
+  // ======================= Sales report: day / week / month / year =======================
+  // Today comes from the live panel (same numbers as the home page). Earlier days are sample data,
+  // calculated the same way every time (seeded), at a normal level for one supermarket branch.
+  var reportPeriod = {htgo:"day", gk:"day"};
+  var REPORT = {htgo:{perDay:96, basket:27.4}, gk:{perDay:82, basket:26.1}};
+  var WD_MULT = [0, .92, .95, 1, 1.02, 1.14, 1.22];                     // Sunday = closed (shops in Germany)
+  var SEASON = [.95, .93, .97, .98, 1, .94, .9, .9, .98, 1.02, 1.05, 1.15];
+  var HOUR_W = {8:.03, 9:.05, 10:.07, 11:.09, 12:.12, 13:.11, 14:.08, 15:.07, 16:.08, 17:.1, 18:.1, 19:.06, 20:.03, 21:.01};
+  var TOP_SHARE = {htgo:[["DRY-001",.09],["BEV-006",.07],["BAK-003",.06],["PRD-001",.055],["SNK-001",.05]],
+                   gk:[["BEV-001",.08],["DRY-002",.07],["BRK-001",.055],["PRD-008",.05],["SWT-001",.045]]};
+  function seeded(n) { var x = Math.sin(n) * 10000; return x - Math.floor(x); }
+  function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function fmtDate(d, o) { return d.toLocaleDateString(t("locale"), o); }
+  function dayStats(ch, date) {
+    var today = new Date();
+    if (sameDay(date, today)) { var d = daily(ch); return {orders:d.count, revenue:d.amount, cancelled:d.cancelled, returns:d.returns}; }
+    if (date.getDay() === 0) return {orders:0, revenue:0, cancelled:0, returns:0, closed:true};
+    var seed = date.getFullYear() * 400 + date.getMonth() * 32 + date.getDate() + (ch === "gk" ? 7777 : 0);
+    var n = Math.round(REPORT[ch].perDay * WD_MULT[date.getDay()] * SEASON[date.getMonth()] * (.9 + .2 * seeded(seed)));
+    var cx = Math.round(n * (.02 + .02 * seeded(seed + 2)));
+    var basket = REPORT[ch].basket * (.94 + .12 * seeded(seed + 1));
+    return {orders:n, revenue:Math.round((n - cx) * basket * 100) / 100, cancelled:cx, returns:Math.round(n * (.008 + .01 * seeded(seed + 3)))};
+  }
+  function sumStats(list) {
+    return list.reduce(function (a, s) { return {orders:a.orders + s.orders, revenue:a.revenue + s.revenue, cancelled:a.cancelled + s.cancelled, returns:a.returns + s.returns}; },
+      {orders:0, revenue:0, cancelled:0, returns:0});
+  }
+  // buckets = the bars of the chart and the rows of the table
+  function reportBuckets(ch, period) {
+    var today = new Date(), out = [];
+    if (period === "day") {
+      var d = dayStats(ch, today), lastHour = Math.min(21, Math.floor(NOW / 60)), hours = [], wsum = 0, given = 0;
+      for (var h = 8; h <= 21; h++) { hours.push(h); if (h <= lastHour) wsum += HOUR_W[h]; }
+      hours.forEach(function (h, i) {
+        var share = h <= lastHour ? HOUR_W[h] / wsum : 0, n = h === lastHour ? d.orders - given : Math.round(d.orders * share);
+        if (h > lastHour) n = 0; given += n;
+        out.push({label:String(h).padStart(2, "0") + ":00", short:String(h).padStart(2, "0"), orders:n, revenue:d.orders ? d.revenue * n / d.orders : 0,
+                  cancelled:0, returns:0, future:h > lastHour});
+      });
+      out.total = d;
+    } else if (period === "week") {
+      for (var b = 6; b >= 0; b--) { var x = new Date(); x.setDate(x.getDate() - b); var s = dayStats(ch, x);
+        s.label = fmtDate(x, {weekday:"long", day:"numeric", month:"short"}); s.short = fmtDate(x, {weekday:"short"}); out.push(s); }
+      out.total = sumStats(out);
+    } else if (period === "month") {
+      for (var dd = 1; dd <= today.getDate(); dd++) { var y = new Date(today.getFullYear(), today.getMonth(), dd), s2 = dayStats(ch, y);
+        s2.label = fmtDate(y, {weekday:"short", day:"numeric", month:"short"}); s2.short = String(dd); out.push(s2); }
+      out.total = sumStats(out);
+    } else {
+      for (var m = 0; m <= today.getMonth(); m++) {
+        var last = m === today.getMonth() ? today.getDate() : new Date(today.getFullYear(), m + 1, 0).getDate(), days = [];
+        for (var k = 1; k <= last; k++) days.push(dayStats(ch, new Date(today.getFullYear(), m, k)));
+        var s3 = sumStats(days), mo = new Date(today.getFullYear(), m, 1);
+        s3.label = fmtDate(mo, {month:"long"}) + (m === today.getMonth() ? " (" + t("soFar") + ")" : ""); s3.short = fmtDate(mo, {month:"short"}); out.push(s3);
+      }
+      out.total = sumStats(out);
+    }
+    return out;
+  }
+  function periodChip(period) {
+    var today = new Date(), from = new Date(); from.setDate(from.getDate() - 6);
+    if (period === "day") return t("chipDay") + " · " + fmtDate(today, {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+    if (period === "week") return t("chipWeek") + " · " + fmtDate(from, {day:"numeric", month:"short"}) + " – " + fmtDate(today, {day:"numeric", month:"short", year:"numeric"});
+    if (period === "month") return t("chipMonth") + " · " + fmtDate(today, {month:"long", year:"numeric"}) + " (1–" + today.getDate() + ")";
+    return t("chipYear") + " · " + today.getFullYear() + " (" + fmtDate(new Date(today.getFullYear(), 0, 1), {month:"short"}) + " – " + fmtDate(today, {month:"short"}) + ")";
+  }
   function pageReport(ch) {
-    var d = daily(ch), live = d.count - d.cancelled;
-    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + t(ch === "htgo" ? "salesReportHtgo" : "salesReportGk") + '</h1></div><div class="kpis">' +
-      kpi(t("orderCount"), d.count) + kpi(t("revenue"), money(d.amount)) + kpi(t("avgBasket"), money(live ? d.amount / live : 0)) +
-      kpi(t("cancellations"), d.cancelled) + kpi(t("returnsKpi"), d.returns) + '</div>';
-    var days = [6,5,4,3,2,1,0].map(function (back) { var x = new Date(); x.setDate(x.getDate() - back); return x.toLocaleDateString(t("locale"), {weekday:"short"}); });
-    var max = Math.max.apply(null, WEEK[ch]);
-    html += '<div class="chart"><h2>' + t("last7") + '</h2><div class="bars">';
-    WEEK[ch].forEach(function (v, i) { html += '<div class="bar"><em>' + v + '</em><i style="height:' + Math.round(v / max * 140) + 'px"></i><small>' + days[i] + '</small></div>'; });
-    html += '</div></div><div class="chart" style="margin-top:14px"><h2>' + t("topProducts") + '</h2>';
-    var qty = {};
-    byCh(ch).forEach(function (o) { if (o.status !== "CANCELLED") o.items.forEach(function (it) { qty[it.sku] = (qty[it.sku] || 0) + it.qty; }); });
-    Object.keys(qty).sort(function (a, b) { return qty[b] - qty[a]; }).slice(0, 5).forEach(function (sku) {
-      html += '<div class="drow" style="color:#111827"><span>' + esc(P[sku].brand + " " + P[sku][lang]) + '</span><b>' + qty[sku] + '×</b></div>';
+    var period = reportPeriod[ch], bk = reportBuckets(ch, period), tot = bk.total, live = tot.orders - tot.cancelled;
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + t(ch === "htgo" ? "salesReportHtgo" : "salesReportGk") + '</h1></div>' +
+      '<div class="tabs period-tabs" role="tablist">' + ["day","week","month","year"].map(function (p) {
+        return '<button class="tab" role="tab" aria-selected="' + (period === p) + '" data-period="' + p + '" data-ch="' + ch + '">' + t("period_" + p) + '</button>'; }).join("") + '</div>' +
+      '<div class="period-chip">📅 ' + esc(periodChip(period)) + '</div><div class="kpis">' +
+      kpi(t("orderCount"), tot.orders.toLocaleString(t("locale"))) + kpi(t("revenue"), money(tot.revenue)) + kpi(t("avgBasket"), money(live ? tot.revenue / live : 0)) +
+      kpi(t("cancellations"), tot.cancelled.toLocaleString(t("locale"))) + kpi(t("returnsKpi"), tot.returns.toLocaleString(t("locale"))) + '</div>';
+    var max = Math.max.apply(null, bk.map(function (b) { return b.orders; })) || 1, many = bk.length > 14;
+    html += '<div class="chart"><h2>' + t("chart_" + period) + '</h2><div class="bars' + (many ? ' many' : '') + '">';
+    bk.forEach(function (b) {
+      var tip = b.label + ': ' + (b.closed ? t("closedSunday") : b.orders + ' · ' + money(b.revenue));
+      html += '<div class="bar' + (b.closed || b.future ? ' off' : '') + '" title="' + esc(tip) + '"><em>' + (many || b.future ? '' : b.closed ? '–' : b.orders) + '</em>' +
+        '<i style="height:' + Math.max(b.orders ? 3 : 0, Math.round(b.orders / max * 140)) + 'px"></i><small>' + esc(b.short) + '</small></div>';
     });
-    return html + '</div></div>';
+    html += '</div></div>';
+    // detail table: one row per hour / day / month, plus the total
+    html += '<div class="chart" style="margin-top:14px"><h2>' + t("tableTitle") + '</h2><div class="rtable-wrap"><table class="rtable"><thead><tr><th>' + t("colPeriod_" + period) + '</th><th>' + t("orderCount") +
+      '</th><th>' + t("revenue") + '</th><th>' + t("avgBasket") + '</th></tr></thead><tbody>';
+    bk.forEach(function (b) {
+      if (b.future) return;
+      var l = b.orders - (b.cancelled || 0);
+      html += '<tr' + (b.closed ? ' class="closed"' : '') + '><td>' + esc(b.label) + '</td>' + (b.closed ? '<td colspan="3">' + t("closedSunday") + '</td>' :
+        '<td>' + b.orders.toLocaleString(t("locale")) + '</td><td>' + money(b.revenue) + '</td><td>' + (l > 0 ? money(b.revenue / l) : '–') + '</td>') + '</tr>';
+    });
+    html += '</tbody><tfoot><tr><td>' + t("total") + '</td><td>' + tot.orders.toLocaleString(t("locale")) + '</td><td>' + money(tot.revenue) + '</td><td>' + money(live ? tot.revenue / live : 0) + '</td></tr></tfoot></table></div></div>';
+    html += '<div class="chart" style="margin-top:14px"><h2>' + t("topProductsP") + ' · ' + t("period_" + period) + '</h2>';
+    TOP_SHARE[ch].forEach(function (x) {
+      html += '<div class="drow" style="color:#111827"><span>' + esc(P[x[0]].brand + " " + P[x[0]][lang]) + '</span><b>' + Math.round(tot.orders * x[1] * 1.3).toLocaleString(t("locale")) + '×</b></div>';
+    });
+    return html + '</div><p class="note" style="margin-top:12px">' + t("reportNote") + '</p></div>';
     function kpi(label, val) { return '<div class="kpi"><span>' + label + '</span><b>' + val + '</b></div>'; }
   }
 
@@ -1699,6 +1834,7 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
       return;
     }
     if (d.saleFilter) { saleFilter = d.saleFilter; render(); return; }
+    if (d.period) { reportPeriod[d.ch] = d.period; render(); return; }
     if (d.reasonFilter != null) { var rch = location.hash.indexOf("gk") >= 0 ? "gk" : "htgo"; returnFilter[rch] = returnFilter[rch] === d.reasonFilter ? "" : d.reasonFilter; render(); return; }
     if (d.openOrder) { openOrder = orders.filter(function (o) { return o.no === d.openOrder; })[0]; if (openOrder) { openOrder.hlRet = find(d.ret) || null; renderModal(); } return; }
     if (d.wa) { STAFF_WA[d.wa] = !STAFF_WA[d.wa]; render(); return; }
