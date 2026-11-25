@@ -902,7 +902,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function volOf(sku) { return VOL[sku] != null ? VOL[sku] : 1; }
   function orderVolume(o) { return o.items.reduce(function (s, it) { return s + volOf(it.sku) * it.qty; }, 0); }
   function fmtL(v) { return (Math.round(v * 10) / 10).toLocaleString(t("locale"), {minimumFractionDigits:1, maximumFractionDigits:1}); }
-  // An order above 20 L is split automatically: biggest units first, each part filled up to 20 L.
+  // An order above 20 L is split automatically into as few parts as possible (total ÷ 20, rounded up),
+  // and the litres are shared as EVENLY as possible: biggest units first, each unit goes to the part that
+  // currently carries the least. If a unit fits nowhere, one more part (courier) is added and it starts again.
   // Every part keeps the order number, is picked on its own and goes with its own courier.
   function splitOrder(no, ch, status, time, lines, extra) {
     var total = lines.reduce(function (s, l) { return s + volOf(l[0]) * l[1]; }, 0);
@@ -910,12 +912,18 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     var units = [];
     lines.forEach(function (l) { for (var i = 0; i < l[1]; i++) units.push(l[0]); });
     units.sort(function (a, b) { return volOf(b) - volOf(a); });
-    var bins = [];
-    units.forEach(function (sku) {
-      var bin = bins.filter(function (b) { return b.vol + volOf(sku) <= COURIER_CAP; })[0];
-      if (!bin) { bin = {vol:0, qty:{}, order:[]}; bins.push(bin); }
-      bin.vol += volOf(sku); if (!bin.qty[sku]) { bin.qty[sku] = 0; bin.order.push(sku); } bin.qty[sku]++;
-    });
+    var bins, n = Math.ceil(total / COURIER_CAP);
+    for (;; n++) {
+      bins = []; for (var k = 0; k < n; k++) bins.push({vol:0, qty:{}, order:[]});
+      var ok = units.every(function (sku) {
+        var fit = bins.filter(function (b) { return b.vol + volOf(sku) <= COURIER_CAP + 1e-9; });
+        if (!fit.length) return false;
+        var bin = fit.sort(function (a, b) { return a.vol - b.vol; })[0];      // the least loaded part
+        bin.vol += volOf(sku); if (!bin.qty[sku]) { bin.qty[sku] = 0; bin.order.push(sku); } bin.qty[sku]++;
+        return true;
+      });
+      if (ok) break;
+    }
     return bins.map(function (b, i) {
       var ex = {split:{parent:no, part:i + 1, of:bins.length}};
       for (var k in extra || {}) ex[k] = extra[k];
@@ -2128,8 +2136,12 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     if (!a) { loginErr.textContent = t("loginWrong"); loginErr.hidden = false; passIn.value = ""; passIn.focus(); return; }
     showDemoList(false);
     enterPanel(a, document.getElementById("rememberMe").checked);
-    // demo: a new order arrives a few seconds after logging in (sound + banner)
-    if (!arriveOrder.demoDone) { arriveOrder.demoDone = true; setTimeout(function () { if (currentUser) arriveOrder(); }, 8000); }
+    // demo: three new orders after logging in (sound + banner each time):
+    // 7 s -> HTGO Market, 27 s -> GK Market, 40 s -> HTGO Market (arriveOrder alternates the channel)
+    if (!arriveOrder.demoDone) {
+      arriveOrder.demoDone = true;
+      [7000, 27000, 40000].forEach(function (ms) { setTimeout(function () { if (currentUser) arriveOrder(); }, ms); });
+    }
     toast(t("welcome").replace("{name}", a.name.split(" ")[0]));
   }
   window.addEventListener("hashchange", function () { if (currentUser && !courierMode) render(); });
