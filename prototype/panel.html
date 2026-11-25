@@ -72,6 +72,9 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
   justify-content:center;align-items:center;gap:6px;cursor:pointer;width:100%}
 .ch-card .kv-rating:hover{background:#F1F5F9} .ch-card .kv-rating .st{font-style:normal;color:#F59E0B;font-size:18px;line-height:1}
 .ch-card .kv-rating b{color:#0F172A;font-size:20px} .ch-card .kv-rating span{color:#475569}
+/* the rating box is about 80 % of the rows above: narrower, lower and smaller text, centred */
+.kvs > .ch-card .kv-rating, .ch-card .kvs > .kv-rating{justify-self:center;align-self:center;width:80%;height:80%;min-height:0;padding:4px 8px;font-size:11px;gap:5px}
+.ch-card .kvs > .kv-rating b{font-size:16px} .ch-card .kvs > .kv-rating .st{font-size:14px}
 .daily{margin-top:26px}
 /* split orders and courier volume */
 .ch-head.center{flex-direction:column;justify-content:center;text-align:center;gap:6px} .ch-head.center h1{line-height:1.2} .h-sub{display:block;font-size:.72em;font-weight:700;opacity:.9}
@@ -139,6 +142,11 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
   display:flex;align-items:center;gap:12px;background:#fff;color:#111827;border-radius:16px;padding:12px 14px;box-shadow:0 14px 36px rgba(14,11,43,.35);border-left:6px solid var(--accent)}
 .banner.show{transform:translate(-50%,0)}
 .banner.wa{border-left-color:#15803D}
+.banner.ch-htgo{background:linear-gradient(135deg,var(--htgo),var(--htgo-dark));color:#fff;border-left-color:#93C5FD}
+.banner.ch-gk{background:linear-gradient(135deg,var(--gk),var(--gk-dark));color:#fff;border-left-color:#E8C9A0}
+.banner.ch-htgo b,.banner.ch-gk b{color:#fff} .banner.ch-htgo span span,.banner.ch-gk span span{color:rgba(255,255,255,.88)}
+.banner.ch-htgo .bi,.banner.ch-gk .bi{background:rgba(255,255,255,.16);width:46px;height:46px}
+.banner.ch-htgo .bi svg,.banner.ch-gk .bi svg{width:40px;height:40px}
 .banner .bi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#EEEBFF;color:var(--accent);flex-shrink:0}
 .banner.wa .bi{background:#DCFCE7;color:#15803D}
 .banner .bi svg{width:24px;height:24px}
@@ -380,7 +388,7 @@ button,a,label,input{touch-action:manipulation}
   .ch-cards,.daily-grid{gap:10px}
   .ch-card{padding:14px;gap:10px} .ch-title{font-size:16px;gap:8px} .ch-title svg{width:34px;height:34px}
   .kv{font-size:13px} .kv b{font-size:22px}
-  .ch-card .kv-active,.ch-card .kv-returns,.ch-card .kv-rating{font-size:12px;padding:6px 8px 6px 9px;gap:6px} .ch-card .kv-rating b{font-size:18px} .kv .lbl{gap:5px} .kv .lbl svg{width:15px;height:15px}
+  .ch-card .kv-active,.ch-card .kv-returns{font-size:12px;padding:6px 8px 6px 9px;gap:6px} .ch-card .kvs > .kv-rating{font-size:10px;padding:3px 6px} .ch-card .kvs > .kv-rating b{font-size:14px} .kv .lbl{gap:5px} .kv .lbl svg{width:15px;height:15px}
   .ch-card .kv-active b,.ch-card .kv-returns b{font-size:18px}
   .daily-col{padding:12px} .drow{font-size:13px} .drow b{font-size:15px}
   .it{grid-template-columns:1fr auto} .it .nm{grid-column:1;grid-row:1}
@@ -1050,10 +1058,11 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   var bannerEl = document.getElementById("banner");
   var BELL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
   var CHAT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.4-4A8 8 0 1 1 8.5 19z"/><path d="M9 10h6M9 13h4"/></svg>';
-  function showBanner(kind, title, sub) {
+  function showBanner(kind, title, sub, ch) {
     var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-    bannerEl.className = "banner" + (kind === "wa" || kind === "ok" ? " wa" : "") + (kind === "order" ? " order" : "");
-    bannerEl.innerHTML = '<span class="bi">' + (kind === "wa" ? CHAT : kind === "ok" ? CHECK : BELL) + '</span><span><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></span>';
+    // a new order shows in its channel's own colours and logo (HTGO blue, GK brown)
+    bannerEl.className = "banner" + (kind === "wa" || kind === "ok" ? " wa" : "") + (kind === "order" ? " order" : "") + (ch ? " ch-" + ch : "");
+    bannerEl.innerHTML = '<span class="bi">' + (ch ? ICON[ch] : kind === "wa" ? CHAT : kind === "ok" ? CHECK : BELL) + '</span><span><b>' + esc(title) + '</b><span>' + esc(sub) + '</span></span>';
     void bannerEl.offsetWidth; bannerEl.classList.add("show");
     clearTimeout(showBanner.timer);
     // fully visible for 3 seconds (plus the short slide-in), then it slides away
@@ -1063,7 +1072,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function unlockAudio() {   // browsers only allow sound after the user has tapped something once
     try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === "suspended") audioCtx.resume(); } catch (x) {}
   }
-  function chime() {
+  function chime(ch) {          // each channel has its own sound, so staff hear where the order comes from
     if (!soundOn) return;
     try {
       // ~2.7 s: the same rising bell arpeggio played three times, with a soft echo
@@ -1081,11 +1090,28 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
           osc.connect(g); g.connect(master); osc.start(at); osc.stop(at + l + .05);
         });
       }
-      var C6 = 1046.5, E6 = 1318.5, G6 = 1568, C7 = 2093;
-      // the same rising "din-din-din-din" three times – no closing chord
-      [0, .9, 1.8].forEach(function (start) {
-        [C6, E6, G6, C7].forEach(function (f, i) { bell(f, s + start + i * .12, .55, .16); });
-      });
+      if (ch === "gk") {
+        // GK Market: a warm wooden "marimba" sound, lower notes, "di-di-dum" three times – clearly different from HTGO
+        var marimba = function (freq, at, len, vol) {
+          [[1, 1], [4, .22], [10, .05]].forEach(function (h) {
+            var osc = ctx.createOscillator(), g = ctx.createGain();
+            osc.type = h[0] === 1 ? "triangle" : "sine"; osc.frequency.value = freq * h[0];
+            var l = h[0] === 1 ? len : len / 4;
+            g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(vol * h[1], at + .006); g.gain.exponentialRampToValueAtTime(.0001, at + l);
+            osc.connect(g); g.connect(master); osc.start(at); osc.stop(at + l + .05);
+          });
+        };
+        var G5 = 784, C6m = 1046.5, E5 = 659.3;
+        [0, .9, 1.8].forEach(function (start) {
+          marimba(G5, s + start, .3, .3); marimba(E5, s + start + .14, .3, .3); marimba(C6m, s + start + .28, .6, .32);
+        });
+      } else {
+        // HTGO Market: the same rising bell "din-din-din-din" three times – no closing chord
+        var C6 = 1046.5, E6 = 1318.5, G6 = 1568, C7 = 2093;
+        [0, .9, 1.8].forEach(function (start) {
+          [C6, E6, G6, C7].forEach(function (f, i) { bell(f, s + start + i * .12, .55, .16); });
+        });
+      }
       if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate([200, 100, 200, 100, 400]);
     } catch (x) {}
   }
@@ -1093,8 +1119,8 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function notifyNewOrders(o) {
     // line 1: which channel the new order came from; line 2: how many orders are waiting in total
     var n = pendingCount();
-    chime();
-    showBanner("order", t("newOrderTitle").replace("{ch}", CH[o.ch].name), tn("pendingLine", n).replace("{no}", orderNo(o)).replace("{n}", n));
+    chime(o.ch);
+    showBanner("order", t("newOrderTitle").replace("{ch}", CH[o.ch].name), tn("pendingLine", n).replace("{no}", orderNo(o)).replace("{n}", n), o.ch);
   }
   var newSeq = {htgo:10486, gk:55125}, newPick = 0;
   var BASKETS = [[["BEV-006",2],["SNK-001",1]], [["DRY-001",2],["BAK-003",1]], [["BRK-001",1],["SWT-001",2]], [["BEV-001",6],["PRD-001",1]]];
@@ -1123,7 +1149,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     }).join("") + '</div>';
     html += '<div class="card"><h2>' + t("demoTitle") + '</h2><div class="demo-row"><span class="clock">🕑 ' + t("demoClock") + ': ' + fmtTime(NOW) + '</span></div><div class="demo-row">' +
       '<button class="btn" data-demo="order">🔔 ' + t("demoNewOrder") + '</button><button class="btn ghost" data-demo="advance">⏩ ' + t("demoAdvance") + '</button>' +
-      '<button class="btn ghost" data-demo="sound">🔊 ' + t("soundTest") + '</button></div>' +
+      '<button class="btn ghost" data-demo="sound-htgo">🔊 ' + t("soundTest") + ' · HTGO</button><button class="btn ghost" data-demo="sound-gk">🔊 ' + t("soundTest") + ' · GK</button></div>' +
       '<label class="remember" style="margin:0"><input type="checkbox" id="soundOn"' + (soundOn ? ' checked' : '') + '><span>' + t("orderSound") + '</span></label>' +
       '<p class="note" style="margin:0">' + t("waProtoNote") + '</p></div></div>';
     html += '<div class="card"><h2>' + t("msgLog") + ' (' + waLog.length + ')</h2><div class="chat">';
@@ -2016,7 +2042,8 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     if (d.wa) { STAFF_WA[d.wa] = !STAFF_WA[d.wa]; render(); return; }
     if (d.demo === "order") { arriveOrder(); return; }
     if (d.demo === "advance") { advanceClock(); return; }
-    if (d.demo === "sound") { chime(); return; }
+    if (d.demo === "sound-htgo") { chime("htgo"); return; }
+    if (d.demo === "sound-gk") { chime("gk"); return; }
     if (d.approve) { var ap = find(d.approve); ap.status = "APPROVED"; ap.courier = ap.courier || COURIERS[ap.ch]; render(); toast(t("returnSaved")); return; }
     if (d.hoQr) { handover[d.hoQr] = {status:"QR", token:newToken(), qrAt:nowHM(), receivedAt:""}; saveHandover(d.hoQr); render(); return; }
     if (d.hoScan) { var sid = d.hoScan; markReceived(sid); render(); showBanner("ok", t("ho_RECEIVED") + " · " + sid, t("hoToast").replace("{id}", sid)); return; }
