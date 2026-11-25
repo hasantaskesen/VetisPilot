@@ -577,7 +577,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       waitingCourier:"Kurye bekleniyor – sonraki durumu kanal belirler.", picked:"toplandı", weight:"Ağırlık (kg)",
       bags:"Poşet sayısı", bagFee:"Poşet ücreti", orderedTotal:"Sipariş tutarı", finalTotal:"Son tutar",
       allLinesFirst:"Önce tüm satırları say (toplanan = sipariş edilen).", callCustomer:"Müşteriyi ara", callNoAnswer:"Cevap yok",
-      callAttempt:"Arama", cancelOrder:"Siparişi iptal et", cancelRule:"İptal için önce 2 cevapsız arama ya da müşteri onayı gerekir.",
+      callAttempt:"Arama", cancelOrder:"Siparişi iptal et", cancelRule:"\"Şube çok yoğun\" aramadan seçilebilir (mağaza puanını etkiler). \"Müşteriye ulaşılamadı\" ve \"Ürün stokta yok\" için önce müşteri 2 kez aranmalı.", needsCalls:"önce 2 arama",
       cancelledUnreachable:"İptal: müşteriye ulaşılamadı (mağaza puanı etkilenmez).", close:"Kapat",
       searchProducts:"Ürün, marka ya da SKU ara…", colProduct:"Ürün", colSize:"Boyut", colPrice:"Fiyat", colStock:"Stok", colAvail:"Satış durumu",
       inStock:"Stokta", outOfStock:"Stokta yok", colReturnOrder:"Sipariş", colReason:"İade nedeni", colAmount:"Tutar",
@@ -644,7 +644,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       waitingCourier:"Wartet auf den Kurier – den nächsten Status setzt der Kanal.", picked:"kommissioniert", weight:"Gewicht (kg)",
       bags:"Anzahl Tüten", bagFee:"Tütengebühr", orderedTotal:"Bestellter Betrag", finalTotal:"Endbetrag",
       allLinesFirst:"Zuerst alle Zeilen zählen (kommissioniert = bestellt).", callCustomer:"Kunden anrufen", callNoAnswer:"Keine Antwort",
-      callAttempt:"Anruf", cancelOrder:"Bestellung stornieren", cancelRule:"Zum Stornieren sind 2 unbeantwortete Anrufe oder die Zustimmung des Kunden nötig.",
+      callAttempt:"Anruf", cancelOrder:"Bestellung stornieren", cancelRule:"\"Filiale überlastet\" geht ohne Anruf (zählt für die Filialbewertung). Für \"Kunde nicht erreichbar\" und \"Artikel nicht vorrätig\" muss der Kunde zuerst 2-mal angerufen werden.", needsCalls:"erst 2 Anrufe",
       cancelledUnreachable:"Storniert: Kunde nicht erreichbar (Filialbewertung nicht betroffen).", close:"Schließen",
       searchProducts:"Produkt, Marke oder SKU suchen …", colProduct:"Produkt", colSize:"Größe", colPrice:"Preis", colStock:"Bestand", colAvail:"Verkaufsstatus",
       inStock:"Vorrätig", outOfStock:"Nicht vorrätig", colReturnOrder:"Bestellung", colReason:"Retourengrund", colAmount:"Betrag",
@@ -712,7 +712,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       waitingCourier:"Waiting for the courier – the channel sets the next status.", picked:"picked", weight:"Weight (kg)",
       bags:"Number of bags", bagFee:"Bag fee", orderedTotal:"Ordered amount", finalTotal:"Final amount",
       allLinesFirst:"Count every line first (picked = ordered).", callCustomer:"Call customer", callNoAnswer:"No answer",
-      callAttempt:"Call", cancelOrder:"Cancel order", cancelRule:"Cancelling needs 2 unanswered calls or the customer's approval.",
+      callAttempt:"Call", cancelOrder:"Cancel order", cancelRule:"\"Branch overloaded\" works without a call (counts against the store score). For \"Customer unreachable\" and \"Item out of stock\" the customer must be called twice first.", needsCalls:"2 calls first",
       cancelledUnreachable:"Cancelled: customer unreachable (store score not affected).", close:"Close",
       searchProducts:"Search product, brand or SKU…", colProduct:"Product", colSize:"Size", colPrice:"Price", colStock:"Stock", colAvail:"Sales status",
       inStock:"In stock", outOfStock:"Out of stock", colReturnOrder:"Order", colReason:"Return reason", colAmount:"Amount",
@@ -903,6 +903,10 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   // Cancellation reasons (orders.cancel_reason). Customer-side reasons do not count against the store score.
   var CANCEL_REASONS = ["CUSTOMER_UNREACHABLE","WRONG_ADDRESS","CUSTOMER_CANCELLED","ITEM_MISSING","BRANCH_OVERLOADED"];
   var SCORE_SAFE = {CUSTOMER_UNREACHABLE:1, WRONG_ADDRESS:1, CUSTOMER_CANCELLED:1};
+  // reasons the branch itself may choose, and which of them need 2 logged calls first
+  var BRANCH_CANCEL = ["BRANCH_OVERLOADED","CUSTOMER_UNREACHABLE","ITEM_MISSING"];
+  var NEEDS_CALLS = {CUSTOMER_UNREACHABLE:1, ITEM_MISSING:1};
+  function branchCancelAllowed(o, c) { return BRANCH_CANCEL.indexOf(c) >= 0 && (!NEEDS_CALLS[c] || o.calls >= 2); }
   function scoreNote(code) { return SCORE_SAFE[code] ? '<span class="score ok">✓ ' + t("scoreSafe") + '</span>' : '<span class="score bad">⚠ ' + t("scoreHit") + '</span>'; }
   // Sales status per channel: p.closed = {htgo:true} closes the product only in HTGO Market
   function isOpen(p, ch) { return p.stock > 0 && !(p.closed && p.closed[ch]); }
@@ -1654,12 +1658,17 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     }
     if (o.status === "READY") html += '<span class="note">' + t("waitingCourier") + '</span>';
     if (o.status === "PENDING" || picking) {
-      // the branch picks a reason; "customer cancelled" only comes from the channel app, so it is not offered here
+      // The branch picks a reason (the list can always be opened):
+      //  - "branch overloaded" can be chosen without calling (it counts against the store score)
+      //  - "customer unreachable" and "item out of stock" stay grey until 2 calls are logged
+      //  - "customer cancelled" / "wrong address" come from the channel, so they are not offered here
+      var cxSel = branchCancelAllowed(o, o.cxDraft) ? o.cxDraft : "BRANCH_OVERLOADED";
       html += '<button class="btn ghost" data-call>📞 ' + t("callCustomer") + ' (' + o.calls + '/2)</button>' +
-        '<select id="cxReason" aria-label="' + t("cancelReasonPick") + '"' + (o.calls >= 2 ? '' : ' disabled') + '>' +
-        CANCEL_REASONS.filter(function (c) { return c !== "CUSTOMER_CANCELLED"; }).map(function (c) {
-          return '<option value="' + c + '"' + (c === (o.cxDraft || "CUSTOMER_UNREACHABLE") ? ' selected' : '') + '>' + t("CR_" + c) + '</option>'; }).join("") + '</select>' +
-        '<button class="btn danger" data-cancel ' + (o.calls >= 2 ? "" : "disabled") + '>' + t("cancelOrder") + '</button>';
+        '<select id="cxReason" aria-label="' + t("cancelReasonPick") + '">' +
+        BRANCH_CANCEL.map(function (c) {
+          var ok = branchCancelAllowed(o, c);
+          return '<option value="' + c + '"' + (c === cxSel ? ' selected' : '') + (ok ? '' : ' disabled') + '>' + t("CR_" + c) + (ok ? '' : ' (' + t("needsCalls") + ')') + '</option>'; }).join("") + '</select>' +
+        '<button class="btn danger" data-cancel>' + t("cancelOrder") + '</button>';
     }
     html += '<button class="btn ghost" data-close style="margin-left:auto">' + t("close") + '</button></div>';
     if (picking && o.readyError) {
@@ -1861,9 +1870,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     if (d.minus != null) { var b = o.items[+d.minus]; if (b.picked > 0) b.picked--; renderModal(); return; }
     if ("call" in d) { if (o.calls < 2) o.calls++; renderModal(); return; }
     if ("cancel" in d) {
-      if (o.calls < 2) return;
-      var sel = document.getElementById("cxReason");
-      o.reason = sel ? sel.value : "CUSTOMER_UNREACHABLE"; o.status = "CANCELLED"; currentTab[o.ch] = "CANCELLED";
+      var sel = document.getElementById("cxReason"), why = sel ? sel.value : "BRANCH_OVERLOADED";
+      if (!branchCancelAllowed(o, why)) return;
+      o.reason = why; o.status = "CANCELLED"; currentTab[o.ch] = "CANCELLED";
       render(); toast(t("cancelledToast").replace("{r}", t("CR_" + o.reason))); return;
     }
     if ("ready" in d) {
@@ -1882,7 +1891,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       productFilter = e.target.value; var pos = e.target.selectionStart; render();
       var s = document.getElementById("psearch"); s.focus(); s.setSelectionRange(pos, pos);
     }
-    if (e.target.id === "cxReason" && openOrder) openOrder.cxDraft = e.target.value;
+    if (e.target.id === "cxReason" && openOrder) { openOrder.cxDraft = e.target.value; renderModal(); }
     if (e.target.id === "soundOn") soundOn = e.target.checked;
     if (e.target.dataset && e.target.dataset.hoCheck) { var hp = e.target.dataset.hoCheck.split("|"); hoChecked[hp[0]] = hoChecked[hp[0]] || {}; hoChecked[hp[0]][hp[1]] = e.target.checked; render(); }
     if (e.target.id === "salesearch") {
