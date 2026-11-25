@@ -67,9 +67,22 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .kvs{display:grid;grid-auto-rows:1fr;gap:8px} /* both rows always the same height */
 .kv-active{background:#15803D} .kv-returns{background:#B91C1C} .ch-card .kv-returns.zero{background:#E5E7EB;color:#4B5563}
 .ch-card .kv-active b,.ch-card .kv-returns b{color:inherit;font-size:20px}
+/* rating row: same size as the two rows above, content centred, neutral colours (not the channel colour) */
+.ch-card .kv-rating{border:1px solid #CBD5E1;border-radius:10px;padding:7px 10px;background:#fff;color:#0F172A;font:inherit;font-size:13px;font-weight:600;
+  justify-content:center;align-items:center;gap:6px;cursor:pointer;width:100%}
+.ch-card .kv-rating:hover{background:#F1F5F9} .ch-card .kv-rating .st{font-style:normal;color:#F59E0B;font-size:18px;line-height:1}
+.ch-card .kv-rating b{color:#0F172A;font-size:20px} .ch-card .kv-rating span{color:#475569}
 .daily{margin-top:26px}
-.daily h2{font-size:15px;letter-spacing:.14em;margin:0 0 10px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
-.daily h2 .date-chip{margin-left:0}
+/* split orders and courier volume */
+.ch-head.center{flex-direction:column;justify-content:center;text-align:center;gap:6px} .ch-head.center h1{line-height:1.2} .h-sub{display:block;font-size:.72em;font-weight:700;opacity:.9}
+.split-tag{display:block;font-size:11px;font-weight:700;color:#6D28D9;line-height:1.3;white-space:normal}
+.modal-head .split-tag{display:inline;color:#E9D5FF}
+.vol{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:#374151}
+.vol-bar{height:8px;border-radius:99px;background:#E5E7EB;overflow:hidden} .vol-bar i{display:block;height:100%;background:#7C3AED;border-radius:99px}
+.split-note{background:#F5F3FF;border:1px solid #DDD6FE;color:#4C1D95;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600}
+.split-note .orderlink{color:#6D28D9;white-space:normal;margin-top:4px}
+.daily h2{font-size:16px;font-weight:900;letter-spacing:.14em;margin:0 0 10px;color:#374151;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.daily h2 .date-chip{margin-left:0;font-weight:800;font-size:13px;color:#111827}
 /* home card is a div now (it holds the rating button) */
 .ch-card[data-go]{cursor:pointer}
 .ch-name{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
@@ -367,7 +380,7 @@ button,a,label,input{touch-action:manipulation}
   .ch-cards,.daily-grid{gap:10px}
   .ch-card{padding:14px;gap:10px} .ch-title{font-size:16px;gap:8px} .ch-title svg{width:34px;height:34px}
   .kv{font-size:13px} .kv b{font-size:22px}
-  .ch-card .kv-active,.ch-card .kv-returns{font-size:12px;padding:6px 8px 6px 9px;gap:6px} .kv .lbl{gap:5px} .kv .lbl svg{width:15px;height:15px}
+  .ch-card .kv-active,.ch-card .kv-returns,.ch-card .kv-rating{font-size:12px;padding:6px 8px 6px 9px;gap:6px} .ch-card .kv-rating b{font-size:18px} .kv .lbl{gap:5px} .kv .lbl svg{width:15px;height:15px}
   .ch-card .kv-active b,.ch-card .kv-returns b{font-size:18px}
   .daily-col{padding:12px} .drow{font-size:13px} .drow b{font-size:15px}
   .it{grid-template-columns:1fr auto} .it .nm{grid-column:1;grid-row:1}
@@ -665,7 +678,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
       reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
       refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı",
-      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
+      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
       recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
@@ -735,7 +748,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
       reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
       refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet",
-      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
+      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
       recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
@@ -805,7 +818,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
       reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
       refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded",
-      reviews:"Reviews", reviewsCount:"{n} reviews", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
+      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
       recentReviews:"Latest reviews", todayWord:"today", yesterday:"yesterday", daysAgo:"{n} days ago", reviewsNote:"Customers give 1–5 stars in the channel app after delivery (service, taste, delivery). The panel only shows the reviews."}
   };
   var lang = "tr";
@@ -881,16 +894,47 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     for (var k in extra || {}) o[k] = extra[k];
     return o;
   }
+  // ---------- Courier capacity: one courier carries at most 20 litres ----------
+  // Volume per unit in litres (packaging included). Bulky items (toilet paper, chips) count more than their weight.
+  var COURIER_CAP = 20;
+  var VOL = {"BEV-001":.55, "BEV-003":5.2, "BEV-006":1.05, "BEV-009":1.05, "PRD-001":1.5, "PRD-008":1.2, "DRY-001":1.05, "DRY-002":1.05,
+             "DRY-003":.55, "BAK-003":1.5, "SWT-001":.15, "SNK-001":1.8, "BRK-001":.8, "PCR-005":.15, "HSH-006":9, "FRZ-004":1.2};
+  function volOf(sku) { return VOL[sku] != null ? VOL[sku] : 1; }
+  function orderVolume(o) { return o.items.reduce(function (s, it) { return s + volOf(it.sku) * it.qty; }, 0); }
+  function fmtL(v) { return (Math.round(v * 10) / 10).toLocaleString(t("locale"), {minimumFractionDigits:1, maximumFractionDigits:1}); }
+  // An order above 20 L is split automatically: biggest units first, each part filled up to 20 L.
+  // Every part keeps the order number, is picked on its own and goes with its own courier.
+  function splitOrder(no, ch, status, time, lines, extra) {
+    var total = lines.reduce(function (s, l) { return s + volOf(l[0]) * l[1]; }, 0);
+    if (total <= COURIER_CAP) return [O(no, ch, status, time, lines, extra)];
+    var units = [];
+    lines.forEach(function (l) { for (var i = 0; i < l[1]; i++) units.push(l[0]); });
+    units.sort(function (a, b) { return volOf(b) - volOf(a); });
+    var bins = [];
+    units.forEach(function (sku) {
+      var bin = bins.filter(function (b) { return b.vol + volOf(sku) <= COURIER_CAP; })[0];
+      if (!bin) { bin = {vol:0, qty:{}, order:[]}; bins.push(bin); }
+      bin.vol += volOf(sku); if (!bin.qty[sku]) { bin.qty[sku] = 0; bin.order.push(sku); } bin.qty[sku]++;
+    });
+    return bins.map(function (b, i) {
+      var ex = {split:{parent:no, part:i + 1, of:bins.length}};
+      for (var k in extra || {}) ex[k] = extra[k];
+      return O(no + "/" + (i + 1), ch, status, time, b.order.map(function (sku) { return [sku, b.qty[sku]]; }), ex);
+    });
+  }
+  function orderNo(o) { return o.split ? o.split.parent : o.no; }
+  function splitTag(o) { return o.split ? '<span class="split-tag">(' + t("splitTag").replace("{p}", o.split.part) + ')</span>' : ''; }
+
   var orders = [
     // waiting orders, oldest first: 12 min = very late, 6 min = late, 4 min = waiting, 1 min = new
     O("HT-10481","htgo","PENDING","13:58",[["DRY-001",2],["BAK-003",1],["PRD-001",1]]),
     O("HT-10482","htgo","PENDING","14:04",[["BEV-006",3],["SNK-001",2]]),
     O("HT-10483","htgo","PENDING","14:06",[["BRK-001",1],["DRY-002",2]]),
     O("HT-10484","htgo","PENDING","14:09",[["SWT-001",2],["BEV-009",1]]),
-    O("HT-10480","htgo","PICKING","13:52",[["SNK-001",2,1],["BEV-009",1,0]],{picker:"nadia"}),
-    O("HT-10479","htgo","PICKING","13:41",[["BEV-003",2,1],["DRY-003",1,0],["SWT-001",2,2]],{picker:"nadia"}),
-    O("HT-10478","htgo","PICKING","13:36",[["DRY-002",2,2],["BRK-001",1,0],["PRD-008",1,0]],{picker:"lukas"}),
-    O("HT-10476","htgo","PICKING","13:33",[["BEV-006",2,1],["SWT-001",1,0]],{picker:"tobias"}),
+    O("HT-10480","htgo","PICKING","13:52",[["SNK-001",2,1],["BEV-009",1,0],["DRY-001",2,2],["BAK-003",1,0],["SWT-001",2,1]],{picker:"nadia"}),
+    O("HT-10479","htgo","PICKING","13:41",[["BEV-003",2,1],["DRY-003",1,0],["SWT-001",2,2],["PRD-001",1,0],["BRK-001",1,1]],{picker:"nadia"}),
+    O("HT-10478","htgo","PICKING","13:36",[["DRY-002",2,2],["BRK-001",1,0],["PRD-008",1,0],["BEV-006",2,1],["PCR-005",1,1],["SNK-001",1,0]],{picker:"lukas"}),
+    O("HT-10476","htgo","PICKING","13:33",[["BEV-006",2,1],["SWT-001",1,0],["DRY-003",2,0],["BAK-003",1,1],["FRZ-004",1,0]],{picker:"tobias"}),
     O("HT-10477","htgo","READY","13:30",[["BRK-001",1],["DRY-002",1]],{bags:1,picker:"lukas"}),
     O("HT-10475","htgo","READY","13:24",[["DRY-001",2],["SNK-001",1]],{bags:1,picker:"mira"}),
     O("HT-10470","htgo","ON_THE_WAY","12:55",[["FRZ-004",2],["BEV-009",1]],{bags:1}),
@@ -906,10 +950,10 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     O("GK-55121","gk","PENDING","13:57",[["BEV-001",6],["PRD-008",1]]),
     O("GK-55122","gk","PENDING","14:03",[["DRY-003",2],["BAK-003",1]]),
     O("GK-55123","gk","PENDING","14:08",[["HSH-006",1],["SNK-001",1]]),
-    O("GK-55120","gk","PICKING","13:54",[["BEV-006",2,0],["SWT-001",1,1],["PRD-001",1,0]],{picker:"lukas"}),
-    O("GK-55118","gk","PICKING","13:50",[["HSH-006",1,1],["PCR-005",2,1]],{picker:"lukas"}),
-    O("GK-55117","gk","PICKING","13:47",[["DRY-001",1,1],["BAK-003",2,0]],{picker:"nadia"}),
-    O("GK-55116","gk","PICKING","13:44",[["BRK-001",1,0],["BEV-009",2,2]],{picker:"mira"}),
+    O("GK-55120","gk","PICKING","13:54",[["BEV-006",2,0],["SWT-001",1,1],["PRD-001",1,0],["DRY-002",2,1],["SNK-001",1,0]],{picker:"lukas"}),
+    O("GK-55118","gk","PICKING","13:50",[["HSH-006",1,1],["PCR-005",2,1],["BEV-009",2,0],["BAK-003",1,1]],{picker:"lukas"}),
+    O("GK-55117","gk","PICKING","13:47",[["DRY-001",1,1],["BAK-003",2,0],["PRD-008",1,0],["SWT-001",2,2],["BRK-001",1,0]],{picker:"nadia"}),
+    O("GK-55116","gk","PICKING","13:44",[["BRK-001",1,0],["BEV-009",2,2],["DRY-003",1,1],["SNK-001",2,0],["FRZ-004",1,0]],{picker:"mira"}),
     O("GK-55114","gk","READY","13:28",[["PRD-001",1],["DRY-003",2]],{bags:1,picker:"tobias"}),
     O("GK-55112","gk","ON_THE_WAY","13:10",[["SNK-001",3]],{bags:1}),
     O("GK-55110","gk","CANCELLED","12:50",[["BEV-003",1],["SNK-001",2]],{reason:"WRONG_ADDRESS"}),
@@ -919,6 +963,10 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     O("GK-55097","gk","DELIVERED","10:12",[["FRZ-004",2],["SWT-001",2]],{bags:1}),
     O("GK-55091","gk","DELIVERED","09:05",[["BEV-003",2],["DRY-002",2]],{bags:2})
   ];
+  // Two big orders (over 20 L) that the system splits automatically – each part waits as its own row
+  function insertAfter(no, parts) { var i = orders.map(function (o) { return o.no; }).indexOf(no); orders.splice.apply(orders, [i + 1, 0].concat(parts)); }
+  insertAfter("HT-10484", splitOrder("HT-10485", "htgo", "PENDING", "14:09", [["BEV-003",3],["HSH-006",1],["BEV-006",4],["DRY-001",4],["SNK-001",2]]));
+  insertAfter("GK-55123", splitOrder("GK-55124", "gk", "PENDING", "14:09", [["BEV-003",2],["HSH-006",1],["BEV-001",12],["DRY-002",4],["PRD-008",2]]));
   var returns = [
     // code = the return reason the customer picks in the channel app; reason = the customer's own note
     // items = only the products (and quantities) the customer sends back – often just a part of the order
@@ -1038,9 +1086,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     // line 1: which channel the new order came from; line 2: how many orders are waiting in total
     var n = pendingCount();
     chime();
-    showBanner("order", t("newOrderTitle").replace("{ch}", CH[o.ch].name), tn("pendingLine", n).replace("{no}", o.no).replace("{n}", n));
+    showBanner("order", t("newOrderTitle").replace("{ch}", CH[o.ch].name), tn("pendingLine", n).replace("{no}", orderNo(o)).replace("{n}", n));
   }
-  var newSeq = {htgo:10485, gk:55124}, newPick = 0;
+  var newSeq = {htgo:10486, gk:55125}, newPick = 0;
   var BASKETS = [[["BEV-006",2],["SNK-001",1]], [["DRY-001",2],["BAK-003",1]], [["BRK-001",1],["SWT-001",2]], [["BEV-001",6],["PRD-001",1]]];
   function arriveOrder() {
     var ch = newPick % 2 ? "gk" : "htgo";
@@ -1147,7 +1195,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   var TODAY_TARGET = {htgo:{count:100, amount:2746.80, cancelled:4}, gk:{count:85, amount:2214.25, cancelled:3}};
   function listedToday(ch) {
     var list = byCh(ch), live = list.filter(function (o) { return o.status !== "CANCELLED"; });
-    return {count:list.length, amount:live.reduce(function (s, o) { return s + shownTotal(o); }, 0), cancelled:list.length - live.length};
+    // a split order is still one customer order: count each order number once
+    var uniq = function (arr) { var seen = {}; arr.forEach(function (o) { seen[orderNo(o)] = 1; }); return Object.keys(seen).length; };
+    return {count:uniq(list), amount:live.reduce(function (s, o) { return s + shownTotal(o); }, 0), cancelled:uniq(list) - uniq(live)};
   }
   var TODAY_BASE = {};
   ["htgo","gk"].forEach(function (ch) {
@@ -1166,11 +1216,11 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function pageHome() {
     var html = '<h1 class="page">' + t("home") + '</h1><div class="ch-cards">';
     ["htgo","gk"].forEach(function (ch) {
-      // the card opens the orders; the rating line inside it opens the reviews
-      html += '<div class="ch-card ' + ch + '" role="link" tabindex="0" data-go="#orders-' + ch + '"><div class="ch-title">' + ICON[ch] + '<span class="ch-name">' + CH[ch].name +
-        '<button class="rating-link" data-go="#reviews-' + ch + '" aria-label="' + t("reviews") + ' ' + CH[ch].name + '"><b><i class="st">★</i> ' + fmt1(RATING[ch].avg) + '</b><span>(' + RATING[ch].count.toLocaleString(t("locale")) + ')</span></button></span></div>' +
+      // the card opens the orders; the rating row (under "pending returns", same size, centred) opens the reviews
+      html += '<div class="ch-card ' + ch + '" role="link" tabindex="0" data-go="#orders-' + ch + '"><div class="ch-title">' + ICON[ch] + CH[ch].name + '</div>' +
         '<div class="kvs"><div class="kv kv-active"><span class="lbl">' + SVG.bag + t("activeOrders") + ':</span><b>' + active(ch) + '</b></div>' +
-        '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div></div></div>';
+        '<div class="kv kv-returns' + (pendingReturns(ch) ? '' : ' zero') + '"><span class="lbl">' + SVG.ret + t("pendingReturns") + ':</span><b>' + pendingReturns(ch) + '</b></div>' +
+        '<button class="kv kv-rating" data-go="#reviews-' + ch + '" aria-label="' + t("reviews") + ' ' + CH[ch].name + '"><i class="st">★</i><b>' + fmt1(RATING[ch].avg) + '</b><span>(' + RATING[ch].count + ' ' + t("reviewsShort") + ')</span></button></div></div>';
     });
     html += '</div><section class="daily"><h2>' + t("daily") + ' <span class="date-chip">📅 ' + t("chipDay") + ' · ' + fmtDate(new Date(), {weekday:"long", day:"numeric", month:"long"}) + '</span></h2><div class="daily-grid">';
     ["htgo","gk"].forEach(function (ch) {
@@ -1216,7 +1266,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       // waiting orders: the level label sits on the same line as the time
       var lvNow = o.status === "PENDING" ? waitLevel(minutesWaiting(o)) : "";
       var timeCell = lvNow ? '<span class="timecell">' + o.time + '<span class="lvl ' + lvNow + '">' + t("lvl_" + lvNow) + '</span></span>' : '<span>' + o.time + '</span>';
-      html += '<div class="row" role="button" tabindex="0" data-order="' + o.no + '"><span class="no">' + o.no + '</span>' + timeCell +
+      html += '<div class="row" role="button" tabindex="0" data-order="' + o.no + '"><span class="no">' + orderNo(o) + splitTag(o) + '</span>' + timeCell +
         third + '<span class="hide-s">' + money(shownTotal(o)) + '</span>' + last + '</div>';
     });
     return html + '</div></div>';
@@ -1567,7 +1617,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   // Customers rate in the channel app after delivery, 1–5 stars in three criteria; the panel only shows them.
   // The star distribution is chosen so that it gives exactly the shown average (HTGO 4.9, GK 4.7).
   var RATING = {
-    htgo:{avg:4.9, count:2004, dist:[1858, 112, 20, 6, 8], crit:{service:4.9, taste:4.8, delivery:4.9}},
+    htgo:{avg:4.9, count:2304, dist:[2136, 128, 22, 8, 10], crit:{service:4.9, taste:4.8, delivery:4.9}},
     gk:{avg:4.7, count:2026, dist:[1610, 300, 70, 22, 24], crit:{service:4.7, taste:4.8, delivery:4.6}}
   };
   var REVIEWS = {
@@ -1597,11 +1647,11 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   }
   function pageReviews(ch) {
     var R = RATING[ch];
-    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("reviews") + '</h1></div><div class="rv-top">' +
+    var html = '<div class="theme-' + ch + '"><div class="ch-head center ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + '<span class="h-sub">' + t("reviews") + '</span></h1></div><div class="rv-top">' +
       '<div class="card rv-score"><b class="rv-big">' + fmt1(R.avg) + '</b><span class="note">' + t("outOf5") + '</span>' + starBoxes(R.avg, true) +
-      '<span class="note">' + t("reviewsCount").replace("{n}", R.count.toLocaleString(t("locale"))) + '</span></div>' +
+      '<span class="note">' + t("reviewsCount").replace("{n}", R.count) + '</span></div>' +
       '<div class="card"><h2>' + t("ratingDist") + '</h2>' + R.dist.map(function (n, i) {
-        var star = 5 - i; return '<div class="rv-dist"><span>' + star + ' ★</span><span class="rv-bar"><i style="width:' + (n / R.count * 100).toFixed(1) + '%"></i></span><span>' + n.toLocaleString(t("locale")) + '</span></div>';
+        var star = 5 - i; return '<div class="rv-dist"><span>' + star + ' ★</span><span class="rv-bar"><i style="width:' + (n / R.count * 100).toFixed(1) + '%"></i></span><span>' + n + '</span></div>';
       }).join("") + '</div>' +
       '<div class="card"><h2>' + t("criteria") + '</h2>' + ["service","taste","delivery"].map(function (k) {
         return '<div class="rv-crit"><span>' + t("crit_" + k) + '</span>' + starBoxes(R.crit[k]) + '<b>' + fmt1(R.crit[k]) + '</b></div>';
@@ -1722,7 +1772,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function renderModal() {
     var o = openOrder; if (!o) { modal.hidden = true; return; }
     var picking = o.status === "PICKING", ch = o.ch;
-    var html = '<div class="modal theme-' + ch + '" role="dialog" aria-modal="true" aria-label="' + o.no + '"><div class="modal-head ' + ch + '"><b>' + o.no + ' · ' + CH[ch].name + ' · ' + o.time + (pickerOf(o) ? '<br><span style="font-weight:500;font-size:13px">' + t("pickedBy") + ': ' + esc(pickerOf(o).name) + '</span>' : '') + '</b>' +
+    var html = '<div class="modal theme-' + ch + '" role="dialog" aria-modal="true" aria-label="' + orderNo(o) + '"><div class="modal-head ' + ch + '"><b>' + orderNo(o) + ' ' + splitTag(o) + ' · ' + CH[ch].name + ' · ' + o.time + (pickerOf(o) ? '<br><span style="font-weight:500;font-size:13px">' + t("pickedBy") + ': ' + esc(pickerOf(o).name) + '</span>' : '') + '</b>' +
       '<span class="pill s-' + o.status + '">' + t(o.status) + '</span></div><div class="modal-body"><div class="items">';
     o.items.forEach(function (it, i) {
       var p = P[it.sku], countOk = it.picked === it.qty, ws = weightState(it), weightOk = ws === "" || ws === "ok", done = countOk && weightOk;
@@ -1741,6 +1791,15 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       html += '<div class="it' + (done && picking ? " done" : "") + ((picking && !done && o.readyError) || (picking && ws === "bad") ? " missing" : "") + (isReturned ? " returned" : "") + '"><span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + ' · ' + money(it.price) + '</span>' + miss + '</span>' + weight + right + '</div>';
     });
     html += '</div>';
+    // courier capacity: how full this order (or this part) is
+    var vol = orderVolume(o);
+    html += '<div class="vol"><span>🧺 ' + t("volLine").replace("{v}", fmtL(vol)).replace("{max}", COURIER_CAP) + '</span>' +
+      '<span class="vol-bar"><i style="width:' + Math.min(100, Math.round(vol / COURIER_CAP * 100)) + '%"></i></span></div>';
+    if (o.split) {
+      var sibs = orders.filter(function (x) { return x.split && x.split.parent === o.split.parent && x !== o; });
+      html += '<div class="split-note">✂️ ' + t("splitNote").replace("{max}", COURIER_CAP).replace("{n}", o.split.of) + ' ' +
+        sibs.map(function (x) { return '<button class="orderlink" data-order="' + x.no + '">' + orderNo(x) + ' · ' + t("splitTag").replace("{p}", x.split.part) + ' ›</button>'; }).join(" ") + '</div>';
+    }
     if (picking) html += limitHtml(o);
     html += '<div class="sum"><span>' + t("orderedTotal") + '</span><span>' + money(orderedTotal(o)) + '</span></div>';
     if (["READY","ON_THE_WAY","DELIVERED"].indexOf(o.status) >= 0)
