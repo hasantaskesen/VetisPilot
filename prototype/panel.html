@@ -68,10 +68,10 @@ h1.page{font-size:24px;margin:0 0 16px;display:flex;align-items:center;gap:10px}
 .kv-active{background:#15803D} .kv-returns{background:#B91C1C} .ch-card .kv-returns.zero{background:#E5E7EB;color:#4B5563}
 .ch-card .kv-active b,.ch-card .kv-returns b{color:inherit;font-size:20px}
 /* rating row: same size as the two rows above, content centred, neutral colours (not the channel colour) */
-.ch-card .kv-rating{border:1px solid #CBD5E1;border-radius:10px;padding:7px 10px;background:#fff;color:#0F172A;font:inherit;font-size:13px;font-weight:600;
+.ch-card .kv-rating{border:0;border-radius:999px;padding:7px 10px;background:linear-gradient(120deg,#7B5CFF,#5B3DF5 55%,#3F22C9);color:#fff;box-shadow:0 4px 12px rgba(91,61,245,.35),inset 0 1px 0 rgba(255,255,255,.35);font:inherit;font-size:13px;font-weight:600;
   justify-content:center;align-items:center;gap:6px;cursor:pointer;width:100%}
-.ch-card .kv-rating:hover{background:#F1F5F9} .ch-card .kv-rating .st{font-style:normal;color:#F59E0B;font-size:18px;line-height:1}
-.ch-card .kv-rating b{color:#0F172A;font-size:20px} .ch-card .kv-rating span{color:#475569}
+.ch-card .kv-rating:hover{filter:brightness(1.08);transform:translateY(-1px)} .ch-card .kv-rating .st{font-style:normal;color:#FCD34D;font-size:18px;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.ch-card .kv-rating b{color:#fff;font-size:20px} .ch-card .kv-rating span{color:rgba(255,255,255,.85)}
 /* the rating box is about 80 % of the rows above: narrower, lower and smaller text, centred */
 .kvs > .ch-card .kv-rating, .ch-card .kvs > .kv-rating{justify-self:center;align-self:center;width:80%;height:80%;min-height:0;padding:4px 8px;font-size:11px;gap:5px}
 .ch-card .kvs > .kv-rating b{font-size:16px} .ch-card .kvs > .kv-rating .st{font-size:14px}
@@ -314,10 +314,10 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .mini{border:0;border-radius:9px;padding:6px 10px;font-weight:700;font-size:12px}
 .mini.ok{background:#DCFCE7;color:#14532D} .mini.no{background:#FEE2E2;color:#7F1D1D}
 /* bottom bar */
-.bottombar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;background:#fff;border-top:1px solid var(--line);padding-block:10px;font-size:13px;color:var(--muted)}
-.bottombar .brandmark{font-weight:800;color:var(--ink);display:flex;align-items:center;gap:6px;font-size:15px}
+.bottombar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;background:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));font-size:13px;color:#C7C2F0}
+.bottombar .brandmark{font-weight:800;color:#fff;display:flex;align-items:center;gap:6px;font-size:15px}
 .bottombar .brandmark i{width:9px;height:9px;border-radius:50%;background:var(--mint);display:inline-block}
-.bottombar .user{justify-self:end;font-weight:700;color:#111827}
+.bottombar .user{justify-self:end;font-weight:700;color:#fff}
 /* ---------- login page (shown first) ---------- */
 .login{position:fixed;inset:0;z-index:80;background:radial-gradient(120% 80% at 50% 0%,#1E1950 0%,var(--ink) 60%);overflow:auto;
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -505,7 +505,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
         </div>
       </div>
     </form>
-    <p class="login-foot">v1.0.0 · VetisPilot</p>
+    <p class="login-foot">v1.0.1 · VetisPilot</p>
   </div>
 </div>
 
@@ -604,7 +604,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
 
 <!-- ============ Bottom bar ============ -->
 <footer class="bottombar gutter">
-  <span>v1.0.0</span>
+  <span>v1.0.1</span>
   <span class="brandmark"><i></i>VetisPilot</span>
   <span class="user" id="footerUser">Nadia Brenner</span>
 </footer>
@@ -620,7 +620,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   // ======================= Texts in three languages =======================
   var T = {
     tr: {locale:"tr-TR", branch:"Lindenkorb Süpermarket", role:"Şube çalışanı", roleStaffM:"Şube çalışanı", logout:"Çıkış yap", login:"Giriş yap",
-      loginTitle:"Giriş", marketSub:"Süpermarket · Berlin-Spandau", updateApp:"Uygulamayı güncelle", updating:"Kontrol ediliyor…", upToDate:"Uygulamanız güncel (v1.0.0)", email:"E-posta", password:"Şifre", rememberMe:"Beni hatırla", availableOn:"UYGULAMA ŞU CİHAZLARDA", storeSoon:"Prototip: mağaza bağlantısı henüz yok.", demoAccounts:"DEMO HESABI SEÇ", roleManager:"Şube müdürü", loginEmpty:"E-posta ve şifreyi gir.", loginWrong:"E-posta veya şifre hatalı.", welcome:"Hoş geldin, {name}!", home:"Ana Sayfa", orders:"Siparişler",
+      loginTitle:"Giriş", marketSub:"Süpermarket · Berlin-Spandau", updateApp:"Uygulamayı güncelle", updating:"Kontrol ediliyor…", upToDate:"Uygulamanız güncel (v1.0.1)", email:"E-posta", password:"Şifre", rememberMe:"Beni hatırla", availableOn:"UYGULAMA ŞU CİHAZLARDA", storeSoon:"Prototip: mağaza bağlantısı henüz yok.", demoAccounts:"DEMO HESABI SEÇ", roleManager:"Şube müdürü", loginEmpty:"E-posta ve şifreyi gir.", loginWrong:"E-posta veya şifre hatalı.", welcome:"Hoş geldin, {name}!", home:"Ana Sayfa", orders:"Siparişler",
       management:"YÖNETİM", productList:"Ürün Listesi", returns:"İadeler", reports:"Raporlar",
       salesReportHtgo:"HTGO Market Satış Raporu", salesReportGk:"GK Market Satış Raporu",
       activeOrders:"Aktif Siparişler", pendingReturns:"Bekleyen İadeler", daily:"GÜNLÜK",
@@ -689,7 +689,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
       recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
-      loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.0)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
+      loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.1)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
       management:"VERWALTUNG", productList:"Produktliste", returns:"Retouren", reports:"Berichte",
       salesReportHtgo:"HTGO Market Umsatzbericht", salesReportGk:"GK Market Umsatzbericht",
       activeOrders:"Aktive Bestellungen", pendingReturns:"Offene Retouren", daily:"HEUTE",
@@ -759,7 +759,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
       recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
-      loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.0)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
+      loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.1)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
       management:"MANAGEMENT", productList:"Product list", returns:"Returns", reports:"Reports",
       salesReportHtgo:"HTGO Market sales report", salesReportGk:"GK Market sales report",
       activeOrders:"Active orders", pendingReturns:"Pending returns", daily:"TODAY",
@@ -1228,24 +1228,51 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function countStatus(ch, s) { return byCh(ch).filter(function (o) { return o.status === s; }).length; }
   function active(ch) { return byCh(ch).filter(function (o) { return ["PENDING","PICKING","READY"].indexOf(o.status) >= 0; }).length; }
   function pendingReturns(ch) { return returns.filter(function (r) { return r.ch === ch && r.status === "REQUESTED"; }).length; }
-  // Today's totals = orders already delivered earlier today (summary) + the orders listed in the panel (live).
-  // Targets at start: HTGO 100 orders, GK 85 orders; average basket of a grocery delivery about 26–28 €.
+  // Today's orders: the hand-made sample orders above + the orders that were already delivered earlier today.
+  // The earlier ones are generated here as REAL rows, so the "All" tab, the home page and the report all count
+  // the same orders. Targets at start: HTGO 100 orders, GK 85; average basket of a grocery delivery about 27 €.
   var TODAY_TARGET = {htgo:{count:100, amount:2746.80, cancelled:4}, gk:{count:85, amount:2214.25, cancelled:3}};
+  (function addEarlierOrders() {
+    var STAFF = ["nadia", "lukas", "mira", "tobias"], SKUS = Object.keys(P), seed = 1;
+    function rnd() { return seeded(seed++); }
+    ["htgo","gk"].forEach(function (ch) {
+      var mine = byCh(ch), g = TODAY_TARGET[ch], seen = {};
+      mine.forEach(function (o) { seen[orderNo(o)] = 1; });
+      var have = Object.keys(seen).length, need = g.count - have;
+      var haveCx = mine.filter(function (o) { return o.status === "CANCELLED"; }).length, needCx = Math.max(0, g.cancelled - haveCx);
+      var haveAmt = mine.filter(function (o) { return o.status !== "CANCELLED"; }).reduce(function (s, o) { return s + shownTotal(o); }, 0);
+      var perOrder = (g.amount - haveAmt) / Math.max(1, need - needCx);
+      // free order numbers (numbers of other stores' orders leave gaps, like on a real platform)
+      var used = {}; mine.forEach(function (o) { used[orderNo(o)] = 1; });
+      var prefix = ch === "htgo" ? "HT-" : "GK-", next = ch === "htgo" ? 10330 : 54990, made = [];
+      for (var i = 0; i < need; i++) {
+        var minute = 8 * 60 + Math.floor((i + rnd()) / need * (5 * 60 + 20));      // 08:00 – 13:20, spread over the morning
+        var target = perOrder * (.6 + .8 * rnd()), lines = [], sum = 0, guard = 0;
+        while (sum < target - 1 && guard++ < 40) {
+          var sku = SKUS[Math.floor(rnd() * SKUS.length)];
+          if (P[sku].kg || lines.some(function (l) { return l[0] === sku; })) continue;
+          var q = 1 + Math.floor(rnd() * 3); lines.push([sku, q]); sum += P[sku].price * q;
+        }
+        while (used[prefix + next]) next++;
+        var no = prefix + next++; used[no] = 1;
+        var cx = i < needCx;
+        made.push(O(no, ch, cx ? "CANCELLED" : "DELIVERED", fmtTime(minute), lines.length ? lines : [["BEV-006", 2]],
+          cx ? {reason:i % 2 ? "ITEM_MISSING" : "BRANCH_OVERLOADED", calls:i % 2 ? 2 : 0} : {bags:sum > 30 ? 2 : 1, picker:STAFF[Math.floor(rnd() * 4)]}));
+      }
+      made.sort(function (a, b) { return toMin(b.time) - toMin(a.time); });     // newest first, like the other delivered orders
+      Array.prototype.push.apply(orders, made);
+    });
+  })();
   function listedToday(ch) {
     var list = byCh(ch), live = list.filter(function (o) { return o.status !== "CANCELLED"; });
     // a split order is still one customer order: count each order number once
     var uniq = function (arr) { var seen = {}; arr.forEach(function (o) { seen[orderNo(o)] = 1; }); return Object.keys(seen).length; };
     return {count:uniq(list), amount:live.reduce(function (s, o) { return s + shownTotal(o); }, 0), cancelled:uniq(list) - uniq(live)};
   }
-  var TODAY_BASE = {};
-  ["htgo","gk"].forEach(function (ch) {
-    var l = listedToday(ch), g = TODAY_TARGET[ch];
-    TODAY_BASE[ch] = {count:g.count - l.count, amount:Math.round((g.amount - l.amount) * 100) / 100, cancelled:Math.max(0, g.cancelled - l.cancelled)};
-  });
+  // every number of "today" is counted from the order rows themselves (no hidden extra totals)
   function daily(ch) {
-    var l = listedToday(ch), b = TODAY_BASE[ch];
-    return {count:b.count + l.count, amount:b.amount + l.amount, cancelled:b.cancelled + l.cancelled,
-            returns:returns.filter(function (r) { return r.ch === ch; }).length};
+    var l = listedToday(ch);
+    return {count:l.count, amount:l.amount, cancelled:l.cancelled, returns:returns.filter(function (r) { return r.ch === ch; }).length};
   }
 
   // ======================= Pages =======================
@@ -1286,7 +1313,8 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     var tabs = ["PENDING","PICKING","READY","ALL","CANCELLED"];
     var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("orders") + '</h1></div><div class="tabs" role="tablist">';
     tabs.forEach(function (s) {
-      var n = s === "ALL" ? byCh(ch).length : countStatus(ch, s);
+      // "All" = today's orders, the same number as on the home page and in the daily report (a split order counts once)
+      var n = s === "ALL" ? daily(ch).count : countStatus(ch, s);
       html += '<button class="tab" role="tab" aria-selected="' + (currentTab[ch] === s) + '" data-tab="' + s + '" data-ch="' + ch + '">' + t(s) + ' <span class="n">' + n + '</span></button>';
     });
     // In "Picking" and "Ready" the third column shows who is picking / picked the order
@@ -1650,7 +1678,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
           (courierSynced === true || dbLive ? '<div class="okbox">' + t("courierSynced") + '</div>' : courierSynced === false || !db ? '<p class="note">' + t("courierNotSynced") + '</p>' : '');
       } else html += '<button class="btn big" data-courier-ok>' + t("courierConfirm") + '</button>';
     }
-    el.innerHTML = html + '<p class="note" style="margin:0">' + t("courierNote") + '</p></div><p class="login-foot">v1.0.0 · VetisPilot</p></div>';
+    el.innerHTML = html + '<p class="note" style="margin:0">' + t("courierNote") + '</p></div><p class="login-foot">v1.0.1 · VetisPilot</p></div>';
     applyStaticTexts();
   }
 
@@ -1739,14 +1767,19 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   function reportBuckets(ch, period) {
     var today = new Date(), out = [];
     if (period === "day") {
-      var d = dayStats(ch, today), lastHour = Math.min(21, Math.floor(NOW / 60)), hours = [], wsum = 0, given = 0;
-      for (var h = 8; h <= 21; h++) { hours.push(h); if (h <= lastHour) wsum += HOUR_W[h]; }
-      hours.forEach(function (h, i) {
-        var share = h <= lastHour ? HOUR_W[h] / wsum : 0, n = h === lastHour ? d.orders - given : Math.round(d.orders * share);
-        if (h > lastHour) n = 0; given += n;
-        out.push({label:String(h).padStart(2, "0") + ":00", short:String(h).padStart(2, "0"), orders:n, revenue:d.orders ? d.revenue * n / d.orders : 0,
-                  cancelled:0, returns:0, future:h > lastHour});
+      // today: counted hour by hour from the real order rows (a split order counts once, at its order time)
+      var d = dayStats(ch, today), lastHour = Math.min(21, Math.floor(NOW / 60)), seenNo = {}, perH = {};
+      byCh(ch).forEach(function (o) {
+        var hh = Math.min(21, Math.max(8, Math.floor(toMin(o.time) / 60)));
+        perH[hh] = perH[hh] || {orders:0, revenue:0, cancelled:0};
+        if (!seenNo[orderNo(o)]) { seenNo[orderNo(o)] = 1; perH[hh].orders++; if (o.status === "CANCELLED") perH[hh].cancelled++; }
+        if (o.status !== "CANCELLED") perH[hh].revenue += shownTotal(o);
       });
+      for (var h = 8; h <= 21; h++) {
+        var ph = perH[h] || {orders:0, revenue:0, cancelled:0};
+        out.push({label:String(h).padStart(2, "0") + ":00", short:String(h).padStart(2, "0"), orders:ph.orders, revenue:ph.revenue,
+                  cancelled:ph.cancelled, returns:0, future:h > lastHour});
+      }
       out.total = d;
     } else if (period === "week") {
       for (var b = 6; b >= 0; b--) { var x = new Date(); x.setDate(x.getDate() - b); var s = dayStats(ch, x);
