@@ -1443,7 +1443,9 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
     var c = courierMode, r = find(c.id), h = handover[c.id], el = document.getElementById("courier");
     var html = '<div class="login-wrap"><div class="login-top"><div class="langs" role="group" aria-label="Language"></div></div>' +
       document.querySelector("#login .market-box").outerHTML + '<div class="courier-card"><h2>' + t("courierTitle") + '</h2>';
-    var invalid = !r || r.status !== "APPROVED" || (h && h.token && h.token !== c.token);
+    // The phone opens a fresh copy of the demo, so a return approved a minute ago still looks "requested" there.
+    // Only unknown or rejected returns (or a code that does not match) are invalid.
+    var invalid = !r || r.status === "REJECTED" || (h && h.token && h.token !== c.token);
     if (invalid) html += '<p class="errbox">' + t("courierInvalid") + '</p>';
     else {
       html += '<div class="note">' + t("courierOrder").replace("{no}", r.order).replace("{ch}", CH[r.ch].name) + ' · ' + r.id + '</div><div class="ho-items">' +
