@@ -288,6 +288,16 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:18px}
 .kpi{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-top:4px solid var(--c)}
 .kpi span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em} .kpi b{display:block;font-size:22px;margin-top:4px;color:var(--c)}
+.kpi-btn{border:0;border-top:4px solid var(--c);text-align:left;font:inherit;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.kpi-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.1)} .kpi-btn:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+.kpi-btn[aria-pressed="true"]{background:#F5F3FF;box-shadow:inset 0 0 0 2px var(--c)}
+.kpi-btn em{display:block;margin-top:6px;font-style:normal;font-size:12px;font-weight:700;color:var(--c)}
+.cx-ret-note{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:grid;gap:4px;font-size:13px;color:#374151}
+.cx-ret-note p{margin:0}
+.kpi-list{margin-bottom:16px} .kpi-list-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px} .kpi-list-head h2{margin:0}
+.rtable.lst td,.rtable.lst th{text-align:left;white-space:normal} .rtable.lst td:last-child,.rtable.lst th:last-child{text-align:right;white-space:nowrap}
+@media (max-width:640px){.rtable.lst{font-size:12.5px} .rtable.lst td,.rtable.lst th{padding:7px 6px} .rtable.lst td:first-child b{white-space:nowrap} .rtable.lst .pill{padding:2px 6px;font-size:11px}}
+.rtable tr.click{cursor:pointer} .rtable tr.click:hover td{background:#F5F3FF} .rtable tr.sumrow td{font-weight:800;background:#F9FAFB}
 .chart{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
 .chart h2{margin:0 0 12px;font-size:16px}
 .bars{display:flex;align-items:flex-end;gap:10px;height:180px}
@@ -686,7 +696,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
       reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
       refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı",
-      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
+      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
       recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.1)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
@@ -756,7 +766,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
       reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
       refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet",
-      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
+      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
       recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.1)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
@@ -826,7 +836,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
       reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
       refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded",
-      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
+      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
       recentReviews:"Latest reviews", todayWord:"today", yesterday:"yesterday", daysAgo:"{n} days ago", reviewsNote:"Customers give 1–5 stars in the channel app after delivery (service, taste, delivery). The panel only shows the reviews."}
   };
   var lang = "tr";
@@ -1299,7 +1309,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
         '<div class="drow"><span>' + t("cancellations") + '</span><b>' + d.cancelled + '</b></div>' +
         '<div class="drow"><span>' + t("returnsKpi") + '</span><b>' + d.returns + '</b></div></button>';
     });
-    return html + '</div></section><p class="note" style="margin-top:18px">' + t("prototype") + '</p>';
+    // cancellations and returns are two different things – explain it right under the numbers
+    return html + '</div><div class="cx-ret-note"><p><b>' + t("cancellations") + ':</b> ' + t("explainCancel") + '</p><p><b>' + t("returnsKpi") + ':</b> ' + t("explainReturn") + '</p></div>' +
+      '</section><p class="note" style="margin-top:18px">' + t("prototype") + '</p>';
   }
 
   var currentTab = {htgo:"PENDING", gk:"PENDING"};
@@ -1740,6 +1752,51 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   // Today comes from the live panel (same numbers as the home page). Earlier days are sample data,
   // calculated the same way every time (seeded), at a normal level for one supermarket branch.
   var reportPeriod = {htgo:"day", gk:"day"};
+  var reportList = {htgo:null, gk:null};     // which list is open under the daily boxes
+  // today's orders, one row per order number (the parts of a split order are added together)
+  function todayOrders(ch) {
+    var map = {}, rows = [];
+    byCh(ch).forEach(function (o) {
+      var no = orderNo(o), r = map[no];
+      if (!r) { r = map[no] = {no:no, first:o, time:o.time, status:o.status, amount:0, parts:0, reason:o.reason}; rows.push(r); }
+      r.parts++; if (o.status !== "CANCELLED") r.amount += shownTotal(o);
+    });
+    return rows.sort(function (a, b) { return toMin(b.time) - toMin(a.time); });
+  }
+  function reportListHtml(ch, kind) {
+    var rows = todayOrders(ch), html = '', sum = 0, title, head, body = '';
+    if (kind === "orders" || kind === "revenue") {
+      if (kind === "revenue") rows = rows.filter(function (r) { return r.status !== "CANCELLED"; });
+      title = t(kind === "orders" ? "detailOrders" : "detailRevenue");
+      head = '<th>' + t("colOrder") + '</th><th>' + t("colTime") + '</th><th>' + t("colStatus") + '</th><th>' + t("colAmount") + '</th>';
+      rows.forEach(function (r) {
+        sum += r.amount;
+        body += '<tr class="click" data-order="' + r.first.no + '"><td><b>' + r.no + '</b>' + (r.parts > 1 ? ' <span class="note">(' + r.parts + ' ' + t("partsShort") + ')</span>' : '') + '</td><td>' + r.time + '</td>' +
+          '<td><span class="pill s-' + r.status + '">' + t(r.status) + '</span></td><td>' + (r.status === "CANCELLED" ? '–' : money(r.amount)) + '</td></tr>';
+      });
+      body += '<tr class="sumrow"><td>' + t("total") + '</td><td colspan="2">' + rows.length + ' ' + t("ordersWord") + '</td><td>' + money(sum) + '</td></tr>';
+    } else if (kind === "cancelled") {
+      rows = rows.filter(function (r) { return r.status === "CANCELLED"; });
+      title = t("detailCancelled");
+      head = '<th>' + t("colOrder") + '</th><th>' + t("colTime") + '</th><th>' + t("colCancelReason") + '</th><th></th>';
+      rows.forEach(function (r) {
+        body += '<tr class="click" data-order="' + r.first.no + '"><td><b>' + r.no + '</b></td><td>' + r.time + '</td><td><span class="reason cx">' + t("CR_" + r.reason) + '</span></td><td>' + scoreNote(r.reason) + '</td></tr>';
+      });
+    } else {
+      var list = returns.filter(function (x) { return x.ch === ch; });
+      title = t("detailReturns");
+      head = '<th>' + t("colReturnOrder") + '</th><th>' + t("colProduct") + '</th><th>' + t("colReason") + '</th><th>' + t("colAmount") + '</th>';
+      list.forEach(function (x) {
+        sum += returnAmount(x);
+        body += '<tr class="click" data-open-order="' + x.order + '" data-ret="' + x.id + '"><td><b>' + x.order + '</b><span class="note" style="display:block">' + x.id + '</span></td>' +
+          '<td>' + x.items.map(function (it) { return it[1] + '× ' + esc(P[it[0]][lang]); }).join('<br>') + '</td><td><span class="reason">' + t("RR_" + x.code) + '</span><span class="pill s-' + x.status + '" style="margin-left:6px">' + t(x.status) + '</span></td><td>' + money(returnAmount(x)) + '</td></tr>';
+      });
+      body += '<tr class="sumrow"><td>' + t("total") + '</td><td colspan="2">' + list.length + '</td><td>' + money(sum) + '</td></tr>';
+    }
+    if (!body) body = '<tr><td colspan="4" class="note">—</td></tr>';
+    return '<div class="chart kpi-list"><div class="kpi-list-head"><h2>' + title + '</h2><button class="btn ghost" data-kpi="' + kind + '" data-ch="' + ch + '">✕ ' + t("close") + '</button></div>' +
+      '<p class="note" style="margin:0 0 8px">' + t("kpiListHint") + '</p><div class="rtable-wrap"><table class="rtable lst"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div></div>';
+  }
   var REPORT = {htgo:{perDay:96, basket:27.4}, gk:{perDay:82, basket:26.1}};
   var WD_MULT = [0, .92, .95, 1, 1.02, 1.14, 1.22];                     // Sunday = closed (shops in Germany)
   var SEASON = [.95, .93, .97, .98, 1, .94, .9, .9, .98, 1.02, 1.05, 1.15];
@@ -1813,8 +1870,9 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       '<div class="tabs period-tabs" role="tablist">' + ["day","week","month","year"].map(function (p) {
         return '<button class="tab" role="tab" aria-selected="' + (period === p) + '" data-period="' + p + '" data-ch="' + ch + '">' + t("period_" + p) + '</button>'; }).join("") + '</div>' +
       '<div class="period-chip">📅 ' + esc(periodChip(period)) + '</div><div class="kpis">' +
-      kpi(t("orderCount"), tot.orders.toLocaleString(t("locale"))) + kpi(t("revenue"), money(tot.revenue)) + kpi(t("avgBasket"), money(live ? tot.revenue / live : 0)) +
-      kpi(t("cancellations"), tot.cancelled.toLocaleString(t("locale"))) + kpi(t("returnsKpi"), tot.returns.toLocaleString(t("locale"))) + '</div>';
+      kpi(t("orderCount"), tot.orders.toLocaleString(t("locale")), "orders") + kpi(t("revenue"), money(tot.revenue), "revenue") + kpi(t("avgBasket"), money(live ? tot.revenue / live : 0)) +
+      kpi(t("cancellations"), tot.cancelled.toLocaleString(t("locale")), "cancelled") + kpi(t("returnsKpi"), tot.returns.toLocaleString(t("locale")), "returns") + '</div>';
+    if (period === "day" && reportList[ch]) html += reportListHtml(ch, reportList[ch]);
     var max = Math.max.apply(null, bk.map(function (b) { return b.orders; })) || 1, many = bk.length > 14;
     // the chart title also shows the total, so a single bar (e.g. 22 orders between 12:00 and 13:00) is not mistaken for the day
     html += '<div class="chart"><h2>' + t("chart_" + period) + ' · ' + t("total") + ': ' + tot.orders.toLocaleString(t("locale")) + '</h2><div class="bars' + (many ? ' many' : '') + '">';
@@ -1839,7 +1897,12 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
       html += '<div class="drow" style="color:#111827"><span>' + esc(P[x[0]].brand + " " + P[x[0]][lang]) + '</span><b>' + Math.round(tot.orders * x[1] * 1.3).toLocaleString(t("locale")) + '×</b></div>';
     });
     return html + '</div><p class="note" style="margin-top:12px">' + t("reportNote") + '</p></div>';
-    function kpi(label, val) { return '<div class="kpi"><span>' + label + '</span><b>' + val + '</b></div>'; }
+    // in the Daily tab, the boxes with a list behind them are buttons (orders, revenue, cancellations, returns)
+    function kpi(label, val, list) {
+      if (period !== "day" || !list) return '<div class="kpi"><span>' + label + '</span><b>' + val + '</b></div>';
+      return '<button class="kpi kpi-btn" data-kpi="' + list + '" data-ch="' + ch + '" aria-pressed="' + (reportList[ch] === list) + '"><span>' + label + '</span><b>' + val + '</b>' +
+        '<em>' + t(reportList[ch] === list ? "kpiHideList" : "kpiShowList") + ' ' + (reportList[ch] === list ? '▴' : '▾') + '</em></button>';
+    }
   }
 
   // ======================= Order detail (picking) =======================
@@ -2026,7 +2089,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
   document.addEventListener("click", function (e) {
     if (!e.target.closest(".email-wrap")) showDemoList(false);
     unlockAudio();
-    var el = e.target.closest("button, [data-go], [data-order]");
+    var el = e.target.closest("button, [data-go], [data-order], [data-open-order]");
     if (!el) { if (!e.target.closest(".profile")) setDropdown(false); return; }
     if (el.dataset.account) { pickAccount(el.dataset.account); return; }
     if (el.dataset.action === "store") { toast(t("storeSoon")); return; }
@@ -2078,6 +2141,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
     }
     if (d.saleFilter) { saleFilter = d.saleFilter; render(); return; }
     if (d.period) { reportPeriod[d.ch] = d.period; render(); return; }
+    if (d.kpi) { reportList[d.ch] = reportList[d.ch] === d.kpi ? null : d.kpi; render(); var lst = document.querySelector(".kpi-list"); if (lst) lst.scrollIntoView({behavior:"smooth", block:"nearest"}); return; }
     if (d.reasonFilter != null) { var rch = location.hash.indexOf("gk") >= 0 ? "gk" : "htgo"; returnFilter[rch] = returnFilter[rch] === d.reasonFilter ? "" : d.reasonFilter; render(); return; }
     if (d.openOrder) { openOrder = orders.filter(function (o) { return o.no === d.openOrder; })[0]; if (openOrder) { openOrder.hlRet = find(d.ret) || null; renderModal(); } return; }
     if (d.wa) { STAFF_WA[d.wa] = !STAFF_WA[d.wa]; render(); return; }
