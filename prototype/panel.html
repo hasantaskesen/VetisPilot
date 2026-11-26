@@ -323,6 +323,12 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .ret-item > span{min-width:0;flex:1} .ret-item b{display:block;font-size:13px;line-height:1.25} .ret-item span span{font-size:11px;color:var(--muted)}
 .ret-item em{font-style:normal;font-weight:800;font-size:13px;background:#FFF1E6;color:#9A3412;border-radius:7px;padding:2px 7px}
 .stcol{display:flex;flex-direction:column;align-items:flex-start}
+.ho-REJECTED{background:#FEE2E2;color:#7F1D1D} .trip.back.rej{color:#B91C1C} body.dark .trip.back.rej{color:#FCA5A5}
+.ho-reject-btn{color:#B91C1C;border-color:#FCA5A5} body.dark .ho-reject-btn{color:#FCA5A5;border-color:#7F1D1D}
+.ho-reject{display:flex;flex-direction:column;gap:8px;background:#FEF2F2;border:1px solid #FCA5A5;border-radius:12px;padding:10px 12px}
+.ho-reject label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:#7F1D1D}
+.ho-reject select,.ho-reject input{padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:500}
+body.dark .ho-reject{background:#2A1414;border-color:#7F1D1D} body.dark .ho-reject label{color:#FCA5A5}
 .ho-ASSIGNING{background:#F3F4F6;color:#374151} .ho-ON_WAY{background:#EDE9FE;color:#4C1D95} .ho-AT_STORE{background:#DCFCE7;color:#14532D} .ho-WAITING{background:#E0F2FE;color:#075985}
 .ho-state{border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700} .ho-state.wait{background:#F3F4F6;color:#374151} .ho-state.way{background:#F5F3FF;color:#5B21B6} .ho-state.here{background:#ECFDF5;color:#065F46}
 .ho-item.locked{opacity:.6;cursor:not-allowed}
@@ -758,7 +764,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       handover:"İade Teslim Alma", handoverInfo:"Kurye iade edilen ürünleri mağazaya getirir. Ürünleri tek tek kontrol et ve işaretle, sonra QR kodu oluştur. Kurye QR kodu kurye uygulamasında okutunca iade kabul edilir.",
       ho_ASSIGNING:"Kurye ataması bekleniyor", ho_ON_WAY:"Kurye yolda", ho_AT_STORE:"Kurye mağazada", hoStateAssigning:"Kurye ataması bekleniyor – henüz bir kurye bu iadeyi almadı.", hoStateOnWay:"Kurye {c} iadeyi mağazaya getiriyor · ≈{m} dk", hoStateAtStore:"Kurye {c} iadeyle mağazada – ürünleri kontrol et ve QR oluştur.", hoQrOnlyAtStore:"QR kod sadece kurye mağazadayken oluşturulabilir.", hoDemoAssign:"Demo: kurye ata", hoDemoArrive:"Demo: kurye mağazaya geldi", tripReturnAssigning:"İade {id}: kurye ataması bekleniyor", tripReturnArrived:"İade {id}: kurye {c} iadeyle mağazada", ho_WAITING:"Kurye getiriyor", ho_QR:"QR okutulmayı bekliyor", ho_RECEIVED:"İade kabul edildi", courierLbl:"Kurye", checkItems:"Gelen ürünleri kontrol et:", itemsChecked:"{a}/{b} ürün kontrol edildi",
       makeQr:"Ürünleri teslim aldım – QR oluştur", qrCode:"Onay kodu", qrHint:"Kurye bu QR kodu kurye uygulamasında okutsun. Kurye uygulaması hazır olana kadar herhangi bir telefonun kamerasıyla da okutulabilir.",
-      demoScan:"Demo: bu cihazda okut", receivedAt:"teslim alındı: {time}", noHandover:"Teslim alınacak iade yok.", doneList:"Teslim alınanlar", amountRefund:"İade tutarı",
+      demoScan:"Demo: bu cihazda okut", receivedAt:"teslim alındı: {time}", noHandover:"Teslim alınacak iade yok.", doneList:"Tamamlananlar", ho_REJECTED:"Teslimde reddedildi", hoRejBtn:"İadeyi reddet (QR oluşturmadan)", hoRejReason:"Ret nedeni (zorunlu)", hoRejChoose:"Neden seç", hoRej_DAMAGED_IN_TRANSIT:"Ürünler taşıma sırasında hasar görmüş / kırılmış", hoRej_DIFFERENT_ITEM:"Belirtilenden farklı ürün geldi", hoRej_MISSING_ITEM:"Ürünler eksik geldi", hoRej_OTHER:"Diğer", hoRejNote:"Not (isteğe bağlı)", hoRejNoteHint:"ör. kola şişesi kırık geldi", hoRejConfirm:"İadeyi reddet", hoRejNeedReason:"Reddetmek için bir neden seç.", hoRejToast:"{id}: iade teslimde reddedildi", hoRejAfter:"QR oluşturulmadı, para iadesi yapılmadı. {ch} bilgilendirildi; kurye ürünleri geri götürüyor.", tripReturnRejected:"İade {id}: teslimde reddedildi, kurye ürünleri geri götürüyor", amountRefund:"İade tutarı",
       liveSync:"Canlı bağlantı açık: QR telefonda okutulunca bu ekran kendiliğinden güncellenir.", localOnly:"Bu görünümde canlı bağlantı yok. QR okutulduktan sonra \"Demo: bu cihazda okut\" düğmesine bas.", resetDemo:"Demoyu sıfırla", hoToast:"{id}: kurye QR kodu okuttu, iade kabul edildi",
       courierTitle:"Kurye · İade teslimi", courierConfirm:"✓ Ürünleri teslim ettim – onayla", courierDone:"İade kabul edildi", courierDoneSub:"Mağaza ürünleri teslim aldı · {time}", courierInvalid:"QR kodu geçersiz ya da artık kullanılamıyor.",
       courierNote:"Prototip: gerçek uygulamada bu ekran kurye uygulamasının içinde açılır.", courierSynced:"Onay satıcı paneline iletildi.", courierNotSynced:"Demo: Bu telefonda claude.ai oturumu açık değilse onay satıcı ekranına otomatik gitmez; satıcı \"Demo: bu cihazda okut\" düğmesini kullanabilir.", courierOrder:"Sipariş {no} · {ch}",
@@ -828,7 +834,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       handover:"Retourenannahme", handoverInfo:"Der Kurier bringt die retournierten Produkte in die Filiale. Prüfe und hake jedes Produkt ab und erstelle dann den QR-Code. Sobald der Kurier den QR-Code in der Kurier-App scannt, ist die Retoure angenommen.",
       ho_ASSIGNING:"Wartet auf Kurier", ho_ON_WAY:"Kurier unterwegs", ho_AT_STORE:"Kurier in der Filiale", hoStateAssigning:"Wartet auf einen Kurier – noch hat kein Kurier diese Retoure übernommen.", hoStateOnWay:"Kurier {c} bringt die Retoure zur Filiale · ≈{m} Min.", hoStateAtStore:"Kurier {c} ist mit der Retoure in der Filiale – Produkte prüfen und QR-Code erstellen.", hoQrOnlyAtStore:"Der QR-Code kann nur erstellt werden, wenn der Kurier in der Filiale ist.", hoDemoAssign:"Demo: Kurier zuteilen", hoDemoArrive:"Demo: Kurier ist angekommen", tripReturnAssigning:"Retoure {id}: wartet auf einen Kurier", tripReturnArrived:"Retoure {id}: Kurier {c} ist mit der Retoure in der Filiale", ho_WAITING:"Kurier unterwegs", ho_QR:"Wartet auf QR-Scan", ho_RECEIVED:"Retoure angenommen", courierLbl:"Kurier", checkItems:"Gelieferte Produkte prüfen:", itemsChecked:"{a}/{b} Produkte geprüft",
       makeQr:"Produkte erhalten – QR-Code erstellen", qrCode:"Bestätigungscode", qrHint:"Der Kurier scannt diesen QR-Code in der Kurier-App. Bis die Kurier-App fertig ist, geht es auch mit der Kamera eines beliebigen Handys.",
-      demoScan:"Demo: auf diesem Gerät scannen", receivedAt:"angenommen: {time}", noHandover:"Keine Retouren anzunehmen.", doneList:"Angenommen", amountRefund:"Erstattungsbetrag",
+      demoScan:"Demo: auf diesem Gerät scannen", receivedAt:"angenommen: {time}", noHandover:"Keine Retouren anzunehmen.", doneList:"Abgeschlossen", ho_REJECTED:"Bei Übergabe abgelehnt", hoRejBtn:"Retoure ablehnen (ohne QR-Code)", hoRejReason:"Ablehnungsgrund (Pflicht)", hoRejChoose:"Grund wählen", hoRej_DAMAGED_IN_TRANSIT:"Produkte beim Transport beschädigt / zerbrochen", hoRej_DIFFERENT_ITEM:"Anderes Produkt als angegeben", hoRej_MISSING_ITEM:"Produkte fehlen", hoRej_OTHER:"Sonstiges", hoRejNote:"Notiz (optional)", hoRejNoteHint:"z. B. Colaflasche kam zerbrochen an", hoRejConfirm:"Retoure ablehnen", hoRejNeedReason:"Zum Ablehnen einen Grund wählen.", hoRejToast:"{id}: Retoure bei Übergabe abgelehnt", hoRejAfter:"Kein QR-Code erstellt, keine Erstattung. {ch} wurde informiert; der Kurier nimmt die Produkte wieder mit.", tripReturnRejected:"Retoure {id}: bei Übergabe abgelehnt, Kurier nimmt die Produkte wieder mit", amountRefund:"Erstattungsbetrag",
       liveSync:"Live-Verbindung aktiv: Wird der QR-Code am Handy gescannt, aktualisiert sich diese Seite von selbst.", localOnly:"In dieser Ansicht gibt es keine Live-Verbindung. Nach dem Scan auf \"Demo: auf diesem Gerät scannen\" tippen.", resetDemo:"Demo zurücksetzen", hoToast:"{id}: Kurier hat den QR-Code gescannt, Retoure angenommen",
       courierTitle:"Kurier · Retourenübergabe", courierConfirm:"✓ Produkte übergeben – bestätigen", courierDone:"Retoure angenommen", courierDoneSub:"Die Filiale hat die Produkte erhalten · {time}", courierInvalid:"QR-Code ungültig oder nicht mehr verwendbar.",
       courierNote:"Prototyp: In der echten App öffnet sich diese Seite in der Kurier-App.", courierSynced:"Bestätigung an das Verkäuferpanel gesendet.", courierNotSynced:"Demo: Ist auf diesem Handy keine claude.ai-Sitzung offen, erreicht die Bestätigung das Verkäuferpanel nicht automatisch; dort kann \"Demo: auf diesem Gerät scannen\" genutzt werden.", courierOrder:"Bestellung {no} · {ch}",
@@ -898,7 +904,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       handover:"Return handover", handoverInfo:"The courier brings the returned products to the store. Check and tick each product, then create the QR code. When the courier scans it in the courier app, the return is accepted.",
       ho_ASSIGNING:"Waiting for a courier", ho_ON_WAY:"Courier on the way", ho_AT_STORE:"Courier at the store", hoStateAssigning:"Waiting for a courier – no courier has taken this return yet.", hoStateOnWay:"Courier {c} is bringing the return to the store · ≈{m} min", hoStateAtStore:"Courier {c} is at the store with the return – check the products and create the QR code.", hoQrOnlyAtStore:"The QR code can only be created while the courier is at the store.", hoDemoAssign:"Demo: assign a courier", hoDemoArrive:"Demo: courier has arrived", tripReturnAssigning:"Return {id}: waiting for a courier", tripReturnArrived:"Return {id}: courier {c} is at the store with the return", ho_WAITING:"Courier on the way", ho_QR:"Waiting for QR scan", ho_RECEIVED:"Return accepted", courierLbl:"Courier", checkItems:"Check the delivered products:", itemsChecked:"{a}/{b} products checked",
       makeQr:"Products received – create QR code", qrCode:"Confirmation code", qrHint:"The courier scans this QR code in the courier app. Until the courier app is ready, any phone camera works too.",
-      demoScan:"Demo: scan on this device", receivedAt:"received: {time}", noHandover:"No returns to receive.", doneList:"Received", amountRefund:"Refund amount",
+      demoScan:"Demo: scan on this device", receivedAt:"received: {time}", noHandover:"No returns to receive.", doneList:"Completed", ho_REJECTED:"Refused at handover", hoRejBtn:"Refuse the return (no QR code)", hoRejReason:"Reason (required)", hoRejChoose:"Choose a reason", hoRej_DAMAGED_IN_TRANSIT:"Products damaged / broken in transport", hoRej_DIFFERENT_ITEM:"Different product than stated", hoRej_MISSING_ITEM:"Products missing", hoRej_OTHER:"Other", hoRejNote:"Note (optional)", hoRejNoteHint:"e.g. the cola bottle arrived broken", hoRejConfirm:"Refuse the return", hoRejNeedReason:"Choose a reason to refuse.", hoRejToast:"{id}: return refused at handover", hoRejAfter:"No QR code created, no refund. {ch} has been informed; the courier takes the products back.", tripReturnRejected:"Return {id}: refused at handover, the courier takes the products back", amountRefund:"Refund amount",
       liveSync:"Live connection on: when the QR code is scanned on a phone, this page updates by itself.", localOnly:"No live connection in this view. After the scan, tap \"Demo: scan on this device\".", resetDemo:"Reset demo", hoToast:"{id}: the courier scanned the QR code, return accepted",
       courierTitle:"Courier · Return handover", courierConfirm:"✓ Products handed over – confirm", courierDone:"Return accepted", courierDoneSub:"The store received the products · {time}", courierInvalid:"QR code invalid or no longer usable.",
       courierNote:"Prototype: in the real app this page opens inside the courier app.", courierSynced:"Confirmation sent to the seller panel.", courierNotSynced:"Demo: if this phone has no claude.ai session, the confirmation does not reach the seller panel automatically; the seller can use \"Demo: scan on this device\".", courierOrder:"Order {no} · {ch}",
@@ -1405,8 +1411,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     returns.forEach(function (r) {
       if (r.order !== orderNo(o) || r.status !== "APPROVED") return;
       var st = handoverStatus(r.id), c = esc(r.courier || COURIERS[r.ch]);
-      h += '<span class="trip back' + (st === "RECEIVED" ? ' done' : '') + '">↩ ' +
-        t(st === "ASSIGNING" ? "tripReturnAssigning" : st === "ON_WAY" ? "tripReturnToStore" : st === "AT_STORE" ? "tripReturnArrived" : st === "QR" ? "tripReturnAtStore" : "tripReturnDone").replace("{c}", c).replace("{id}", r.id) + '</span>';
+      h += '<span class="trip back' + (st === "RECEIVED" ? ' done' : st === "REJECTED" ? ' rej' : '') + '">↩ ' +
+        t(st === "ASSIGNING" ? "tripReturnAssigning" : st === "ON_WAY" ? "tripReturnToStore" : st === "AT_STORE" ? "tripReturnArrived" : st === "QR" ? "tripReturnAtStore" : st === "REJECTED" ? "tripReturnRejected" : "tripReturnDone").replace("{c}", c).replace("{id}", r.id) + '</span>';
     });
     return h;
   }
@@ -1667,6 +1673,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
   var COURIERS = {htgo:"Jonas W.", gk:"Selin A."};
   var handover = {};      // returnId -> {status, token, qrAt, receivedAt, local}
   var hoChecked = {};     // returnId -> {sku:true}
+  var hoRejecting = null; // returnId whose handover is being refused (reason form open)
   var db = null, dbLive = false;
   // before the QR step the state comes from the courier: r.courierState = ASSIGNING | ON_WAY | AT_STORE
   function handoverStatus(id) {
@@ -1713,8 +1720,9 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
 
   function pageHandover() {
     var list = returns.filter(function (r) { return r.status === "APPROVED"; });
-    var open = list.filter(function (r) { return handoverStatus(r.id) !== "RECEIVED"; });
-    var done = list.filter(function (r) { return handoverStatus(r.id) === "RECEIVED"; });
+    var isDone = function (r) { var s = handoverStatus(r.id); return s === "RECEIVED" || s === "REJECTED"; };
+    var open = list.filter(function (r) { return !isDone(r); });
+    var done = list.filter(isDone);
     var html = '<div class="page-head"><h1 class="page">' + t("handover") + '</h1>' + (db ? '<button class="btn ghost" data-ho-reset>↺ ' + t("resetDemo") + '</button>' : '') + '</div>' +
       '<p class="note" style="margin:-4px 0 6px">' + t("handoverInfo") + '</p>' +
       '<p class="note" style="margin:0 0 14px">' + (dbLive ? '🟢 ' + t("liveSync") : 'ℹ️ ' + t("localOnly")) + '</p><div class="ho-grid">';
@@ -1748,6 +1756,17 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     } else if (atStore) {
       html += '<div class="note">' + t("itemsChecked").replace("{a}", nOk).replace("{b}", r.items.length) + '</div>' +
         '<button class="btn" data-ho-qr="' + r.id + '"' + (nOk === r.items.length ? '' : ' disabled') + '>▦ ' + t("makeQr") + '</button>';
+      // the products came broken, different or incomplete: refuse the handover WITHOUT a QR code (reason required)
+      if (hoRejecting === r.id) {
+        html += '<div class="ho-reject"><label>' + t("hoRejReason") + '<select id="hoRejReason"><option value="">— ' + t("hoRejChoose") + ' —</option>' +
+          ["DAMAGED_IN_TRANSIT","DIFFERENT_ITEM","MISSING_ITEM","OTHER"].map(function (c) { return '<option value="' + c + '">' + t("hoRej_" + c) + '</option>'; }).join("") + '</select></label>' +
+          '<label>' + t("hoRejNote") + '<input id="hoRejNote" placeholder="' + t("hoRejNoteHint") + '"></label>' +
+          '<div class="actions"><button class="btn danger" data-ho-reject-save="' + r.id + '">✕ ' + t("hoRejConfirm") + '</button><button class="btn ghost" data-ho-reject-cancel>' + t("cancel") + '</button></div></div>';
+      } else html += '<button class="btn ghost ho-reject-btn" data-ho-reject="' + r.id + '">✕ ' + t("hoRejBtn") + '</button>';
+    } else if (st === "REJECTED") {
+      var hx = handover[r.id];
+      html += '<div class="errbox">✕ ' + t("ho_REJECTED") + ' · ' + esc(hx.at) + ': <b>' + t("hoRej_" + hx.reason) + '</b>' + (hx.note ? '<br><span style="font-weight:500">“' + esc(hx.note) + '”</span>' : '') + '</div>' +
+        '<p class="note" style="margin:0">' + t("hoRejAfter").replace("{ch}", CH[r.ch].name) + '</p>';
     } else if (st === "QR") {
       html += '<div class="qr-box"><canvas data-qr="' + r.id + '" width="440" height="440" role="img" aria-label="QR ' + r.id + '"></canvas><div><span class="note">' + t("qrCode") + '</span>' +
         '<b class="qr-code">' + esc(handover[r.id].token) + '</b><p class="note" style="margin:0">' + t("qrHint") + '</p>' +
@@ -2294,6 +2313,14 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     if (d.demo === "sound-gk") { chime("gk"); return; }
     if (d.approve) { var ap = find(d.approve); ap.status = "APPROVED"; ap.courier = ap.courier || COURIERS[ap.ch]; ap.courierState = ap.courierState || "ASSIGNING"; render(); toast(t("returnSaved")); return; }
     // demo: move the courier on – waiting for a courier -> on the way -> at the store (in the real app the channel reports this)
+    if (d.hoReject) { hoRejecting = d.hoReject; render(); return; }
+    if ("hoRejectCancel" in d) { hoRejecting = null; render(); return; }
+    if (d.hoRejectSave) {
+      var rsn = (document.getElementById("hoRejReason") || {}).value, rnote = ((document.getElementById("hoRejNote") || {}).value || "").trim();
+      if (!rsn) { toast(t("hoRejNeedReason")); return; }
+      handover[d.hoRejectSave] = {status:"REJECTED", reason:rsn, note:rnote, at:nowHM()}; hoRejecting = null; render();
+      toast(t("hoRejToast").replace("{id}", d.hoRejectSave)); return;
+    }
     if (d.hoStep) { var hr = find(d.hoStep); hr.courierState = hr.courierState === "ON_WAY" ? "AT_STORE" : "ON_WAY"; if (hr.courierState === "ON_WAY") hr.eta = hr.eta || 6; render(); return; }
     if (d.hoQr && handoverStatus(d.hoQr) !== "AT_STORE") return;   // QR only while the courier is at the store
     if (d.hoQr) { handover[d.hoQr] = {status:"QR", token:newToken(), qrAt:nowHM(), receivedAt:""}; saveHandover(d.hoQr); render(); return; }

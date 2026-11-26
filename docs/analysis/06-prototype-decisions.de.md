@@ -86,6 +86,7 @@ flowchart LR
     B -->|genehmigen| C["Wartet auf Kurier<br/>dann: Kurier unterwegs"]
     C --> C2["Kurier in der Filiale<br/>(QR erst jetzt möglich)"]
     C2 --> D["Mitarbeitende haken<br/>jedes Produkt ab"]
+    C2 -->|"zerbrochen, anders oder fehlend"| X(["Bei Übergabe abgelehnt<br/>kein QR, keine Erstattung"])
     D --> E["Panel erstellt einen QR-Code<br/>(Einmalcode)"]
     E --> F["Kurier scannt ihn<br/>Kurier-App / beliebiges Handy"]
     F --> G(["Retoure angenommen"])

@@ -86,6 +86,7 @@ flowchart LR
     B -->|onayla| C["Kurye ataması bekleniyor<br/>sonra: kurye yolda"]
     C --> C2["Kurye mağazada<br/>(QR sadece şimdi)"]
     C2 --> D["Çalışan her ürünü<br/>işaretler"]
+    C2 -->|"kırık, farklı ya da eksik"| X(["Teslimde reddedildi<br/>QR yok, para iadesi yok"])
     D --> E["Panel QR kod oluşturur<br/>(tek kullanımlık kod)"]
     E --> F["Kurye okutur<br/>kurye uygulaması / herhangi bir telefon"]
     F --> G(["İade kabul edildi"])

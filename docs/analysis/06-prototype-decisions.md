@@ -86,6 +86,7 @@ flowchart LR
     B -->|approve| C["Waiting for a courier<br/>then: courier on the way"]
     C --> C2["Courier at the store<br/>(QR possible only now)"]
     C2 --> D["Employee ticks<br/>every product"]
+    C2 -->|"broken, different or missing"| X(["Refused at handover<br/>no QR, no refund"])
     D --> E["Panel creates a QR code<br/>(one-time code)"]
     E --> F["Courier scans it<br/>courier app / any phone"]
     F --> G(["Return accepted"])

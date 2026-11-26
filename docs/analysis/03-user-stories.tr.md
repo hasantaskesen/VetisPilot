@@ -358,6 +358,7 @@ Bu hikâyeler prototip (v1.0.1) denenirken ortaya çıktı. Arka plan, örnekler
 *Bir* şube çalışanı *olarak* teslimi QR kodla onaylamak *istiyorum*, *böylece* kurye ve mağaza neyin geri getirildiği konusunda anlaşır.
 - **Verilen** onaylanmış bir iade, **o zaman** kuryenin nerede olduğunu gösterir: *kurye ataması bekleniyor*, *kurye yolda* ya da *kurye mağazada*.
 - **Verilen** kurye mağazada, **o zaman** her ürünü işaretler ve tek kullanımlık bir QR kod oluştururum; bundan önce QR düğmesi kilitlidir.
+- **Verilen** ürünler kırık, farklı ya da eksik geldi, **o zaman** teslimi QR oluşturmadan reddederim; neden zorunludur (taşımada hasar, farklı ürün, eksik ürün, diğer) ve isteğe bağlı not yazılabilir; para iadesi yapılmaz ve kanal bilgilendirilir.
 - **Verilen** kurye kodu okutur (kurye uygulaması; şimdilik herhangi bir telefon), **o zaman** iade *kabul edildi* olur.
 
 ### US-49 – İade kabul edilince para iadesi · M
