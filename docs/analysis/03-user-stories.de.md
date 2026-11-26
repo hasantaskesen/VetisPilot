@@ -356,7 +356,8 @@ Diese Stories entstanden beim Testen des Prototyps (v1.0.1). Hintergrund, Beispi
 
 ### US-48 – Retouren mit QR-Code annehmen · M
 *Als* Filialmitarbeiter *möchte ich* die Übergabe mit einem QR-Code bestätigen, *damit* Kurier und Filiale sich einig sind, was zurückgebracht wurde.
-- **Gegeben** eine genehmigte Retoure, **wenn** der Kurier sie bringt, **dann** hake ich jedes Produkt ab und erstelle einen Einmal-QR-Code.
+- **Gegeben** eine genehmigte Retoure, **dann** zeigt sie, wo der Kurier ist: *wartet auf Kurier*, *Kurier unterwegs* oder *Kurier in der Filiale*.
+- **Gegeben** der Kurier ist in der Filiale, **dann** hake ich jedes Produkt ab und erstelle einen Einmal-QR-Code; vorher ist der QR-Button gesperrt.
 - **Gegeben** der Kurier scannt den Code (Kurier-App; vorerst jedes Handy), **dann** wird die Retoure *angenommen*.
 
 ### US-49 – Erstattung nach Annahme der Retoure · M

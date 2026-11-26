@@ -83,8 +83,9 @@ This replaces the table in [04 – Order Process §9](04-order-process.md).
 flowchart LR
     A(["Customer returns<br/>some products"]) --> B{"Branch decides"}
     B -->|reject + reason| R(["Rejected"])
-    B -->|approve| C["Courier is assigned<br/>status: courier on the way"]
-    C --> D["Courier brings the products<br/>employee ticks every product"]
+    B -->|approve| C["Waiting for a courier<br/>then: courier on the way"]
+    C --> C2["Courier at the store<br/>(QR possible only now)"]
+    C2 --> D["Employee ticks<br/>every product"]
     D --> E["Panel creates a QR code<br/>(one-time code)"]
     E --> F["Courier scans it<br/>courier app / any phone"]
     F --> G(["Return accepted"])

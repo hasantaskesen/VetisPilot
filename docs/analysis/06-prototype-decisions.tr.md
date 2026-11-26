@@ -83,8 +83,9 @@ Tıklanabilir prototip [prototype/panel.html](../../prototype/panel.html) (sür�
 flowchart LR
     A(["Müşteri bazı ürünleri<br/>iade eder"]) --> B{"Şube karar verir"}
     B -->|"reddet + neden"| R(["Reddedildi"])
-    B -->|onayla| C["Kurye atanır<br/>durum: kurye getiriyor"]
-    C --> D["Kurye ürünleri getirir<br/>çalışan her ürünü işaretler"]
+    B -->|onayla| C["Kurye ataması bekleniyor<br/>sonra: kurye yolda"]
+    C --> C2["Kurye mağazada<br/>(QR sadece şimdi)"]
+    C2 --> D["Çalışan her ürünü<br/>işaretler"]
     D --> E["Panel QR kod oluşturur<br/>(tek kullanımlık kod)"]
     E --> F["Kurye okutur<br/>kurye uygulaması / herhangi bir telefon"]
     F --> G(["İade kabul edildi"])

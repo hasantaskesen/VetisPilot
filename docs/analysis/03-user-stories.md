@@ -356,7 +356,8 @@ These stories come from testing the prototype (v1.0.1). Background, examples and
 
 ### US-48 – Receive returned products with a QR code · M
 *As a* branch employee *I want* to confirm the handover with a QR code *so that* courier and store agree on what was brought back.
-- **Given** an approved return, **when** the courier brings it, **then** I tick every product and create a one-time QR code.
+- **Given** an approved return, **then** it shows where the courier is: *waiting for a courier*, *courier on the way* or *courier at the store*.
+- **Given** the courier is at the store, **then** I tick every product and create a one-time QR code; before that the QR button is locked.
 - **Given** the courier scans the code (courier app; for now any phone), **then** the return becomes *Return accepted*.
 
 ### US-49 – Refund after the return is accepted · M

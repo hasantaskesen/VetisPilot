@@ -83,8 +83,9 @@ Ersetzt die Tabelle in [04 – Bestellprozess §9](04-order-process.de.md).
 flowchart LR
     A(["Kunde schickt<br/>einige Produkte zurück"]) --> B{"Filiale entscheidet"}
     B -->|"ablehnen + Grund"| R(["Abgelehnt"])
-    B -->|genehmigen| C["Kurier wird zugeteilt<br/>Status: Kurier unterwegs"]
-    C --> D["Kurier bringt die Produkte<br/>Mitarbeitende haken jedes Produkt ab"]
+    B -->|genehmigen| C["Wartet auf Kurier<br/>dann: Kurier unterwegs"]
+    C --> C2["Kurier in der Filiale<br/>(QR erst jetzt möglich)"]
+    C2 --> D["Mitarbeitende haken<br/>jedes Produkt ab"]
     D --> E["Panel erstellt einen QR-Code<br/>(Einmalcode)"]
     E --> F["Kurier scannt ihn<br/>Kurier-App / beliebiges Handy"]
     F --> G(["Retoure angenommen"])

@@ -323,7 +323,10 @@ code.cols{display:block;background:#F3F4F6;border-radius:8px;padding:8px 10px;fo
 .ret-item > span{min-width:0;flex:1} .ret-item b{display:block;font-size:13px;line-height:1.25} .ret-item span span{font-size:11px;color:var(--muted)}
 .ret-item em{font-style:normal;font-weight:800;font-size:13px;background:#FFF1E6;color:#9A3412;border-radius:7px;padding:2px 7px}
 .stcol{display:flex;flex-direction:column;align-items:flex-start}
-.ho-WAITING{background:#E0F2FE;color:#075985} .ho-QR{background:#EDE9FE;color:#4C1D95} .ho-RECEIVED{background:#DCFCE7;color:#14532D}
+.ho-ASSIGNING{background:#F3F4F6;color:#374151} .ho-ON_WAY{background:#EDE9FE;color:#4C1D95} .ho-AT_STORE{background:#DCFCE7;color:#14532D} .ho-WAITING{background:#E0F2FE;color:#075985}
+.ho-state{border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700} .ho-state.wait{background:#F3F4F6;color:#374151} .ho-state.way{background:#F5F3FF;color:#5B21B6} .ho-state.here{background:#ECFDF5;color:#065F46}
+.ho-item.locked{opacity:.6;cursor:not-allowed}
+body.dark .ho-state.wait{background:var(--surf2);color:var(--muted)} body.dark .ho-state.way{background:#221B44;color:#C4B5FD} body.dark .ho-state.here{background:#0F2A1C;color:#6EE7B7} .ho-QR{background:#EDE9FE;color:#4C1D95} .ho-RECEIVED{background:#DCFCE7;color:#14532D}
 .rrow{display:grid;grid-template-columns:minmax(96px,.8fr) minmax(0,2.2fr) minmax(0,1.5fr) auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
 .orderlink{white-space:nowrap}
 /* returns: tablets and phones get a stacked card layout (products full width, reason under them) */
@@ -753,7 +756,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       filterByReason:"Bu nedene göre süz", showAllReasons:"Tümünü göster", openOrderHint:"Siparişi aç", returnedItem:"İade edilen ürün",
       returnItems:"{n} ürün iade", returnQty:"İade: {q} adet", newOrderTitle:"🛒 Yeni sipariş var · {ch}", pendingLine:"{no} · Kabul etmeni bekleyen {n} sipariş var",
       handover:"İade Teslim Alma", handoverInfo:"Kurye iade edilen ürünleri mağazaya getirir. Ürünleri tek tek kontrol et ve işaretle, sonra QR kodu oluştur. Kurye QR kodu kurye uygulamasında okutunca iade kabul edilir.",
-      ho_WAITING:"Kurye getiriyor", ho_QR:"QR okutulmayı bekliyor", ho_RECEIVED:"İade kabul edildi", courierLbl:"Kurye", checkItems:"Gelen ürünleri kontrol et:", itemsChecked:"{a}/{b} ürün kontrol edildi",
+      ho_ASSIGNING:"Kurye ataması bekleniyor", ho_ON_WAY:"Kurye yolda", ho_AT_STORE:"Kurye mağazada", hoStateAssigning:"Kurye ataması bekleniyor – henüz bir kurye bu iadeyi almadı.", hoStateOnWay:"Kurye {c} iadeyi mağazaya getiriyor · ≈{m} dk", hoStateAtStore:"Kurye {c} iadeyle mağazada – ürünleri kontrol et ve QR oluştur.", hoQrOnlyAtStore:"QR kod sadece kurye mağazadayken oluşturulabilir.", hoDemoAssign:"Demo: kurye ata", hoDemoArrive:"Demo: kurye mağazaya geldi", tripReturnAssigning:"İade {id}: kurye ataması bekleniyor", tripReturnArrived:"İade {id}: kurye {c} iadeyle mağazada", ho_WAITING:"Kurye getiriyor", ho_QR:"QR okutulmayı bekliyor", ho_RECEIVED:"İade kabul edildi", courierLbl:"Kurye", checkItems:"Gelen ürünleri kontrol et:", itemsChecked:"{a}/{b} ürün kontrol edildi",
       makeQr:"Ürünleri teslim aldım – QR oluştur", qrCode:"Onay kodu", qrHint:"Kurye bu QR kodu kurye uygulamasında okutsun. Kurye uygulaması hazır olana kadar herhangi bir telefonun kamerasıyla da okutulabilir.",
       demoScan:"Demo: bu cihazda okut", receivedAt:"teslim alındı: {time}", noHandover:"Teslim alınacak iade yok.", doneList:"Teslim alınanlar", amountRefund:"İade tutarı",
       liveSync:"Canlı bağlantı açık: QR telefonda okutulunca bu ekran kendiliğinden güncellenir.", localOnly:"Bu görünümde canlı bağlantı yok. QR okutulduktan sonra \"Demo: bu cihazda okut\" düğmesine bas.", resetDemo:"Demoyu sıfırla", hoToast:"{id}: kurye QR kodu okuttu, iade kabul edildi",
@@ -823,7 +826,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       bannerNew1:"1 neue Bestellung wartet auf deine Annahme", waWait1:"⏱ Seit {m} Minuten wartet 1 Bestellung auf Ihre Annahme.", waLate1:"⚠️ 1 Bestellung seit {m} Minuten nicht angenommen – sie ist verspätet!", waVeryLate1:"🚨 1 Bestellung wartet seit {m} Minuten – stark verspätet! Bitte sofort annehmen.",
       returnItems:"{n} Artikel zurück", returnQty:"Retoure: {q} Stück", newOrderTitle:"🛒 Neue Bestellung · {ch}", pendingLine:"{no} · {n} Bestellungen warten auf deine Annahme", pendingLine1:"{no} · 1 Bestellung wartet auf deine Annahme",
       handover:"Retourenannahme", handoverInfo:"Der Kurier bringt die retournierten Produkte in die Filiale. Prüfe und hake jedes Produkt ab und erstelle dann den QR-Code. Sobald der Kurier den QR-Code in der Kurier-App scannt, ist die Retoure angenommen.",
-      ho_WAITING:"Kurier unterwegs", ho_QR:"Wartet auf QR-Scan", ho_RECEIVED:"Retoure angenommen", courierLbl:"Kurier", checkItems:"Gelieferte Produkte prüfen:", itemsChecked:"{a}/{b} Produkte geprüft",
+      ho_ASSIGNING:"Wartet auf Kurier", ho_ON_WAY:"Kurier unterwegs", ho_AT_STORE:"Kurier in der Filiale", hoStateAssigning:"Wartet auf einen Kurier – noch hat kein Kurier diese Retoure übernommen.", hoStateOnWay:"Kurier {c} bringt die Retoure zur Filiale · ≈{m} Min.", hoStateAtStore:"Kurier {c} ist mit der Retoure in der Filiale – Produkte prüfen und QR-Code erstellen.", hoQrOnlyAtStore:"Der QR-Code kann nur erstellt werden, wenn der Kurier in der Filiale ist.", hoDemoAssign:"Demo: Kurier zuteilen", hoDemoArrive:"Demo: Kurier ist angekommen", tripReturnAssigning:"Retoure {id}: wartet auf einen Kurier", tripReturnArrived:"Retoure {id}: Kurier {c} ist mit der Retoure in der Filiale", ho_WAITING:"Kurier unterwegs", ho_QR:"Wartet auf QR-Scan", ho_RECEIVED:"Retoure angenommen", courierLbl:"Kurier", checkItems:"Gelieferte Produkte prüfen:", itemsChecked:"{a}/{b} Produkte geprüft",
       makeQr:"Produkte erhalten – QR-Code erstellen", qrCode:"Bestätigungscode", qrHint:"Der Kurier scannt diesen QR-Code in der Kurier-App. Bis die Kurier-App fertig ist, geht es auch mit der Kamera eines beliebigen Handys.",
       demoScan:"Demo: auf diesem Gerät scannen", receivedAt:"angenommen: {time}", noHandover:"Keine Retouren anzunehmen.", doneList:"Angenommen", amountRefund:"Erstattungsbetrag",
       liveSync:"Live-Verbindung aktiv: Wird der QR-Code am Handy gescannt, aktualisiert sich diese Seite von selbst.", localOnly:"In dieser Ansicht gibt es keine Live-Verbindung. Nach dem Scan auf \"Demo: auf diesem Gerät scannen\" tippen.", resetDemo:"Demo zurücksetzen", hoToast:"{id}: Kurier hat den QR-Code gescannt, Retoure angenommen",
@@ -893,7 +896,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       bannerNew1:"1 new order is waiting for you to accept", waWait1:"⏱ 1 order has been waiting {m} minutes for you to accept.", waLate1:"⚠️ 1 order not accepted for {m} minutes – it is late!", waVeryLate1:"🚨 1 order waiting for {m} minutes – very late! Please accept it now.",
       returnItems:"{n} items returned", returnItems1:"1 item returned", returnQty:"Returned: {q}", newOrderTitle:"🛒 New order · {ch}", pendingLine:"{no} · {n} orders waiting for you to accept", pendingLine1:"{no} · 1 order waiting for you to accept",
       handover:"Return handover", handoverInfo:"The courier brings the returned products to the store. Check and tick each product, then create the QR code. When the courier scans it in the courier app, the return is accepted.",
-      ho_WAITING:"Courier on the way", ho_QR:"Waiting for QR scan", ho_RECEIVED:"Return accepted", courierLbl:"Courier", checkItems:"Check the delivered products:", itemsChecked:"{a}/{b} products checked",
+      ho_ASSIGNING:"Waiting for a courier", ho_ON_WAY:"Courier on the way", ho_AT_STORE:"Courier at the store", hoStateAssigning:"Waiting for a courier – no courier has taken this return yet.", hoStateOnWay:"Courier {c} is bringing the return to the store · ≈{m} min", hoStateAtStore:"Courier {c} is at the store with the return – check the products and create the QR code.", hoQrOnlyAtStore:"The QR code can only be created while the courier is at the store.", hoDemoAssign:"Demo: assign a courier", hoDemoArrive:"Demo: courier has arrived", tripReturnAssigning:"Return {id}: waiting for a courier", tripReturnArrived:"Return {id}: courier {c} is at the store with the return", ho_WAITING:"Courier on the way", ho_QR:"Waiting for QR scan", ho_RECEIVED:"Return accepted", courierLbl:"Courier", checkItems:"Check the delivered products:", itemsChecked:"{a}/{b} products checked",
       makeQr:"Products received – create QR code", qrCode:"Confirmation code", qrHint:"The courier scans this QR code in the courier app. Until the courier app is ready, any phone camera works too.",
       demoScan:"Demo: scan on this device", receivedAt:"received: {time}", noHandover:"No returns to receive.", doneList:"Received", amountRefund:"Refund amount",
       liveSync:"Live connection on: when the QR code is scanned on a phone, this page updates by itself.", localOnly:"No live connection in this view. After the scan, tap \"Demo: scan on this device\".", resetDemo:"Reset demo", hoToast:"{id}: the courier scanned the QR code, return accepted",
@@ -1072,12 +1075,12 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     // items = only the products (and quantities) the customer sends back – often just a part of the order
     {id:"R-305",ch:"htgo",order:"HT-10463",items:[["DRY-001",1]],code:"EXPIRED",reason:{tr:"Bir sütün tarihi dünü gösteriyordu",de:"Bei einer Milch war das Datum schon gestern abgelaufen",en:"One milk had already passed its date yesterday"},status:"REQUESTED"},
     {id:"R-301",ch:"htgo",order:"HT-10455",items:[["DRY-003",2],["BEV-009",1]],code:"SPOILED",reason:{tr:"Yoğurtlar bozuk, meyve suyu da açılmıştı",de:"Joghurts verdorben, der Saft war schon offen",en:"Yogurts spoiled and the juice had been opened"},status:"REQUESTED"},
-    {id:"R-298",ch:"htgo",order:"HT-10447",items:[["SNK-001",2],["BEV-006",1]],code:"DAMAGED",reason:{tr:"Cips paketleri yırtık, bir kola şişesi ezik",de:"Chipstüten gerissen, eine Colaflasche zerdrückt",en:"Chips bags torn, one cola bottle crushed"},status:"APPROVED",courier:"Jonas W."},
-    {id:"R-296",ch:"htgo",order:"HT-10442",items:[["BEV-001",1]],code:"DAMAGED",reason:{tr:"Bir su şişesi patlamış",de:"Eine Wasserflasche war geplatzt",en:"One water bottle had burst"},status:"APPROVED",courier:"Jonas W."},
+    {id:"R-298",ch:"htgo",order:"HT-10447",items:[["SNK-001",2],["BEV-006",1]],code:"DAMAGED",reason:{tr:"Cips paketleri yırtık, bir kola şişesi ezik",de:"Chipstüten gerissen, eine Colaflasche zerdrückt",en:"Chips bags torn, one cola bottle crushed"},status:"APPROVED",courier:"Jonas W.",courierState:"AT_STORE"},
+    {id:"R-296",ch:"htgo",order:"HT-10442",items:[["BEV-001",1]],code:"DAMAGED",reason:{tr:"Bir su şişesi patlamış",de:"Eine Wasserflasche war geplatzt",en:"One water bottle had burst"},status:"APPROVED",courier:"Emre K.",courierState:"ON_WAY",eta:7},
     {id:"R-415",ch:"gk",order:"GK-55108",items:[["BRK-001",1]],code:"WRONG_ITEM",reason:{tr:"Kafeinsiz kahve istemiştim",de:"Ich hatte entkoffeinierten Kaffee bestellt",en:"I had ordered decaf coffee"},status:"REQUESTED"},
     {id:"R-412",ch:"gk",order:"GK-55103",items:[["BAK-003",1]],code:"DAMAGED",reason:{tr:"Kruvasanlar ezilmiş",de:"Croissants waren zerdrückt",en:"Croissants were squashed"},status:"REQUESTED"},
     {id:"R-410",ch:"gk",order:"GK-55097",items:[["FRZ-004",2],["SWT-001",1]],code:"COLD_CHAIN",reason:{tr:"Pizzalar erimiş, çikolata da yumuşamış",de:"Pizzen aufgetaut, Schokolade weich geworden",en:"Pizzas thawed and the chocolate had gone soft"},status:"REQUESTED"},
-    {id:"R-408",ch:"gk",order:"GK-55091",items:[["DRY-002",2]],code:"EXPIRED",reason:{tr:"İki sütün de tarihi geçmiş",de:"Bei beiden Milchpackungen war das Datum abgelaufen",en:"Both milks were past their date"},status:"APPROVED",courier:"Selin A."}
+    {id:"R-408",ch:"gk",order:"GK-55091",items:[["DRY-002",2]],code:"EXPIRED",reason:{tr:"İki sütün de tarihi geçmiş",de:"Bei beiden Milchpackungen war das Datum abgelaufen",en:"Both milks were past their date"},status:"APPROVED",courier:"Selin A.",courierState:"ASSIGNING"}
   ];
   // refund = returned quantity × the price on the order line (price snapshot, US-14)
   function returnAmount(r) {
@@ -1403,7 +1406,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       if (r.order !== orderNo(o) || r.status !== "APPROVED") return;
       var st = handoverStatus(r.id), c = esc(r.courier || COURIERS[r.ch]);
       h += '<span class="trip back' + (st === "RECEIVED" ? ' done' : '') + '">↩ ' +
-        t(st === "WAITING" ? "tripReturnToStore" : st === "QR" ? "tripReturnAtStore" : "tripReturnDone").replace("{c}", c).replace("{id}", r.id) + '</span>';
+        t(st === "ASSIGNING" ? "tripReturnAssigning" : st === "ON_WAY" ? "tripReturnToStore" : st === "AT_STORE" ? "tripReturnArrived" : st === "QR" ? "tripReturnAtStore" : "tripReturnDone").replace("{c}", c).replace("{id}", r.id) + '</span>';
     });
     return h;
   }
@@ -1657,14 +1660,20 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
   }
 
   // ======================= Return handover: the courier brings the returned products back =======================
-  // Flow: return APPROVED -> courier on the way (WAITING) -> seller checks every product and creates a QR code (QR)
+  // Flow: return APPROVED -> waiting for a courier (ASSIGNING) -> courier on the way (ON_WAY) -> courier at the store (AT_STORE)
+  //       -> seller checks every product and creates a QR code (QR) – ONLY while the courier is at the store
   //       -> the courier scans it (courier app; for now any phone camera) -> return accepted (RECEIVED).
   var APP_URL = "https://claude.ai/artifact/PDU89CzC8WzeQ6Tw427WQQ";   // public link of this prototype
   var COURIERS = {htgo:"Jonas W.", gk:"Selin A."};
   var handover = {};      // returnId -> {status, token, qrAt, receivedAt, local}
   var hoChecked = {};     // returnId -> {sku:true}
   var db = null, dbLive = false;
-  function handoverStatus(id) { return handover[id] ? handover[id].status : "WAITING"; }
+  // before the QR step the state comes from the courier: r.courierState = ASSIGNING | ON_WAY | AT_STORE
+  function handoverStatus(id) {
+    if (handover[id]) return handover[id].status;
+    var r = returns.filter(function (x) { return x.id === id; })[0];
+    return (r && r.courierState) || "ASSIGNING";
+  }
   function rcode(id) { return id.replace("-", ""); }                    // R-298 -> R298 (safe in the link)
   function nowHM() { var d = new Date(); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
   function newToken() {
@@ -1717,18 +1726,26 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
   }
   function hoCard(r) {
     var st = handoverStatus(r.id), chk = hoChecked[r.id] || {};
-    var nOk = r.items.filter(function (it) { return st !== "WAITING" || chk[it[0]]; }).length;
+    var before = ["ASSIGNING","ON_WAY","AT_STORE"].indexOf(st) >= 0, atStore = st === "AT_STORE";
+    var nOk = r.items.filter(function (it) { return !before || chk[it[0]]; }).length;
     var html = '<div class="card ho-card" style="--c:var(--' + r.ch + ')"><div class="ho-head"><span><i class="dot" style="background:var(--' + r.ch + ')"></i><b>' + CH[r.ch].name + '</b> · ' + r.id + '</span>' +
       '<span class="pill ho-' + st + '">' + t("ho_" + st) + '</span></div>' +
       '<div class="note">' + t("colReturnOrder") + ': <button class="orderlink" data-open-order="' + r.order + '" data-ret="' + r.id + '">' + r.order + '</button> · ' +
       t("courierLbl") + ': <b>' + esc(r.courier || COURIERS[r.ch]) + '</b> · <span class="reason">' + t("RR_" + r.code) + '</span></div>';
-    if (st === "WAITING") html += '<div class="note"><b>' + t("checkItems") + '</b></div>';
+    // where the courier is – the products can only be checked (and the QR created) while the courier is at the store
+    if (st === "ASSIGNING") html += '<div class="ho-state wait">⏳ ' + t("hoStateAssigning") + '</div>';
+    if (st === "ON_WAY") html += '<div class="ho-state way">🛵 ' + t("hoStateOnWay").replace("{c}", esc(r.courier || COURIERS[r.ch])).replace("{m}", r.eta || 6) + '</div>';
+    if (atStore) html += '<div class="ho-state here">📍 ' + t("hoStateAtStore").replace("{c}", esc(r.courier || COURIERS[r.ch])) + '</div><div class="note"><b>' + t("checkItems") + '</b></div>';
     html += '<div class="ho-items">' + r.items.map(function (it) {
-      var p = P[it[0]], on = st !== "WAITING" || !!chk[it[0]];
-      return '<label class="ho-item' + (on ? ' ok' : '') + '"><input type="checkbox" data-ho-check="' + r.id + '|' + it[0] + '"' + (on ? ' checked' : '') + (st !== "WAITING" ? ' disabled' : '') + '>' +
+      var p = P[it[0]], on = !before || !!chk[it[0]];
+      return '<label class="ho-item' + (on ? ' ok' : '') + (before && !atStore ? ' locked' : '') + '"><input type="checkbox" data-ho-check="' + r.id + '|' + it[0] + '"' + (on ? ' checked' : '') + (atStore ? '' : ' disabled') + '>' +
         '<img src="' + photoOf(p) + '" alt=""><span><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · ' + esc(p.size[lang]) + '</span></span><em>×' + it[1] + '</em></label>';
     }).join("") + '</div><div class="sum" style="font-size:15px"><span>' + t("amountRefund") + '</span><span>' + money(returnAmount(r)) + '</span></div>';
-    if (st === "WAITING") {
+    if (st === "ASSIGNING" || st === "ON_WAY") {
+      // no QR yet: the courier is not here. Demo button moves the courier one step on (in the real app the channel sends this)
+      html += '<button class="btn" disabled title="' + t("hoQrOnlyAtStore") + '">▦ ' + t("makeQr") + '</button><p class="note" style="margin:0">🔒 ' + t("hoQrOnlyAtStore") + '</p>' +
+        '<button class="btn ghost" data-ho-step="' + r.id + '">🧪 ' + t(st === "ASSIGNING" ? "hoDemoAssign" : "hoDemoArrive") + '</button>';
+    } else if (atStore) {
       html += '<div class="note">' + t("itemsChecked").replace("{a}", nOk).replace("{b}", r.items.length) + '</div>' +
         '<button class="btn" data-ho-qr="' + r.id + '"' + (nOk === r.items.length ? '' : ' disabled') + '>▦ ' + t("makeQr") + '</button>';
     } else if (st === "QR") {
@@ -2275,7 +2292,10 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     if (d.demo === "advance") { advanceClock(); return; }
     if (d.demo === "sound-htgo") { chime("htgo"); return; }
     if (d.demo === "sound-gk") { chime("gk"); return; }
-    if (d.approve) { var ap = find(d.approve); ap.status = "APPROVED"; ap.courier = ap.courier || COURIERS[ap.ch]; render(); toast(t("returnSaved")); return; }
+    if (d.approve) { var ap = find(d.approve); ap.status = "APPROVED"; ap.courier = ap.courier || COURIERS[ap.ch]; ap.courierState = ap.courierState || "ASSIGNING"; render(); toast(t("returnSaved")); return; }
+    // demo: move the courier on – waiting for a courier -> on the way -> at the store (in the real app the channel reports this)
+    if (d.hoStep) { var hr = find(d.hoStep); hr.courierState = hr.courierState === "ON_WAY" ? "AT_STORE" : "ON_WAY"; if (hr.courierState === "ON_WAY") hr.eta = hr.eta || 6; render(); return; }
+    if (d.hoQr && handoverStatus(d.hoQr) !== "AT_STORE") return;   // QR only while the courier is at the store
     if (d.hoQr) { handover[d.hoQr] = {status:"QR", token:newToken(), qrAt:nowHM(), receivedAt:""}; saveHandover(d.hoQr); render(); return; }
     if (d.hoScan) { var sid = d.hoScan; markReceived(sid); render(); showBanner("ok", t("ho_RECEIVED") + " · " + sid, t("hoToast").replace("{id}", sid)); return; }
     if ("hoReset" in d) { Object.keys(handover).forEach(function (id) { if (db) db.doc("handover/" + rcode(id)).delete().catch(function () {}); }); handover = {}; hoChecked = {}; render(); return; }
