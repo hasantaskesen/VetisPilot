@@ -228,7 +228,7 @@ flowchart TD
 Bevor eine Bestellung *Bereit* sein kann, prüft das Panel die Beträge (US-44, US-45; Details in [06 §2](06-prototype-decisions.de.md)):
 - jede gewogene Zeile innerhalb von **±10 %** des bestellten Gewichts;
 - Warenwert höchstens **+15 %** des Bestellwerts – feste Grenze, auch mit Zustimmung des Kunden;
-- fehlende Produkte oder ein Rückgang über **15 %** nur, wenn „Kunde informiert und einverstanden“ abgehakt ist.
+- fehlende Produkte oder ein Rückgang über **15 %** nur nach mindestens **1 protokollierten Anruf** beim Kunden und dem Haken „Kunde informiert und einverstanden“.
 
 ## 11. Kurierkapazität und geteilte Bestellungen
 Ein Kurier trägt höchstens **20 Liter**. Eine Bestellung über 20 L wird automatisch in möglichst wenige Teile geteilt, die Liter gleichmäßig verteilt und jedes Produkt in einem Teil gehalten (US-46; Details in [06 §3](06-prototype-decisions.de.md)). Jeder Teil durchläuft diesen Prozess für sich (annehmen, kommissionieren, bereit); Berichte zählen ihn als eine Bestellung.

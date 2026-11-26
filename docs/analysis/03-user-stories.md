@@ -343,7 +343,7 @@ These stories come from testing the prototype (v1.0.1). Background, examples and
 
 ### US-45 – Remove missing products with the customer's approval · M
 *As a* branch employee *I want* to finish an order without missing products after talking to the customer *so that* the customer still gets the rest.
-- **Given** a product is missing or the total drops by more than 15 %, **then** *Ready* needs the tick *"customer informed and agreed"*; the time is stored with the order.
+- **Given** a product is missing or the total drops by more than 15 %, **then** the customer must be called first (at least 1 logged call); only then can the employee tick *"customer informed and agreed"*, and *Ready* is possible; the time is stored with the order.
 
 ### US-46 – Split orders over the courier capacity · M
 *As a* branch employee *I want* orders over 20 litres to be split automatically *so that* every courier can carry their part.

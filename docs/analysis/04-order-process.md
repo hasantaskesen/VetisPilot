@@ -228,7 +228,7 @@ flowchart TD
 Before an order can be *Ready*, the panel checks the amounts (US-44, US-45; details in [06 §2](06-prototype-decisions.md)):
 - every weighed line within **±10 %** of the ordered weight;
 - products at most **+15 %** of the ordered value – a hard limit, also with the customer's approval;
-- missing products or a drop of more than **15 %** only after the employee ticks *"customer informed and agreed"*.
+- missing products or a drop of more than **15 %** only after at least **1 logged call** to the customer and the tick *"customer informed and agreed"*.
 
 ## 11. Courier capacity and split orders
 One courier carries at most **20 litres**. An order above 20 L is split automatically into as few parts as possible, the litres shared evenly and every product kept in one part (US-46; details in [06 §3](06-prototype-decisions.md)). Each part follows this process on its own (accept, pick, ready); reports count it as one order.

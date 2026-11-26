@@ -343,7 +343,7 @@ Bu hikâyeler prototip (v1.0.1) denenirken ortaya çıktı. Arka plan, örnekler
 
 ### US-45 – Eksik ürünleri müşteri onayıyla çıkarmak · M
 *Bir* şube çalışanı *olarak* müşteriyle konuştuktan sonra siparişi eksik ürünler olmadan tamamlamak *istiyorum*, *böylece* müşteri geri kalanını yine alır.
-- **Verilen** bir ürün eksik ya da tutar %15'ten fazla düşüyor, **o zaman** *Hazır* için *"müşteri bilgilendirildi ve onayladı"* işareti gerekir; saat siparişle birlikte kaydedilir.
+- **Verilen** bir ürün eksik ya da tutar %15'ten fazla düşüyor, **o zaman** önce müşteri aranmalıdır (en az 1 kayıtlı arama); ancak bundan sonra çalışan *"müşteri bilgilendirildi ve onayladı"* kutusunu işaretleyebilir ve *Hazır* mümkün olur; saat siparişle birlikte kaydedilir.
 
 ### US-46 – Kurye kapasitesini aşan siparişleri bölmek · M
 *Bir* şube çalışanı *olarak* 20 litreyi aşan siparişlerin otomatik bölünmesini *istiyorum*, *böylece* her kurye kendi kısmını taşıyabilir.

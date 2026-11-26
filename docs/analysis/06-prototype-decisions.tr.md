@@ -31,7 +31,7 @@ Tıklanabilir prototip [prototype/panel.html](../../prototype/panel.html) (sür�
 |---|---|---|
 | Tartılı satır | sipariş edilen ağırlık **±%10** (1 kg → 0,90 – 1,10 kg) | Kutu kırmızı olur, *Hazır* engellenir |
 | Ürün tutarı (poşet ücreti hariç) | sipariş tutarının en fazla **+%15**'i | **Kesin sınır** – müşteri onayıyla da aşılamaz |
-| Ürün tutarı düşük / ürün eksik | **−%15**'ten fazla düşüş ya da eksik satır | Ancak çalışan *"müşteri bilgilendirildi ve onayladı"* kutusunu işaretlerse; saat kaydedilir |
+| Ürün tutarı düşük / ürün eksik | **−%15**'ten fazla düşüş ya da eksik satır | Ancak müşteri en az **1 kez aranıp** (kayıtlı arama) *"müşteri bilgilendirildi ve onayladı"* kutusu işaretlenirse; saat kaydedilir |
 
 | Sipariş | En fazla (+%15) | Şunun altında onay gerekir (−%15) |
 |---|---|---|

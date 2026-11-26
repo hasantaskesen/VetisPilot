@@ -31,7 +31,7 @@ Mit dem klickbaren Prototyp [prototype/panel.html](../../prototype/panel.html) (
 |---|---|---|
 | Gewogene Zeile | bestelltes Gewicht **±10 %** (1 kg → 0,90 – 1,10 kg) | Feld wird rot, *Bereit* ist gesperrt |
 | Warenwert (ohne Tütengebühr) | höchstens **+15 %** des bestellten Werts | **Feste Grenze** – auch mit Zustimmung des Kunden |
-| Warenwert niedriger / Produkte fehlen | mehr als **−15 %** oder eine fehlende Zeile | Nur erlaubt, wenn „Kunde informiert und einverstanden“ abgehakt ist; die Uhrzeit wird gespeichert |
+| Warenwert niedriger / Produkte fehlen | mehr als **−15 %** oder eine fehlende Zeile | Nur erlaubt nach mindestens **1 protokollierten Anruf** beim Kunden und dem Haken „Kunde informiert und einverstanden“; die Uhrzeit wird gespeichert |
 
 | Bestellt | Höchstens (+15 %) | Zustimmung nötig unter (−15 %) |
 |---|---|---|

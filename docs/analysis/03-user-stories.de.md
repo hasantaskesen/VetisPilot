@@ -343,7 +343,7 @@ Diese Stories entstanden beim Testen des Prototyps (v1.0.1). Hintergrund, Beispi
 
 ### US-45 – Fehlende Produkte mit Zustimmung des Kunden entfernen · M
 *Als* Filialmitarbeiter *möchte ich* eine Bestellung ohne fehlende Produkte abschließen, nachdem ich mit dem Kunden gesprochen habe, *damit* er den Rest trotzdem bekommt.
-- **Gegeben** ein Produkt fehlt oder der Betrag sinkt um mehr als 15 %, **dann** braucht *Bereit* den Haken *„Kunde informiert und einverstanden“*; die Uhrzeit wird mit der Bestellung gespeichert.
+- **Gegeben** ein Produkt fehlt oder der Betrag sinkt um mehr als 15 %, **dann** muss der Kunde zuerst angerufen werden (mindestens 1 protokollierter Anruf); erst dann lässt sich *„Kunde informiert und einverstanden“* abhaken und *Bereit* ist möglich; die Uhrzeit wird mit der Bestellung gespeichert.
 
 ### US-46 – Bestellungen über der Kurierkapazität teilen · M
 *Als* Filialmitarbeiter *möchte ich*, dass Bestellungen über 20 Liter automatisch geteilt werden, *damit* jeder Kurier seinen Teil tragen kann.

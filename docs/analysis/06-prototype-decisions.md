@@ -31,7 +31,7 @@ The clickable prototype [prototype/panel.html](../../prototype/panel.html) (vers
 |---|---|---|
 | Weighed line | ordered weight **±10 %** (1 kg → 0.90 – 1.10 kg) | Field turns red, *Ready* is blocked |
 | Products total (bag fee not included) | at most **+15 %** of the ordered value | **Hard limit** – even with the customer's approval |
-| Products total lower / products missing | more than **−15 %** or a missing line | Allowed only after the employee ticks *"customer informed and agreed"*; the time is stored |
+| Products total lower / products missing | more than **−15 %** or a missing line | Allowed only after at least **1 logged call** to the customer and the tick *"customer informed and agreed"*; the time is stored |
 
 | Ordered | Maximum (+15 %) | Approval needed below (−15 %) |
 |---|---|---|

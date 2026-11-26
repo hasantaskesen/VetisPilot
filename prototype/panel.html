@@ -470,7 +470,7 @@ button.daily-col:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)} button.daily-col:fo
 .limit-bar em{position:absolute;top:-3px;bottom:-3px;width:2px;background:#111827;border-radius:2px}
 .limit-meta{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:600;color:#4B5563;flex-wrap:wrap}
 .limit-msg{font-size:13px;font-weight:700} .limit.over .limit-msg{color:#991B1B} .limit.low .limit-msg{color:#92400E}
-.cust-ok{margin:0;font-size:13px;align-items:flex-start} .cust-ok input{flex-shrink:0;margin-top:1px}
+.cust-ok{margin:0;font-size:13px;align-items:flex-start} .cust-ok input{flex-shrink:0;margin-top:1px} .cust-ok.locked{opacity:.75} .cust-ok .need-call{display:block;font-style:normal;font-weight:800;color:#B91C1C;margin-top:2px} body.dark .cust-ok .need-call{color:#FCA5A5}
 @media (max-width:640px){.rrow > .nm{grid-column:1 / -1} .qr-box{justify-content:center} .qr-box canvas{width:200px;height:200px}}
 /* ---------- day / night button (next to the profile letters) ---------- */
 .profile{display:flex;align-items:center;gap:8px}
@@ -710,9 +710,9 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       acceptOrder:"Siparişi kabul et", accept:"Kabul et", acceptedToast:"Sipariş kabul edildi, toplama başladı.",
       missingQty:"Eksik", weightMissing:"Ağırlık girilmedi", readyBlocked:"Hazır yapılamıyor – şu satırlar eksik:",
       readyBlocked2:"Hazır yapılamıyor:", weightRange:"İzin verilen: {a}–{b} kg", weightOut:"Ağırlık izin verilen aralığın dışında", errWeightOut:"{p}: {k} kg girildi, izin verilen {a}–{b} kg (±%10)",
-      errOver:"Ürün tutarı {f}, en fazla {m} olabilir (+%15)", errNeedOk:"Eksik ürün var ya da tutar %15'ten fazla düştü: müşteri onayını işaretle",
+      errOver:"Ürün tutarı {f}, en fazla {m} olabilir (+%15)", errNeedOk:"Eksik ürün var ya da tutar %15'ten fazla düştü: müşteri onayını işaretle", errNeedCall:"Eksik ürün var ya da tutar %15'ten fazla düştü: önce müşteriyi ara (📞 Müşteriyi ara) ve onayını al", custOkNeedCall:"Önce müşteriyi ara – arama kaydı olmadan işaretlenemez.", callAgreed:"Müşteriye ulaşıldı, onayladı",
       limitTitle:"Ürün tutarı (son)", limitOrder:"Sipariş", limitMax:"En fazla (+%15)", limitOver:"Üst sınır aşıldı! Müşterinin kartından en fazla {m} çekilebilir. Ağırlıkları ve adetleri kontrol et.",
-      limitLow:"Tutar siparişten %15'ten fazla düşük olduğunda ({l} altı), müşteri bilgilendirilmeli.", custOk:"Müşteriyle konuştum: eksik ürünlerin çıkarılmasını ve yeni tutarı onayladı",
+      limitLow:"Tutar siparişten %15'ten fazla düşük olduğunda ({l} altı), müşteri bilgilendirilmeli.", custOk:"Müşteriyi aradım: eksik ürünlerin çıkarılmasını ve yeni tutarı onayladı",
       readyHelp:"Eksik ürünleri + ile say, tartılı ürünlere ağırlık gir (ör. 1,10). Ürün yoksa müşteriyi ara.",
       listedCount:"Listelenen ürün sayısı", totalCount:"Toplam ürün sayısı", searchHint:"Ürün adı, marka, SKU ya da barkod ara…",
       newProduct:"Yeni ürün", importProducts:"İçe aktar", edit:"Düzenle", editProduct:"Ürünü düzenle", photo:"Resim",
@@ -779,9 +779,9 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       acceptOrder:"Bestellung annehmen", accept:"Annehmen", acceptedToast:"Bestellung angenommen, Kommissionierung gestartet.",
       missingQty:"Fehlt", weightMissing:"Kein Gewicht eingegeben", readyBlocked:"Nicht bereit – diese Zeilen fehlen:",
       readyBlocked2:"Nicht bereit:", weightRange:"Erlaubt: {a}–{b} kg", weightOut:"Gewicht außerhalb des erlaubten Bereichs", errWeightOut:"{p}: {k} kg eingegeben, erlaubt sind {a}–{b} kg (±10 %)",
-      errOver:"Warenwert {f}, höchstens {m} möglich (+15 %)", errNeedOk:"Es fehlen Produkte oder der Betrag ist um mehr als 15 % gesunken: Zustimmung des Kunden abhaken",
+      errOver:"Warenwert {f}, höchstens {m} möglich (+15 %)", errNeedOk:"Es fehlen Produkte oder der Betrag ist um mehr als 15 % gesunken: Zustimmung des Kunden abhaken", errNeedCall:"Es fehlen Produkte oder der Betrag ist um mehr als 15 % gesunken: zuerst den Kunden anrufen (📞 Kunden anrufen) und die Zustimmung einholen", custOkNeedCall:"Zuerst den Kunden anrufen – ohne protokollierten Anruf nicht abhakbar.", callAgreed:"Kunde erreicht, einverstanden",
       limitTitle:"Warenwert (final)", limitOrder:"Bestellung", limitMax:"Höchstens (+15 %)", limitOver:"Obergrenze überschritten! Von der Karte des Kunden dürfen höchstens {m} abgebucht werden. Gewichte und Mengen prüfen.",
-      limitLow:"Wenn der Betrag mehr als 15 % unter der Bestellung liegt (unter {l}), muss der Kunde informiert werden.", custOk:"Mit dem Kunden gesprochen: Er ist mit dem Entfernen der fehlenden Produkte und dem neuen Betrag einverstanden",
+      limitLow:"Wenn der Betrag mehr als 15 % unter der Bestellung liegt (unter {l}), muss der Kunde informiert werden.", custOk:"Kunden angerufen: Er ist mit dem Entfernen der fehlenden Produkte und dem neuen Betrag einverstanden",
       readyHelp:"Fehlende Artikel mit + zählen, bei Gewichtsartikeln das Gewicht eingeben (z. B. 1,10). Fehlt ein Artikel, den Kunden anrufen.",
       listedCount:"Angezeigte Produkte", totalCount:"Produkte gesamt", searchHint:"Produktname, Marke, SKU oder Barcode suchen …",
       newProduct:"Neues Produkt", importProducts:"Importieren", edit:"Bearbeiten", editProduct:"Produkt bearbeiten", photo:"Bild",
@@ -849,9 +849,9 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       acceptOrder:"Accept order", accept:"Accept", acceptedToast:"Order accepted, picking started.",
       missingQty:"Missing", weightMissing:"No weight entered", readyBlocked:"Cannot mark as ready – these lines are missing:",
       readyBlocked2:"Cannot mark as ready:", weightRange:"Allowed: {a}–{b} kg", weightOut:"Weight outside the allowed range", errWeightOut:"{p}: {k} kg entered, allowed {a}–{b} kg (±10%)",
-      errOver:"Product total {f}, at most {m} is allowed (+15%)", errNeedOk:"Products are missing or the total dropped by more than 15%: tick the customer's approval",
+      errOver:"Product total {f}, at most {m} is allowed (+15%)", errNeedOk:"Products are missing or the total dropped by more than 15%: tick the customer's approval", errNeedCall:"Products are missing or the total dropped by more than 15%: call the customer first (📞 Call customer) and get their approval", custOkNeedCall:"Call the customer first – it cannot be ticked without a logged call.", callAgreed:"Customer reached, agreed",
       limitTitle:"Product total (final)", limitOrder:"Order", limitMax:"Maximum (+15%)", limitOver:"Upper limit exceeded! At most {m} may be charged to the customer's card. Check weights and quantities.",
-      limitLow:"When the total is more than 15% below the order (under {l}), the customer must be informed.", custOk:"I talked to the customer: they agreed to removing the missing products and to the new total",
+      limitLow:"When the total is more than 15% below the order (under {l}), the customer must be informed.", custOk:"I called the customer: they agreed to removing the missing products and to the new total",
       readyHelp:"Count missing items with +, enter the weight of products sold by weight (e.g. 1.10). If an item is missing, call the customer.",
       listedCount:"Products listed", totalCount:"Products in total", searchHint:"Search product name, brand, SKU or barcode…",
       newProduct:"New product", importProducts:"Import", edit:"Edit", editProduct:"Edit product", photo:"Image",
@@ -1274,7 +1274,9 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       if (ws === "bad") { r = weightRange(it); errs.push(t("errWeightOut").replace("{p}", nm).replace("{k}", fmtKg(it.kg)).replace("{a}", fmtKg(r[0])).replace("{b}", fmtKg(r[1]))); }
     });
     if (a.over) errs.push(t("errOver").replace("{f}", money(a.fin)).replace("{m}", money(a.max)));
-    if (a.needsOk && !o.custOk) errs.push(t("errNeedOk"));
+    // missing products / big drop: the customer must be CALLED first (at least 1 logged call), then the approval ticked
+    if (a.needsOk && o.calls < 1) errs.push(t("errNeedCall"));
+    else if (a.needsOk && !o.custOk) errs.push(t("errNeedOk"));
     return errs;
   }
   function limitHtml(o) {
@@ -1284,7 +1286,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       '<div class="limit-meta"><span>' + t("limitOrder") + ': ' + money(a.ord) + '</span><span>' + t("limitMax") + ': ' + money(a.max) + '</span></div>';
     if (a.over) h += '<div class="limit-msg">⛔ ' + t("limitOver").replace("{m}", money(a.max)) + '</div>';
     else if (a.low_) h += '<div class="limit-msg">⚠️ ' + t("limitLow").replace("{l}", money(a.low)) + '</div>';
-    if (a.needsOk) h += '<label class="remember cust-ok"><input type="checkbox" id="custOk"' + (o.custOk ? ' checked' : '') + '><span>📞 ' + t("custOk") + '</span></label>';
+    if (a.needsOk) h += '<label class="remember cust-ok' + (o.calls < 1 ? ' locked' : '') + '"><input type="checkbox" id="custOk"' + (o.custOk && o.calls >= 1 ? ' checked' : '') + (o.calls < 1 ? ' disabled' : '') + '><span>📞 ' + t("custOk") +
+      (o.calls < 1 ? '<em class="need-call">' + t("custOkNeedCall") + '</em>' : '') + '</span></label>';
     return h + '</div>';
   }
   function orderedTotal(o) { return o.items.reduce(function (s, it) { return s + lineAmount(it, false); }, 0); }
@@ -2050,7 +2053,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
         '</ul><span style="font-weight:500">' + t("readyHelp") + '</span></div>';
     }
     if ((o.status === "PENDING" || picking) && o.calls < 2) html += '<p class="note">' + t("cancelRule") + '</p>';
-    if (o.calls) html += '<div class="calllog">' + Array.from({length:o.calls}, function (_, k) { return t("callAttempt") + ' ' + (k + 1) + '/2 · ' + t("callNoAnswer"); }).join('<br>') + '</div>';
+    // the last call counts as answered once the employee ticked the customer's approval
+    if (o.calls) html += '<div class="calllog">' + Array.from({length:o.calls}, function (_, k) { return t("callAttempt") + ' ' + (k + 1) + '/2 · ' + (o.custOk && k === o.calls - 1 ? '✓ ' + t("callAgreed") : t("callNoAnswer")); }).join('<br>') + '</div>';
     modal.innerHTML = html + '</div></div>';
     modal.hidden = false;
   }

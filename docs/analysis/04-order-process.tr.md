@@ -228,7 +228,7 @@ flowchart TD
 Bir sipariş *Hazır* olmadan önce panel tutarları kontrol eder (US-44, US-45; ayrıntılar [06 §2](06-prototype-decisions.tr.md)):
 - her tartılı satır sipariş edilen ağırlığın **±%10**'u içinde;
 - ürün tutarı sipariş tutarının en fazla **+%15**'i – kesin sınır, müşteri onayıyla da aşılamaz;
-- eksik ürün ya da **%15**'ten fazla düşüş ancak çalışan *"müşteri bilgilendirildi ve onayladı"* kutusunu işaretlerse.
+- eksik ürün ya da **%15**'ten fazla düşüş ancak müşteri en az **1 kez aranıp** (kayıtlı arama) çalışan *"müşteri bilgilendirildi ve onayladı"* kutusunu işaretlerse.
 
 ## 11. Kurye kapasitesi ve bölünen siparişler
 Bir kurye en fazla **20 litre** taşır. 20 L'yi aşan sipariş otomatik olarak olabildiğince az kısma bölünür; litreler eşit paylaşılır ve her ürün tek kısımda kalır (US-46; ayrıntılar [06 §3](06-prototype-decisions.tr.md)). Her kısım bu süreci kendi başına izler (kabul, toplama, hazır); raporlar onu tek sipariş sayar.
