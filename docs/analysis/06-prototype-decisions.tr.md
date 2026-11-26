@@ -23,6 +23,7 @@ Tıklanabilir prototip [prototype/panel.html](../../prototype/panel.html) (sür�
 | PD-14 | Üç kriterde **müşteri değerlendirmesi:** servis, lezzet, teslimat | US-51 | S-03, S-23 |
 | PD-15 | Satış raporu **günlük, haftalık, aylık, yıllık;** günlük görünümde ayrıntı listeleri | US-52 | S-12 |
 | PD-16 | **Gündüz ve gece modu** | US-53 | tümü |
+| PD-17 | İlk ziyarette 6 adımlık **demo turu** (cihazda hatırlanır), profil menüsünden yeniden açılabilir | – | tümü |
 
 ## 2. Tutar koruması (PD-06, PD-07)
 **Sorun:** Bir çalışan 1 kg muz yerine 15 kg yazar – müşterinin kartından çok fazla para çekilir.

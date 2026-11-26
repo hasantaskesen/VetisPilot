@@ -23,6 +23,7 @@ The clickable prototype [prototype/panel.html](../../prototype/panel.html) (vers
 | PD-14 | **Customer ratings** in three criteria: service, taste, delivery | US-51 | S-03, S-23 |
 | PD-15 | Sales report **per day, week, month, year**, drill-down lists in the daily view | US-52 | S-12 |
 | PD-16 | **Day and night mode** | US-53 | all |
+| PD-17 | **Demo tour** in 6 steps on the first visit (stored on the device), can be restarted from the profile menu | – | all |
 
 ## 2. Amount protection (PD-06, PD-07)
 **Problem:** an employee types 15 kg instead of 1 kg of bananas – the customer's card would be charged far too much.

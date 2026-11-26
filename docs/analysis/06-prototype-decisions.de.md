@@ -23,6 +23,7 @@ Mit dem klickbaren Prototyp [prototype/panel.html](../../prototype/panel.html) (
 | PD-14 | **Kundenbewertungen** in drei Kriterien: Service, Geschmack, Lieferung | US-51 | S-03, S-23 |
 | PD-15 | Verkaufsbericht **pro Tag, Woche, Monat, Jahr,** Detaillisten in der Tagesansicht | US-52 | S-12 |
 | PD-16 | **Tag- und Nachtmodus** | US-53 | alle |
+| PD-17 | **Demo-Tour** in 6 Schritten beim ersten Besuch (auf dem Gerät gespeichert), im Profilmenü erneut startbar | – | alle |
 
 ## 2. Betragsschutz (PD-06, PD-07)
 **Problem:** Eine Mitarbeiterin tippt 15 kg statt 1 kg Bananen ein – von der Karte des Kunden würde viel zu viel abgebucht.
