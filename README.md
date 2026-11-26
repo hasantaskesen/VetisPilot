@@ -28,6 +28,18 @@ VetisPilot is a multi-channel order management system. A grocery store or restau
 - [Database – Data Model (ER)](docs/database/01-er-model.md)
 - [Clickable prototype of the panel](prototype/panel.html) (v1.0.1) – login, orders with alerts and split orders, picking with amount protection, products and sale status, returns with QR handover, reports, reviews, day / night mode (sample data; open the file in a browser)
 
+## Colour language of the panel
+Colours always mean the same thing, so a branch employee understands a list at a glance – in day and in night mode.
+
+| Colour | Meaning | Example |
+|---|---|---|
+| 🔵 Blue / 🟤 brown | The channel: **HTGO Market** / **GK Market** (headers, alerts, reports) | New-order banner in the channel's colour |
+| 🟢 Green | Good / can go on now | Active orders, product on sale, *courier is at the store to pick up the order*, return received |
+| 🟣 Purple | Courier is moving | *Courier on the way to the store*, *courier on the way to the delivery address* |
+| 🟠 Orange | Needs attention soon | Order *late* (6+ min), *courier is bringing a return back to the store* |
+| 🔴 Red | Act now / blocked | Order *very late* (12+ min), pending returns, amount limit exceeded, cancellation |
+| ⚪ Grey | Not possible yet | *Cancel* before a reason is chosen, switch off |
+
 ## Tech stack
 | Layer | Technology |
 |---|---|

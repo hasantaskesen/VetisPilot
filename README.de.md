@@ -28,6 +28,18 @@ VetisPilot ist ein Multi-Channel-Bestellmanagementsystem. Ein Lebensmittelgesch�
 - [Datenbank – Datenmodell (ER)](docs/database/01-er-model.de.md)
 - [Klickbarer Prototyp des Panels](prototype/panel.html) (v1.0.1) – Anmeldung, Bestellungen mit Hinweisen und geteilten Bestellungen, Kommissionierung mit Betragsschutz, Produkte und Verkaufsstatus, Retouren mit QR-Übergabe, Berichte, Bewertungen, Tag-/Nachtmodus (Beispieldaten; Datei im Browser öffnen)
 
+## Farbsprache des Panels
+Farben bedeuten immer dasselbe, damit Filialmitarbeitende eine Liste auf einen Blick verstehen – im Tag- und im Nachtmodus.
+
+| Farbe | Bedeutung | Beispiel |
+|---|---|---|
+| 🔵 Blau / 🟤 Braun | Der Kanal: **HTGO Market** / **GK Market** (Kopfzeilen, Hinweise, Berichte) | Banner für neue Bestellungen in der Kanalfarbe |
+| 🟢 Grün | Gut / kann jetzt weitergehen | Aktive Bestellungen, Produkt im Verkauf, *Kurier ist in der Filiale, um die Bestellung abzuholen*, Retoure angenommen |
+| 🟣 Lila | Kurier ist unterwegs | *Kurier auf dem Weg zur Filiale*, *Kurier unterwegs zur Lieferadresse* |
+| 🟠 Orange | Bald Aufmerksamkeit nötig | Bestellung *verspätet* (ab 6 Min.), *Kurier bringt eine Retoure zur Filiale* |
+| 🔴 Rot | Jetzt handeln / gesperrt | Bestellung *stark verspätet* (ab 12 Min.), offene Retouren, Betragsgrenze überschritten, Stornierung |
+| ⚪ Grau | Noch nicht möglich | *Stornieren* bevor ein Grund gewählt ist, Schalter aus |
+
 ## Technologie
 | Schicht | Technologie |
 |---|---|

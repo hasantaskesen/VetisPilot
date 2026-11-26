@@ -28,6 +28,18 @@ VetisPilot çok kanallı bir sipariş yönetim sistemidir. Bir market ya da rest
 - [Veritabanı – Veri Modeli (ER)](docs/database/01-er-model.tr.md)
 - [Panelin tıklanabilir prototipi](prototype/panel.html) (v1.0.1) – giriş, uyarılı ve bölünebilen siparişler, tutar korumalı toplama, ürünler ve satış durumu, QR ile iade teslim alma, raporlar, değerlendirmeler, gündüz / gece modu (örnek veriler; dosyayı tarayıcıda aç)
 
+## Paneldeki renklerin dili
+Renkler her yerde aynı anlama gelir; böylece şube çalışanı bir listeyi tek bakışta anlar – gündüz ve gece modunda.
+
+| Renk | Anlamı | Örnek |
+|---|---|---|
+| 🔵 Mavi / 🟤 kahverengi | Kanal: **HTGO Market** / **GK Market** (başlıklar, bildirimler, raporlar) | Kanalın renginde yeni sipariş bildirimi |
+| 🟢 Yeşil | İyi / şimdi devam edilebilir | Aktif siparişler, satıştaki ürün, *kurye siparişi teslim almak için mağazada*, iade teslim alındı |
+| 🟣 Mor | Kurye hareket halinde | *Kurye mağazaya geliyor*, *kurye teslimat adresine gidiyor* |
+| 🟠 Turuncu | Yakında dikkat gerekiyor | Sipariş *gecikmede* (6+ dk), *kurye iadeyi mağazaya getiriyor* |
+| 🔴 Kırmızı | Hemen harekete geç / engellendi | Sipariş *çok gecikmiş* (12+ dk), bekleyen iadeler, tutar sınırı aşıldı, iptal |
+| ⚪ Gri | Henüz mümkün değil | Neden seçilmeden *İptal et*, kapalı anahtar |
+
 ## Teknoloji
 | Katman | Teknoloji |
 |---|---|
