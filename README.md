@@ -26,6 +26,7 @@ VetisPilot is a multi-channel order management system. A grocery store or restau
 - [05 – Screen List](docs/analysis/05-screens.md)
 - [06 – Decisions from the clickable prototype](docs/analysis/06-prototype-decisions.md)
 - [Database – Data Model (ER)](docs/database/01-er-model.md)
+- [API 01 – Login](docs/api/01-login.md)
 - [Clickable prototype of the panel](prototype/panel.html) (v1.0.1) – login, orders with alerts and split orders, picking with amount protection, products and sale status, returns with QR handover, reports, reviews, day / night mode (sample data; open the file in a browser)
 
 ## Colour language of the panel

@@ -26,6 +26,7 @@ VetisPilot çok kanallı bir sipariş yönetim sistemidir. Bir market ya da rest
 - [05 – Ekran Listesi](docs/analysis/05-screens.tr.md)
 - [06 – Tıklanabilir prototipten çıkan kararlar](docs/analysis/06-prototype-decisions.tr.md)
 - [Veritabanı – Veri Modeli (ER)](docs/database/01-er-model.tr.md)
+- [API 01 – Giriş](docs/api/01-login.tr.md)
 - [Panelin tıklanabilir prototipi](prototype/panel.html) (v1.0.1) – giriş, uyarılı ve bölünebilen siparişler, tutar korumalı toplama, ürünler ve satış durumu, QR ile iade teslim alma, raporlar, değerlendirmeler, gündüz / gece modu (örnek veriler; dosyayı tarayıcıda aç)
 
 ## Paneldeki renklerin dili

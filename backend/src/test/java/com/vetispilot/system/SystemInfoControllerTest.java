@@ -4,18 +4,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.vetispilot.auth.JwtService;
+import com.vetispilot.auth.SecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
- * Tests only the web layer (no database needed):
+ * Tests only the web layer (no database needed). The endpoint is open without a login:
  * does GET /api/v1/system/info answer with the expected JSON?
  */
 @WebMvcTest(SystemInfoController.class)
-@TestPropertySource(properties = "vetispilot.version=test")
+@Import({SecurityConfig.class, JwtService.class})
+@TestPropertySource(properties = {"vetispilot.version=test",
+        "vetispilot.security.jwt-secret=test-secret-that-is-long-enough-for-hmac-256"})
 class SystemInfoControllerTest {
 
     @Autowired

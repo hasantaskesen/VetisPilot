@@ -22,7 +22,8 @@ spring:
           time_zone: UTC
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    # db/demo adds the demo branch and accounts of the prototype; leave it out for a real installation
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration,classpath:db/demo}
 
 server:
   port: 8080
@@ -35,3 +36,8 @@ management:
 
 vetispilot:
   version: 0.1.0
+  security:
+    jwt-secret: ${JWT_SECRET}          # from .env – never written here
+    token-hours: 8                     # US-01: logged out after 8 hours
+    max-failed-logins: 5               # US-02: the 5th wrong password locks the account ...
+    lock-minutes: 15                   # ... for 15 minutes
