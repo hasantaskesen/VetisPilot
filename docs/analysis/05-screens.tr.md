@@ -37,6 +37,7 @@ Bu belge, satıcı panelindeki tüm ekranları, kimin açabileceğini ve hangi u
 | S-21 | İade teslim alma | Gelen ürünleri işaretleme, QR kod oluşturma, kabul edilen iadeleri ve para iadelerini görme | ✔ okuma | ✔ | ✔ | US-48, US-49 | M |
 | S-22 | Kurye onayı | QR kod okutulunca açılır, giriş gerekmez; kurye teslimi onaylar | – | – | – (kurye) | US-48 | M |
 | S-23 | Değerlendirmeler | Ortalama, yıldız dağılımı, servis / lezzet / teslimat, son yorumlar | ✔ | ✔ | ✔ | US-51 | S |
+| S-24 | İndirimler | Kanal bazında: yeni indirim (ürünler, yüzde / tutar, süre), etkilenen ürünler ve örnek fiyat, geri sayımlı aktif indirimler ve durdurma | ✔ | ✔ | ✔ | US-54 | S |
 
 Kanal simülatörünün (US-29) panelde ekranı yoktur; ayrı bir servis olarak çalışır ve bir ayar dosyasıyla yapılandırılır.
 

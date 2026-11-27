@@ -2,7 +2,7 @@
 
 🇬🇧 **English** · 🇩🇪 [Deutsch](06-prototype-decisions.de.md) · 🇹🇷 [Türkçe](06-prototype-decisions.tr.md)
 
-The clickable prototype [prototype/panel.html](../../prototype/panel.html) (version **v1.0.1**, sample data) was used to try the screens with real users before the backend is built. While testing it, many new business rules came up. This document collects them in one place: **what** was decided, **why**, which user stories and screens it touches, and what it means for the database. New stories are US-40 – US-53 in [03 – User Stories](03-user-stories.md), new screens S-19 – S-23 in [05 – Screens](05-screens.md).
+The clickable prototype [prototype/panel.html](../../prototype/panel.html) (version **v1.0.1**, sample data) was used to try the screens with real users before the backend is built. While testing it, many new business rules came up. This document collects them in one place: **what** was decided, **why**, which user stories and screens it touches, and what it means for the database. New stories are US-40 – US-54 in [03 – User Stories](03-user-stories.md), new screens S-19 – S-24 in [05 – Screens](05-screens.md).
 
 ## 1. Overview
 | ID | Decision | Stories | Screen |
@@ -24,6 +24,7 @@ The clickable prototype [prototype/panel.html](../../prototype/panel.html) (vers
 | PD-15 | Sales report **per day, week, month, year**, drill-down lists in the daily view | US-52 | S-12 |
 | PD-16 | **Day and night mode** | US-53 | all |
 | PD-17 | **Demo tour** in 6 steps on the first visit (stored on the device), can be restarted from the profile menu | – | all |
+| PD-18 | **Time-limited discounts per channel:** all, category, selected or best-before-soon products; percent or amount; minutes to weeks | US-54 | S-24 |
 
 ## 2. Amount protection (PD-06, PD-07)
 **Problem:** an employee types 15 kg instead of 1 kg of bananas – the customer's card would be charged far too much.
@@ -100,6 +101,7 @@ flowchart LR
 - **Ratings (PD-14):** HTGO 4.9 (2304 reviews), GK 4.7 (2026 reviews); every review has 1 – 5 stars for service, taste and delivery. The panel only shows them.
 - **Reports (PD-15):** today's numbers are counted from the order rows themselves, so the home page, the *All* tab and the daily report always match. In the daily view the boxes *Orders, Revenue, Cancellations, Returns* open the list behind the number. Sundays are closed (Germany).
 - **Day / night mode (PD-16):** sun / moon button next to the profile; the choice is remembered on the device.
+- **Discounts (PD-18):** a discount belongs to **one channel** and runs for a set time (minutes, hours, days or weeks). Products whose best-before date is **3 days or less** away are listed automatically, so they are sold instead of thrown away. Rules: at most **70 %**, never below **€0.01**, one discount per product at a time (the highest wins). A new order stores the discounted price (US-14); stopping a discount does not change placed orders. Example: whole milk €1.29 − 30 % = €0.90.
 
 ## 8. Legal notes
 - **Trademark:** "WhatsApp" may be named to describe the integration; its logo is not used and no partnership is implied.
@@ -119,6 +121,7 @@ flowchart LR
 | new `return_handovers (return_id, token, status, qr_created_at, received_at, courier)` and refund time | QR handover and refund (PD-11, PD-12) |
 | `users.phone`, `users.whatsapp_opt_in` + new `notification_log` | WhatsApp reminders and consent (PD-05) |
 | new `reviews (order_id, service, taste, delivery, comment)` | ratings (PD-14) |
+| new `discounts (id, channel_id, scope, category, type, value, starts_at, ends_at, stopped_at)` + `discount_products` | time-limited discounts (PD-18) |
 
 ## 10. Open questions
 - Should the 20 L limit depend on the courier's vehicle (bike vs car)?

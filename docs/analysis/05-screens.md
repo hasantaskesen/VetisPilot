@@ -37,6 +37,7 @@ This document lists every screen of the seller panel, who can open it and which 
 | S-21 | Return handover | Tick returned products, create the QR code, see accepted returns and refunds | ✔ read | ✔ | ✔ | US-48, US-49 | M |
 | S-22 | Courier confirmation | Opened by scanning the QR code, no login; courier confirms the handover | – | – | – (courier) | US-48 | M |
 | S-23 | Reviews | Average, star distribution, service / taste / delivery, latest reviews | ✔ | ✔ | ✔ | US-51 | S |
+| S-24 | Discounts | Per channel: new discount (products, percent / amount, duration), affected products and example price, active discounts with countdown and stop | ✔ | ✔ | ✔ | US-54 | S |
 
 The channel simulator (US-29) has no screen in the panel; it runs as a separate service and is configured by a settings file.
 

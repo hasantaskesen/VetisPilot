@@ -64,6 +64,7 @@
 | US-51 | Dashboard | Kundenbewertungen sehen | Händler, Filialmitarbeiter | S | G5 |
 | US-52 | Berichte | Verkaufsbericht pro Tag, Woche, Monat, Jahr | Händler | S | G4 |
 | US-53 | Zugang | Tag- und Nachtmodus | Alle Nutzer | C | – |
+| US-54 | Produkte | Zeitlich begrenzte Rabatte pro Kanal | Händler, Filialmitarbeiter | S | G5 |
 
 ---
 
@@ -383,3 +384,9 @@ Diese Stories entstanden beim Testen des Prototyps (v1.0.1). Hintergrund, Beispi
 ### US-53 – Tag- und Nachtmodus · C
 *Als* Nutzer *möchte ich* zwischen heller und dunkler Darstellung wechseln, *damit* der Bildschirm in Nachtschichten angenehm ist.
 - **Gegeben** der Sonne-/Mond-Button, **dann** wechseln alle Seiten; Statusfarben behalten ihre Bedeutung, und die Wahl wird auf dem Gerät gespeichert.
+
+### US-54 – Zeitlich begrenzte Rabatte pro Kanal · S
+*Als* Filialmitarbeiter *möchte ich* in einem Kanal für eine bestimmte Zeit einen Rabatt starten, *damit* Produkte kurz vor dem Mindesthaltbarkeitsdatum verkauft statt weggeworfen werden.
+- **Gegeben** die Rabattseite eines Kanals, **wenn** ich die Produkte (alle, eine Kategorie, ausgewählte Produkte oder *MHD läuft bald ab* = 3 Tage oder weniger), einen Prozentsatz (Schnellwahl 10 / 20 / 30 / 50 %) oder einen festen Betrag und eine Dauer in Minuten, Stunden, Tagen oder Wochen wähle, **dann** zeigt das Panel die Zahl der betroffenen Produkte, einen Beispielpreis und das Ende.
+- **Gegeben** der Rabatt läuft, **dann** zeigt die Produktliste pro Kanal den alten Preis durchgestrichen neben dem Rabattpreis, und die Liste der aktiven Rabatte zeigt einen Countdown und einen Button *Beenden*.
+- **Regeln:** höchstens 70 %; ein Preis fällt nie unter 0,01 €; pro Produkt nur ein Rabatt gleichzeitig (der höchste gilt); eine neue Bestellung speichert den Rabattpreis (US-14), daher ändert das Beenden eines Rabatts bereits erteilte Bestellungen nie.

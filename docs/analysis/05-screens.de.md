@@ -37,6 +37,7 @@ Dieses Dokument listet alle Bildschirme des Händler-Panels auf, wer sie öffnen
 | S-21 | Retourenannahme | Zurückgebrachte Produkte abhaken, QR-Code erstellen, angenommene Retouren und Erstattungen sehen | ✔ lesen | ✔ | ✔ | US-48, US-49 | M |
 | S-22 | Kurierbestätigung | Öffnet sich beim Scannen des QR-Codes, ohne Anmeldung; der Kurier bestätigt die Übergabe | – | – | – (Kurier) | US-48 | M |
 | S-23 | Bewertungen | Durchschnitt, Sternverteilung, Service / Geschmack / Lieferung, neueste Bewertungen | ✔ | ✔ | ✔ | US-51 | S |
+| S-24 | Rabatte | Pro Kanal: neuer Rabatt (Produkte, Prozent / Betrag, Dauer), betroffene Produkte und Beispielpreis, aktive Rabatte mit Countdown und Beenden | ✔ | ✔ | ✔ | US-54 | S |
 
 Der Kanal-Simulator (US-29) hat keinen Bildschirm im Panel; er läuft als separater Dienst und wird über eine Konfigurationsdatei eingestellt.
 

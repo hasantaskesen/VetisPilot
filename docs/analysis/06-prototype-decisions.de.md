@@ -2,7 +2,7 @@
 
 🇬🇧 [English](06-prototype-decisions.md) · 🇩🇪 **Deutsch** · 🇹🇷 [Türkçe](06-prototype-decisions.tr.md)
 
-Mit dem klickbaren Prototyp [prototype/panel.html](../../prototype/panel.html) (Version **v1.0.1**, Beispieldaten) wurden die Bildschirme mit echten Nutzern ausprobiert, bevor das Backend gebaut wird. Dabei sind viele neue Geschäftsregeln entstanden. Dieses Dokument sammelt sie an einer Stelle: **was** entschieden wurde, **warum**, welche User Stories und Bildschirme betroffen sind und was das für die Datenbank bedeutet. Neue Stories sind US-40 – US-53 in [03 – User Stories](03-user-stories.de.md), neue Bildschirme S-19 – S-23 in [05 – Bildschirme](05-screens.de.md).
+Mit dem klickbaren Prototyp [prototype/panel.html](../../prototype/panel.html) (Version **v1.0.1**, Beispieldaten) wurden die Bildschirme mit echten Nutzern ausprobiert, bevor das Backend gebaut wird. Dabei sind viele neue Geschäftsregeln entstanden. Dieses Dokument sammelt sie an einer Stelle: **was** entschieden wurde, **warum**, welche User Stories und Bildschirme betroffen sind und was das für die Datenbank bedeutet. Neue Stories sind US-40 – US-54 in [03 – User Stories](03-user-stories.de.md), neue Bildschirme S-19 – S-24 in [05 – Bildschirme](05-screens.de.md).
 
 ## 1. Überblick
 | ID | Entscheidung | Stories | Bildschirm |
@@ -24,6 +24,7 @@ Mit dem klickbaren Prototyp [prototype/panel.html](../../prototype/panel.html) (
 | PD-15 | Verkaufsbericht **pro Tag, Woche, Monat, Jahr,** Detaillisten in der Tagesansicht | US-52 | S-12 |
 | PD-16 | **Tag- und Nachtmodus** | US-53 | alle |
 | PD-17 | **Demo-Tour** in 6 Schritten beim ersten Besuch (auf dem Gerät gespeichert), im Profilmenü erneut startbar | – | alle |
+| PD-18 | **Zeitlich begrenzte Rabatte pro Kanal:** alle, Kategorie, ausgewählte oder MHD-nahe Produkte; Prozent oder Betrag; Minuten bis Wochen | US-54 | S-24 |
 
 ## 2. Betragsschutz (PD-06, PD-07)
 **Problem:** Eine Mitarbeiterin tippt 15 kg statt 1 kg Bananen ein – von der Karte des Kunden würde viel zu viel abgebucht.
@@ -100,6 +101,7 @@ flowchart LR
 - **Bewertungen (PD-14):** HTGO 4,9 (2304 Bewertungen), GK 4,7 (2026 Bewertungen); jede Bewertung hat 1 – 5 Sterne für Service, Geschmack und Lieferung. Das Panel zeigt sie nur an.
 - **Berichte (PD-15):** Die Zahlen von heute werden aus den Bestellzeilen selbst gezählt, deshalb stimmen Startseite, Reiter *Alle* und Tagesbericht immer überein. In der Tagesansicht öffnen die Kästen *Bestellungen, Umsatz, Stornierungen, Retouren* die Liste hinter der Zahl. Sonntags geschlossen (Deutschland).
 - **Tag- / Nachtmodus (PD-16):** Sonne-/Mond-Button neben dem Profil; die Wahl wird auf dem Gerät gespeichert.
+- **Rabatte (PD-18):** ein Rabatt gehört zu **einem Kanal** und läuft für eine feste Zeit (Minuten, Stunden, Tage oder Wochen). Produkte, deren MHD in **3 Tagen oder früher** erreicht ist, werden automatisch gelistet – so werden sie verkauft statt weggeworfen. Regeln: höchstens **70 %**, nie unter **0,01 €**, pro Produkt nur ein Rabatt gleichzeitig (der höchste gilt). Eine neue Bestellung speichert den Rabattpreis (US-14); das Beenden eines Rabatts ändert erteilte Bestellungen nicht. Beispiel: Vollmilch 1,29 € − 30 % = 0,90 €.
 
 ## 8. Rechtliche Hinweise
 - **Marke:** „WhatsApp“ darf genannt werden, um die Anbindung zu beschreiben; das Logo wird nicht verwendet und keine Partnerschaft vorgetäuscht.
@@ -119,6 +121,7 @@ flowchart LR
 | neu `return_handovers (return_id, token, status, qr_created_at, received_at, courier)` und Erstattungszeit | QR-Übergabe und Erstattung (PD-11, PD-12) |
 | `users.phone`, `users.whatsapp_opt_in` + neu `notification_log` | WhatsApp-Erinnerungen und Einwilligung (PD-05) |
 | neu `reviews (order_id, service, taste, delivery, comment)` | Bewertungen (PD-14) |
+| neu `discounts (id, channel_id, scope, category, type, value, starts_at, ends_at, stopped_at)` + `discount_products` | zeitlich begrenzte Rabatte (PD-18) |
 
 ## 10. Offene Fragen
 - Soll die 20-L-Grenze vom Fahrzeug des Kuriers abhängen (Fahrrad oder Auto)?

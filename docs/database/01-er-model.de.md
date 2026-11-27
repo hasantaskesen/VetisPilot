@@ -238,4 +238,4 @@ docker compose down -v      # löscht die Datenbank vollständig (für einen Neu
 ```
 
 ## 6. Geplante Änderungen aus dem Prototyp
-Der Test des klickbaren Prototyps (v1.0.1) hat neue Regeln gebracht, die Schemaänderungen brauchen: Produktvolumen, Verkaufsstatus pro Kanal, geteilte Bestellungen, Zeitpunkt der Kundenzustimmung, neue Stornoregeln im Trigger, Retourengründe, QR-Übergabe und Erstattung, WhatsApp-Einwilligung und Bewertungen. Sie stehen in [06 – Prototyp-Entscheidungen §9](../analysis/06-prototype-decisions.de.md) und kommen als neue Flyway-Migration (`V2__…`) – `V1` wird nach dem Ausführen nie mehr geändert.
+Der Test des klickbaren Prototyps (v1.0.1) hat neue Regeln gebracht, die Schemaänderungen brauchen: Produktvolumen, Verkaufsstatus pro Kanal, geteilte Bestellungen, Zeitpunkt der Kundenzustimmung, neue Stornoregeln im Trigger, Retourengründe, QR-Übergabe und Erstattung, WhatsApp-Einwilligung, Bewertungen und zeitlich begrenzte Rabatte. Sie stehen in [06 – Prototyp-Entscheidungen §9](../analysis/06-prototype-decisions.de.md) und kommen als neue Flyway-Migration (`V2__…`) – `V1` wird nach dem Ausführen nie mehr geändert.

@@ -238,4 +238,4 @@ docker compose down -v      # deletes the database completely (for a fresh start
 ```
 
 ## 6. Planned changes from the prototype
-Testing the clickable prototype (v1.0.1) brought new rules that need schema changes: product volume, sale status per channel, split orders, customer approval time, new cancellation rules in the trigger, return reasons, QR handover and refund, WhatsApp consent and reviews. They are listed in [06 – Prototype decisions §9](../analysis/06-prototype-decisions.md) and will come as a new Flyway migration (`V2__…`) – `V1` is never changed after it has run.
+Testing the clickable prototype (v1.0.1) brought new rules that need schema changes: product volume, sale status per channel, split orders, customer approval time, new cancellation rules in the trigger, return reasons, QR handover and refund, WhatsApp consent, reviews and time-limited discounts. They are listed in [06 – Prototype decisions §9](../analysis/06-prototype-decisions.md) and will come as a new Flyway migration (`V2__…`) – `V1` is never changed after it has run.

@@ -64,6 +64,7 @@
 | US-51 | Dashboard | See customer ratings | Seller, Branch employee | S | G5 |
 | US-52 | Reports | Sales report per day, week, month, year | Seller | S | G4 |
 | US-53 | Access | Day and night mode | All users | C | – |
+| US-54 | Products | Time-limited discounts per channel | Seller, Branch employee | S | G5 |
 
 ---
 
@@ -383,3 +384,9 @@ These stories come from testing the prototype (v1.0.1). Background, examples and
 ### US-53 – Day and night mode · C
 *As a* user *I want* to switch between a light and a dark look *so that* the screen is comfortable on night shifts.
 - **Given** the sun / moon button, **then** all pages switch; status colours keep their meaning, and the choice is remembered on the device.
+
+### US-54 – Time-limited discounts per channel · S
+*As a* branch employee *I want* to start a discount in one channel for a set time *so that* products close to their best-before date are sold instead of thrown away.
+- **Given** the discounts page of a channel, **when** I choose the products (all, a category, selected products or *best-before soon* = 3 days or less), a percent (quick chips 10 / 20 / 30 / 50 %) or a fixed amount and a duration in minutes, hours, days or weeks, **then** the panel shows how many products are affected, an example price and the end time.
+- **Given** the discount is running, **then** the product list shows the old price struck through next to the discounted price per channel, and the active list shows a countdown and a *Stop* button.
+- **Rules:** at most 70 %; a price never goes below €0.01; one discount per product at a time (the highest wins); a new order stores the discounted price (US-14), so stopping or ending a discount never changes orders already placed.

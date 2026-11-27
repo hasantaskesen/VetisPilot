@@ -64,6 +64,7 @@
 | US-51 | Gösterge paneli | Müşteri değerlendirmelerini görmek | Satıcı, Şube çalışanı | S | G5 |
 | US-52 | Raporlar | Günlük, haftalık, aylık, yıllık satış raporu | Satıcı | S | G4 |
 | US-53 | Erişim | Gündüz ve gece modu | Tüm kullanıcılar | C | – |
+| US-54 | Ürünler | Kanal bazında süreli indirimler | Satıcı, Şube çalışanı | S | G5 |
 
 ---
 
@@ -383,3 +384,9 @@ Bu hikâyeler prototip (v1.0.1) denenirken ortaya çıktı. Arka plan, örnekler
 ### US-53 – Gündüz ve gece modu · C
 *Bir* kullanıcı *olarak* açık ve koyu görünüm arasında geçiş yapmak *istiyorum*, *böylece* gece vardiyasında ekran göz yormaz.
 - **Verilen** güneş / ay düğmesi, **o zaman** bütün sayfalar değişir; durum renklerinin anlamı korunur ve seçim cihazda hatırlanır.
+
+### US-54 – Kanal bazında süreli indirimler · S
+*Bir* şube çalışanı *olarak* bir kanalda belirli bir süre için indirim başlatmak *istiyorum*, *böylece* son tüketim tarihi yaklaşan ürünler atılmak yerine satılır.
+- **Verilen** bir kanalın indirim sayfası, **eğer** ürünleri (tüm ürünler, bir kategori, seçili ürünler ya da *SKT'si yaklaşanlar* = 3 gün veya daha az), bir yüzde (hızlı seçim %10 / 20 / 30 / 50) ya da sabit tutar ve dakika, saat, gün veya hafta olarak bir süre seçersem, **o zaman** panel etkilenen ürün sayısını, örnek bir fiyatı ve bitiş zamanını gösterir.
+- **Verilen** indirim sürüyor, **o zaman** ürün listesi her kanal için eski fiyatı üstü çizili olarak indirimli fiyatın yanında gösterir; aktif indirimler listesinde geri sayım ve *Durdur* düğmesi vardır.
+- **Kurallar:** en fazla %70; fiyat hiçbir zaman 0,01 €'nun altına inmez; bir ürüne aynı anda tek indirim (en yüksek olan geçerli); yeni sipariş indirimli fiyatı saklar (US-14), bu yüzden indirimi durdurmak ya da bitmesi verilmiş siparişleri hiç değiştirmez.

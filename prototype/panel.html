@@ -94,6 +94,28 @@ body.dark .tour{background:var(--surf);color:var(--txt)} body.dark .tour p{color
 .trip{display:block;font-size:11.5px;font-weight:700;line-height:1.3;margin-top:3px;white-space:normal}
 .note.waiting-courier{font-weight:800;font-size:14px;color:#1F2937} body.dark .note.waiting-courier{color:var(--txt)}
 .trip.out{color:#6D28D9} .trip.back{color:#B45309} .trip.back.done{color:#15803D} .trip.here{color:#047857}
+/* discounts */
+.disc-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+.disc-form{display:flex;flex-direction:column;gap:16px} .disc-grid h2{margin:0 0 4px;font-size:18px;font-weight:800}
+.fld{display:flex;flex-direction:column;gap:8px} .fl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:6px} .seg button,.chip-btn{border:1px solid var(--line);background:#fff;color:#111827;border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.theme-htgo .seg button[aria-pressed="true"]{background:var(--htgo);border-color:var(--htgo);color:#fff} .theme-gk .seg button[aria-pressed="true"]{background:var(--gk);border-color:var(--gk);color:#fff}
+.row-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px} .row-in input{width:90px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:16px;font-weight:700}
+.disc-form select,#discQ{padding:9px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;max-width:100%}
+.pick-list{display:flex;flex-direction:column;gap:4px;max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px}
+.pick{display:flex;align-items:center;gap:10px;padding:6px;border-radius:8px;cursor:pointer} .pick img{width:34px;height:34px;object-fit:contain;border-radius:6px;background:#fff}
+.pick span{flex:1;min-width:0;font-weight:600;font-size:14px} .pick small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.mhd{font-style:normal;font-size:12px;font-weight:800;color:#B45309;background:#FEF3C7;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.disc-preview{display:flex;flex-direction:column;gap:2px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:10px 12px;color:#166534;font-size:14px}
+.disc-item{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:12px 0;border-top:1px solid var(--line)} .disc-item>div{flex:1 1 180px;min-width:0;display:flex;flex-direction:column}
+.disc-left{font-weight:800;color:#B91C1C;font-size:14px;white-space:nowrap} .disc-item .btn{padding:7px 14px} .disc-item.ended{opacity:.65;justify-content:space-between;font-size:14px}
+.disc-tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:2px 7px;margin:1px 2px 1px 0;white-space:nowrap;color:#fff} .disc-tag.htgo{background:var(--htgo)} .disc-tag.gk{background:var(--gk)}
+.old-price{color:var(--muted);font-weight:500}
+@media (max-width:760px){.disc-grid{grid-template-columns:1fr}}
+body.dark :is(.seg button,.chip-btn,.row-in input,.disc-form select,.disc-form input[type=search]){background:var(--surf2);color:var(--txt);border-color:var(--line)}
+body.dark .theme-htgo .seg button[aria-pressed="true"]{background:#3B6FF0;border-color:#3B6FF0;color:#fff} body.dark .theme-gk .seg button[aria-pressed="true"]{background:#A56A36;border-color:#A56A36;color:#fff}
+body.dark .mhd{background:#422006;color:#FCD34D} body.dark .disc-preview{background:#052e1a;border-color:#14532d;color:#86EFAC} body.dark .disc-left{color:#FCA5A5}
+body.dark .disc-tag.htgo{background:#3B6FF0} body.dark .disc-tag.gk{background:#A56A36}
 body.dark .split-tag{color:#E9D5FF} body.dark .trip.here{color:#6EE7B7} body.dark .trip.out{color:#C4B5FD} body.dark .trip.back{color:#FCD34D} body.dark .trip.back.done{color:#4ADE80}
 .split-tag{display:block;font-size:11px;font-weight:700;color:#6D28D9;line-height:1.3;white-space:normal}
 .modal-head .split-tag{display:inline;color:#E9D5FF}
@@ -677,6 +699,14 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     <button class="nav-item" data-go="#sale">
       <svg class="i" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="10" rx="5"/><circle cx="16.5" cy="12" r="3"/></svg><span data-t="saleStatus"></span>
     </button>
+    <button class="nav-item" data-toggle="subDiscounts" aria-expanded="false">
+      <svg class="i" viewBox="0 0 24 24"><path d="M3 12.5V4h8.5l9.5 9.5-8.5 8.5z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg><span data-t="discounts"></span>
+      <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="sub" id="subDiscounts" hidden>
+      <button data-go="#discounts-htgo"><i class="dot" style="background:var(--htgo)"></i>HTGO Market</button>
+      <button data-go="#discounts-gk"><i class="dot" style="background:var(--gk)"></i>GK Market</button>
+    </div>
     <button class="nav-item" data-toggle="subReturns" aria-expanded="false">
       <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21c.8-4.2 3.6-6.5 7-6.5s6.2 2.3 7 6.5"/><path d="M12 14.5l-1.3 2.2 1.3 3.3 1.3-3.3z"/></svg><span data-t="returns"></span>
       <svg class="i chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
@@ -799,7 +829,14 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       tableTitle:"Ayrıntı tablosu", colPeriod_day:"Saat", colPeriod_week:"Gün", colPeriod_month:"Gün", colPeriod_year:"Ay", total:"Toplam", closedSunday:"Kapalı (pazar)", topProductsP:"En çok satanlar", soFar:"şu ana kadar",
       reportNote:"Prototip: bugünün rakamları paneldeki canlı siparişlerden gelir, önceki günler örnek verilerdir. Almanya'da süpermarketler pazar günü kapalıdır.",
       refundDone:"{a} müşterinin kartına geri ödendi · {time}", refundNote:"Para iadesi, iade kabul edildiği anda {ch} üzerinden otomatik olarak yapılır.", refundPill:"Para iadesi yapıldı",
-      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum", tourNext:"İleri", tourBack:"Geri", tourSkip:"Turu atla", tourDone:"Başla", tourRestart:"Demo turunu göster", tourT1:"VetisPilot'a hoş geldin! 👋", tourX1:"Bu prototip, iki teslimat kanalından (HTGO Market ve GK Market) gelen siparişleri tek panelde yönetir. Bu kısa tur 1 dakika sürer.", tourT2:"Ana sayfa", tourX2:"Her kanalın aktif siparişleri, bekleyen iadeleri ve müşteri puanı burada. Altında bugünün rakamları var; kutulara basınca satış raporu açılır.", tourT3:"Siparişler ve toplama", tourX3:"☰ menüden Siparişler'e gir. Bekliyor sekmesinde ✓ Kabul et ile siparişi al; toplarken − / + ile say, tartılı ürünlere ağırlık gir. Tutar koruması yanlış girişleri engeller.", tourT4:"Yeni sipariş bildirimi", tourX4:"Birkaç saniye içinde yeni siparişler gelecek: her kanalın kendi sesi ve renginde bir bildirim çıkar.", tourT5:"İadeler", tourX5:"İadeler'de nedenleri gör ve onayla. Kurye ürünleri getirince İade Teslim Alma'da ürünleri işaretle ve QR kod oluştur; kurye okutunca para iadesi yapılır.", tourT6:"Dil ve görünüm", tourX6:"Sağ üstten gündüz / gece modunu, profilden dili (EN / DE / TR) değiştirebilirsin. İyi gezinmeler!", nightMode:"Gece modu", dayMode:"Gündüz modu", tripToCustomer:"Kurye {c} teslimat adresine gidiyor", tripCourierAtStore:"Kurye {c} siparişi teslim almak için mağazada", tripCourierComing:"Kurye {c} siparişi almak için mağazaya geliyor · ≈{m} dk", tripReturnToStore:"İade {id}: kurye {c} iadeyi mağazaya getiriyor", tripReturnAtStore:"İade {id}: kurye mağazada, QR okutulmayı bekliyor", tripReturnDone:"İade {id}: mağaza teslim aldı", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
+      reviews:"Değerlendirmeler", reviewsCount:"{n} değerlendirme", reviewsShort:"yorum",
+      discounts:"İndirimler", discNew:"Yeni indirim", discScope:"Hangi ürünler?", scope_ALL:"Tüm ürünler", scope_CAT:"Kategori", scope_SKUS:"Seçili ürünler", scope_MHD:"SKT'si yaklaşanlar",
+      discMhdInfo:"Son tüketim tarihine {d} gün veya daha az kalan ürünler otomatik listelenir:", discMhdLeft:"SKT {d} gün", discType:"İndirim", discPct:"Yüzde (%)", discEur:"Tutar (−€)",
+      discDuration:"Süre", unit_m:"Dakika", unit_h:"Saat", unit_d:"Gün", unit_w:"Hafta", discEnds:"Bitiş: {t}", discAffects:"{n} ürün etkilenir",
+      discExample:"Örnek: {p} {o} → {n}", discStart:"İndirimi başlat", discActive:"Aktif indirimler", discNone:"Şu an aktif indirim yok.", discLeft:"{t} kaldı", discStop:"Durdur",
+      discStopped:"İndirim durduruldu. Verilmiş siparişlerin fiyatı değişmez.", discStoppedShort:"Durduruldu", discExpired:"Süresi doldu", discStarted:"{ch}: {d} başladı",
+      discErrValue:"Geçerli bir indirim ve süre gir (en fazla %{m}).", discErrNone:"Bu seçimde indirim uygulanacak ürün yok.", discSearch:"Ürün ara…", discEnded:"Biten indirimler", discProductsCount:"{n} ürün",
+      discRules:"Kurallar: en fazla %70 · fiyat 0,01 €'nun altına inmez · bir ürüne aynı anda tek indirim (en yüksek olan geçerli) · verilmiş siparişler o anki fiyatla kalır.", tourNext:"İleri", tourBack:"Geri", tourSkip:"Turu atla", tourDone:"Başla", tourRestart:"Demo turunu göster", tourT1:"VetisPilot'a hoş geldin! 👋", tourX1:"Bu prototip, iki teslimat kanalından (HTGO Market ve GK Market) gelen siparişleri tek panelde yönetir. Bu kısa tur 1 dakika sürer.", tourT2:"Ana sayfa", tourX2:"Her kanalın aktif siparişleri, bekleyen iadeleri ve müşteri puanı burada. Altında bugünün rakamları var; kutulara basınca satış raporu açılır.", tourT3:"Siparişler ve toplama", tourX3:"☰ menüden Siparişler'e gir. Bekliyor sekmesinde ✓ Kabul et ile siparişi al; toplarken − / + ile say, tartılı ürünlere ağırlık gir. Tutar koruması yanlış girişleri engeller.", tourT4:"Yeni sipariş bildirimi", tourX4:"Birkaç saniye içinde yeni siparişler gelecek: her kanalın kendi sesi ve renginde bir bildirim çıkar.", tourT5:"İadeler", tourX5:"İadeler'de nedenleri gör ve onayla. Kurye ürünleri getirince İade Teslim Alma'da ürünleri işaretle ve QR kod oluştur; kurye okutunca para iadesi yapılır.", tourT6:"Dil ve görünüm", tourX6:"Sağ üstten gündüz / gece modunu, profilden dili (EN / DE / TR) değiştirebilirsin. İyi gezinmeler!", nightMode:"Gece modu", dayMode:"Gündüz modu", tripToCustomer:"Kurye {c} teslimat adresine gidiyor", tripCourierAtStore:"Kurye {c} siparişi teslim almak için mağazada", tripCourierComing:"Kurye {c} siparişi almak için mağazaya geliyor · ≈{m} dk", tripReturnToStore:"İade {id}: kurye {c} iadeyi mağazaya getiriyor", tripReturnAtStore:"İade {id}: kurye mağazada, QR okutulmayı bekliyor", tripReturnDone:"İade {id}: mağaza teslim aldı", kpiShowList:"Listeyi gör", explainCancel:"Sipariş müşteriye ulaşmadan iptal edildi; karttan para çekilmez.", explainReturn:"Sipariş teslim edildi, müşteri sonra bazı ürünleri geri gönderdi; o ürünlerin parası iade edilir. İptal ve iade farklı siparişlerdir, sayıları birbirinden bağımsızdır.", kpiHideList:"Listeyi gizle", detailOrders:"Bugünün siparişleri", detailRevenue:"Ciroyu oluşturan siparişler (iptaller hariç)", detailCancelled:"Bugün iptal edilen siparişler", detailReturns:"İadeler", kpiListHint:"Bir satıra basınca siparişin detayı açılır.", ordersWord:"sipariş", partsShort:"kısım", splitTag:"Otomatik bölünmüş sipariş · {p}. kısım", volLine:"Hacim: {v} L / {max} L (kurye taşıma kapasitesi)", splitNote:"Bu sipariş kurye kapasitesini ({max} L) aştığı için otomatik olarak {n} kısma bölündü. Her kısım ayrı toplanır ve ayrı kuryeyle gider.", outOf5:"5 üzerinden", ratingDist:"Puan dağılımı", criteria:"Kriterlere göre", crit_service:"Servis", crit_taste:"Lezzet", crit_delivery:"Teslimat",
       recentReviews:"Son değerlendirmeler", todayWord:"bugün", yesterday:"dün", daysAgo:"{n} gün önce", reviewsNote:"Müşteriler siparişleri teslim edildikten sonra kanal uygulamasında 1–5 yıldız verir (servis, lezzet, teslimat). Panel değerlendirmeleri sadece gösterir."},
     de: {locale:"de-DE", branch:"Lindenkorb Supermarkt", role:"Filialmitarbeiterin", roleStaffM:"Filialmitarbeiter", logout:"Abmelden", login:"Anmelden",
       loginTitle:"Anmelden", marketSub:"Supermarkt · Berlin-Spandau", updateApp:"App aktualisieren", updating:"Wird geprüft …", upToDate:"Ihre App ist aktuell (v1.0.1)", email:"E-Mail", password:"Passwort", rememberMe:"Angemeldet bleiben", availableOn:"APP VERFÜGBAR FÜR", storeSoon:"Prototyp: Store-Link noch nicht verfügbar.", demoAccounts:"DEMO-KONTO WÄHLEN", roleManager:"Filialleiter", loginEmpty:"Bitte E-Mail und Passwort eingeben.", loginWrong:"E-Mail oder Passwort ist falsch.", welcome:"Willkommen, {name}!", home:"Startseite", orders:"Bestellungen",
@@ -869,7 +906,14 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       tableTitle:"Detailtabelle", colPeriod_day:"Uhrzeit", colPeriod_week:"Tag", colPeriod_month:"Tag", colPeriod_year:"Monat", total:"Gesamt", closedSunday:"Geschlossen (Sonntag)", topProductsP:"Meistverkauft", soFar:"bisher",
       reportNote:"Prototyp: Die Zahlen von heute kommen aus den Live-Bestellungen im Panel, frühere Tage sind Beispieldaten. In Deutschland haben Supermärkte sonntags geschlossen.",
       refundDone:"{a} auf die Karte des Kunden zurückerstattet · {time}", refundNote:"Die Erstattung läuft automatisch über {ch}, sobald die Retoure angenommen ist.", refundPill:"Erstattet",
-      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen", tourNext:"Weiter", tourBack:"Zurück", tourSkip:"Tour überspringen", tourDone:"Los geht's", tourRestart:"Demo-Tour anzeigen", tourT1:"Willkommen bei VetisPilot! 👋", tourX1:"Dieser Prototyp verwaltet Bestellungen aus zwei Lieferkanälen (HTGO Market und GK Market) in einem Panel. Die kurze Tour dauert 1 Minute.", tourT2:"Startseite", tourX2:"Hier stehen die aktiven Bestellungen, offenen Retouren und die Kundenbewertung jedes Kanals. Darunter die Zahlen von heute; ein Tipp auf die Kästen öffnet den Verkaufsbericht.", tourT3:"Bestellungen und Kommissionierung", tourX3:"Über das ☰-Menü zu den Bestellungen. Im Reiter Offen mit ✓ Annehmen übernehmen; beim Kommissionieren mit − / + zählen und bei gewogenen Produkten das Gewicht eingeben. Der Betragsschutz verhindert Fehleingaben.", tourT4:"Hinweis bei neuer Bestellung", tourX4:"In wenigen Sekunden kommen neue Bestellungen: mit eigenem Ton und Banner in der Farbe des Kanals.", tourT5:"Retouren", tourX5:"Unter Retouren die Gründe sehen und genehmigen. Bringt der Kurier die Produkte, in der Retourenannahme abhaken und den QR-Code erstellen; nach dem Scan wird erstattet.", tourT6:"Sprache und Darstellung", tourX6:"Oben rechts wechselst du Tag- und Nachtmodus, im Profil die Sprache (EN / DE / TR). Viel Spaß!", nightMode:"Nachtmodus", dayMode:"Tagmodus", tripToCustomer:"Kurier {c} ist unterwegs zur Lieferadresse", tripCourierAtStore:"Kurier {c} ist in der Filiale, um die Bestellung abzuholen", tripCourierComing:"Kurier {c} ist auf dem Weg zur Filiale · ≈{m} Min.", tripReturnToStore:"Retoure {id}: Kurier {c} bringt die Retoure zur Filiale", tripReturnAtStore:"Retoure {id}: Kurier in der Filiale, wartet auf QR-Scan", tripReturnDone:"Retoure {id}: von der Filiale angenommen", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
+      reviews:"Bewertungen", reviewsCount:"{n} Bewertungen", reviewsShort:"Bewertungen",
+      discounts:"Rabatte", discNew:"Neuer Rabatt", discScope:"Welche Produkte?", scope_ALL:"Alle Produkte", scope_CAT:"Kategorie", scope_SKUS:"Ausgewählte Produkte", scope_MHD:"MHD läuft bald ab",
+      discMhdInfo:"Produkte, deren Mindesthaltbarkeitsdatum in {d} Tagen oder früher erreicht ist, werden automatisch gelistet:", discMhdLeft:"MHD {d} T.", discType:"Rabatt", discPct:"Prozent (%)", discEur:"Betrag (−€)",
+      discDuration:"Dauer", unit_m:"Minuten", unit_h:"Stunden", unit_d:"Tage", unit_w:"Wochen", discEnds:"Ende: {t}", discAffects:"{n} Produkte betroffen",
+      discExample:"Beispiel: {p} {o} → {n}", discStart:"Rabatt starten", discActive:"Aktive Rabatte", discNone:"Gerade ist kein Rabatt aktiv.", discLeft:"noch {t}", discStop:"Beenden",
+      discStopped:"Rabatt beendet. Der Preis bereits erteilter Bestellungen bleibt gleich.", discStoppedShort:"Beendet", discExpired:"Abgelaufen", discStarted:"{ch}: {d} gestartet",
+      discErrValue:"Bitte gültigen Rabatt und Dauer eingeben (höchstens {m} %).", discErrNone:"Für diese Auswahl gibt es keine Produkte.", discSearch:"Produkt suchen…", discEnded:"Beendete Rabatte", discProductsCount:"{n} Produkte",
+      discRules:"Regeln: höchstens 70 % · Preis nie unter 0,01 € · pro Produkt nur ein Rabatt gleichzeitig (der höchste gilt) · erteilte Bestellungen behalten den damaligen Preis.", tourNext:"Weiter", tourBack:"Zurück", tourSkip:"Tour überspringen", tourDone:"Los geht's", tourRestart:"Demo-Tour anzeigen", tourT1:"Willkommen bei VetisPilot! 👋", tourX1:"Dieser Prototyp verwaltet Bestellungen aus zwei Lieferkanälen (HTGO Market und GK Market) in einem Panel. Die kurze Tour dauert 1 Minute.", tourT2:"Startseite", tourX2:"Hier stehen die aktiven Bestellungen, offenen Retouren und die Kundenbewertung jedes Kanals. Darunter die Zahlen von heute; ein Tipp auf die Kästen öffnet den Verkaufsbericht.", tourT3:"Bestellungen und Kommissionierung", tourX3:"Über das ☰-Menü zu den Bestellungen. Im Reiter Offen mit ✓ Annehmen übernehmen; beim Kommissionieren mit − / + zählen und bei gewogenen Produkten das Gewicht eingeben. Der Betragsschutz verhindert Fehleingaben.", tourT4:"Hinweis bei neuer Bestellung", tourX4:"In wenigen Sekunden kommen neue Bestellungen: mit eigenem Ton und Banner in der Farbe des Kanals.", tourT5:"Retouren", tourX5:"Unter Retouren die Gründe sehen und genehmigen. Bringt der Kurier die Produkte, in der Retourenannahme abhaken und den QR-Code erstellen; nach dem Scan wird erstattet.", tourT6:"Sprache und Darstellung", tourX6:"Oben rechts wechselst du Tag- und Nachtmodus, im Profil die Sprache (EN / DE / TR). Viel Spaß!", nightMode:"Nachtmodus", dayMode:"Tagmodus", tripToCustomer:"Kurier {c} ist unterwegs zur Lieferadresse", tripCourierAtStore:"Kurier {c} ist in der Filiale, um die Bestellung abzuholen", tripCourierComing:"Kurier {c} ist auf dem Weg zur Filiale · ≈{m} Min.", tripReturnToStore:"Retoure {id}: Kurier {c} bringt die Retoure zur Filiale", tripReturnAtStore:"Retoure {id}: Kurier in der Filiale, wartet auf QR-Scan", tripReturnDone:"Retoure {id}: von der Filiale angenommen", kpiShowList:"Liste anzeigen", explainCancel:"Die Bestellung wurde vor der Lieferung storniert; von der Karte wird nichts abgebucht.", explainReturn:"Die Bestellung wurde geliefert und der Kunde hat danach einige Produkte zurückgeschickt; dieser Betrag wird erstattet. Stornos und Retouren betreffen verschiedene Bestellungen, ihre Zahlen hängen nicht zusammen.", kpiHideList:"Liste ausblenden", detailOrders:"Bestellungen von heute", detailRevenue:"Bestellungen im Umsatz (ohne Stornos)", detailCancelled:"Heute stornierte Bestellungen", detailReturns:"Retouren", kpiListHint:"Tippe auf eine Zeile, um die Bestellung zu öffnen.", ordersWord:"Bestellungen", partsShort:"Teile", splitTag:"Automatisch geteilte Bestellung · Teil {p}", volLine:"Volumen: {v} L / {max} L (Tragekapazität des Kuriers)", splitNote:"Diese Bestellung war größer als die Kurierkapazität ({max} L) und wurde automatisch in {n} Teile geteilt. Jeder Teil wird separat kommissioniert und von einem eigenen Kurier geliefert.", outOf5:"von 5", ratingDist:"Verteilung der Sterne", criteria:"Nach Kriterien", crit_service:"Service", crit_taste:"Geschmack", crit_delivery:"Lieferung",
       recentReviews:"Neueste Bewertungen", todayWord:"heute", yesterday:"gestern", daysAgo:"vor {n} Tagen", reviewsNote:"Kunden vergeben nach der Lieferung in der Kanal-App 1–5 Sterne (Service, Geschmack, Lieferung). Das Panel zeigt die Bewertungen nur an."},
     en: {locale:"en-IE", branch:"Lindenkorb Supermarket", role:"Branch employee", roleStaffM:"Branch employee", logout:"Log out", login:"Log in",
       loginTitle:"Log in", marketSub:"Supermarket · Berlin-Spandau", updateApp:"Update app", updating:"Checking…", upToDate:"Your app is up to date (v1.0.1)", email:"Email", password:"Password", rememberMe:"Remember me", availableOn:"APP AVAILABLE FOR", storeSoon:"Prototype: store link not available yet.", demoAccounts:"CHOOSE A DEMO ACCOUNT", roleManager:"Branch manager", loginEmpty:"Enter your email and password.", loginWrong:"Email or password is incorrect.", welcome:"Welcome, {name}!", home:"Home", orders:"Orders",
@@ -939,7 +983,14 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       tableTitle:"Detail table", colPeriod_day:"Hour", colPeriod_week:"Day", colPeriod_month:"Day", colPeriod_year:"Month", total:"Total", closedSunday:"Closed (Sunday)", topProductsP:"Best sellers", soFar:"so far",
       reportNote:"Prototype: today's numbers come from the live orders in the panel, earlier days are sample data. In Germany supermarkets are closed on Sundays.",
       refundDone:"{a} refunded to the customer's card · {time}", refundNote:"The refund is made automatically through {ch} as soon as the return is accepted.", refundPill:"Refunded",
-      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews", tourNext:"Next", tourBack:"Back", tourSkip:"Skip tour", tourDone:"Let's go", tourRestart:"Show the demo tour", tourT1:"Welcome to VetisPilot! 👋", tourX1:"This prototype manages orders from two delivery channels (HTGO Market and GK Market) in one panel. The short tour takes 1 minute.", tourT2:"Home page", tourX2:"Here you see each channel's active orders, pending returns and customer rating, and today's numbers below; tapping the boxes opens the sales report.", tourT3:"Orders and picking", tourX3:"Open Orders from the ☰ menu. In the Pending tab take an order with ✓ Accept; while picking, count with − / + and enter the weight of weighed products. The amount protection blocks wrong entries.", tourT4:"New-order alert", tourX4:"New orders arrive in a few seconds: each channel has its own sound and a banner in its colour.", tourT5:"Returns", tourX5:"See and approve return reasons under Returns. When the courier brings the products, tick them in Return handover and create the QR code; after the scan the customer is refunded.", tourT6:"Language and look", tourX6:"Switch day / night mode at the top right and the language (EN / DE / TR) in the profile. Enjoy!", nightMode:"Night mode", dayMode:"Day mode", tripToCustomer:"Courier {c} is on the way to the delivery address", tripCourierAtStore:"Courier {c} is at the store to pick up the order", tripCourierComing:"Courier {c} is on the way to the store · ≈{m} min", tripReturnToStore:"Return {id}: courier {c} is bringing the return to the store", tripReturnAtStore:"Return {id}: courier at the store, waiting for the QR scan", tripReturnDone:"Return {id}: received by the store", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
+      reviews:"Reviews", reviewsCount:"{n} reviews", reviewsShort:"reviews",
+      discounts:"Discounts", discNew:"New discount", discScope:"Which products?", scope_ALL:"All products", scope_CAT:"Category", scope_SKUS:"Selected products", scope_MHD:"Best-before soon",
+      discMhdInfo:"Products whose best-before date is {d} days away or less are listed automatically:", discMhdLeft:"BBD {d} d", discType:"Discount", discPct:"Percent (%)", discEur:"Amount (−€)",
+      discDuration:"Duration", unit_m:"Minutes", unit_h:"Hours", unit_d:"Days", unit_w:"Weeks", discEnds:"Ends: {t}", discAffects:"{n} products affected",
+      discExample:"Example: {p} {o} → {n}", discStart:"Start discount", discActive:"Active discounts", discNone:"No discount is active right now.", discLeft:"{t} left", discStop:"Stop",
+      discStopped:"Discount stopped. Orders already placed keep their price.", discStoppedShort:"Stopped", discExpired:"Expired", discStarted:"{ch}: {d} started",
+      discErrValue:"Enter a valid discount and duration (at most {m} %).", discErrNone:"No products match this choice.", discSearch:"Search product…", discEnded:"Ended discounts", discProductsCount:"{n} products",
+      discRules:"Rules: at most 70 % · price never below €0.01 · one discount per product at a time (the highest wins) · placed orders keep the price of that moment.", tourNext:"Next", tourBack:"Back", tourSkip:"Skip tour", tourDone:"Let's go", tourRestart:"Show the demo tour", tourT1:"Welcome to VetisPilot! 👋", tourX1:"This prototype manages orders from two delivery channels (HTGO Market and GK Market) in one panel. The short tour takes 1 minute.", tourT2:"Home page", tourX2:"Here you see each channel's active orders, pending returns and customer rating, and today's numbers below; tapping the boxes opens the sales report.", tourT3:"Orders and picking", tourX3:"Open Orders from the ☰ menu. In the Pending tab take an order with ✓ Accept; while picking, count with − / + and enter the weight of weighed products. The amount protection blocks wrong entries.", tourT4:"New-order alert", tourX4:"New orders arrive in a few seconds: each channel has its own sound and a banner in its colour.", tourT5:"Returns", tourX5:"See and approve return reasons under Returns. When the courier brings the products, tick them in Return handover and create the QR code; after the scan the customer is refunded.", tourT6:"Language and look", tourX6:"Switch day / night mode at the top right and the language (EN / DE / TR) in the profile. Enjoy!", nightMode:"Night mode", dayMode:"Day mode", tripToCustomer:"Courier {c} is on the way to the delivery address", tripCourierAtStore:"Courier {c} is at the store to pick up the order", tripCourierComing:"Courier {c} is on the way to the store · ≈{m} min", tripReturnToStore:"Return {id}: courier {c} is bringing the return to the store", tripReturnAtStore:"Return {id}: courier at the store, waiting for the QR scan", tripReturnDone:"Return {id}: received by the store", kpiShowList:"Show list", explainCancel:"The order was cancelled before delivery; nothing is charged to the card.", explainReturn:"The order was delivered and the customer later sent some products back; that amount is refunded. Cancellations and returns are different orders, their numbers are independent.", kpiHideList:"Hide list", detailOrders:"Today's orders", detailRevenue:"Orders in the revenue (without cancellations)", detailCancelled:"Orders cancelled today", detailReturns:"Returns", kpiListHint:"Tap a row to open the order.", ordersWord:"orders", partsShort:"parts", splitTag:"Automatically split order · part {p}", volLine:"Volume: {v} L / {max} L (courier carrying capacity)", splitNote:"This order was larger than the courier capacity ({max} L) and was split automatically into {n} parts. Each part is picked separately and goes with its own courier.", outOf5:"out of 5", ratingDist:"Star distribution", criteria:"By criterion", crit_service:"Service", crit_taste:"Taste", crit_delivery:"Delivery",
       recentReviews:"Latest reviews", todayWord:"today", yesterday:"yesterday", daysAgo:"{n} days ago", reviewsNote:"Customers give 1–5 stars in the channel app after delivery (service, taste, delivery). The panel only shows the reviews."}
   };
   var lang = "tr";
@@ -1011,7 +1062,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
   function photoOf(p) { return p.img || (BRANDS[p.bk] ? BRANDS[p.bk].icon : ""); }
   var NOW = 14 * 60 + 10; // demo clock: 14:10 (the "+2 min" demo button moves it forward)
   function O(no, ch, status, time, items, extra) {
-    var o = {no:no, ch:ch, status:status, time:time, items:items.map(function (x) { return {sku:x[0], qty:x[1], price:P[x[0]].price, picked:status === "PENDING" ? 0 : (x[2] == null ? x[1] : x[2]), kg:null}; }), calls:0};
+    var o = {no:no, ch:ch, status:status, time:time, items:items.map(function (x) { return {sku:x[0], qty:x[1], price:priceFor(x[0], ch), picked:status === "PENDING" ? 0 : (x[2] == null ? x[1] : x[2]), kg:null}; }), calls:0};
     for (var k in extra || {}) o[k] = extra[k];
     return o;
   }
@@ -1242,7 +1293,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     showBanner("order", t("newOrderTitle").replace("{ch}", CH[o.ch].name), tn("pendingLine", n).replace("{no}", orderNo(o)).replace("{n}", n), o.ch);
   }
   var newSeq = {htgo:10486, gk:55125}, newPick = 0;
-  var BASKETS = [[["BEV-006",2],["SNK-001",1]], [["DRY-001",2],["BAK-003",1]], [["BRK-001",1],["SWT-001",2]], [["BEV-001",6],["PRD-001",1]]];
+  var BASKETS = [[["BEV-006",2],["SNK-001",1]], [["BRK-001",1],["SWT-001",2]], [["DRY-001",2],["BAK-003",1]], [["BEV-001",6],["PRD-001",1]]];
   function arriveOrder() {
     var ch = newPick % 2 ? "gk" : "htgo";
     var o = O((ch === "htgo" ? "HT-" : "GK-") + newSeq[ch]++, ch, "PENDING", fmtTime(NOW), BASKETS[newPick++ % BASKETS.length]);
@@ -1508,8 +1559,8 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       var p = P[sku];
       html += '<div class="prow"><img class="ph" src="' + photoOf(p) + '" alt="">' +
         '<span class="nm"><b>' + esc(p[lang]) + '</b><span>' + esc(p.brand) + ' · VP-' + sku + '</span><span class="code">' + SVG.barcode + p.ean + '</span>' +
-        '<span class="show-s"><b style="display:inline">' + money(p.price) + '</b> · ' + esc(p.size[lang]) + ' · ' + t("colStock") + ' ' + p.stock + '</span></span>' +
-        '<span class="hide-s">' + esc(p.size[lang]) + '</span><span class="hide-s">' + money(p.price) + (p.kg ? ' <span class="note">/ ' + esc(p.size[lang]) + '</span>' : '') + '</span>' +
+        '<span class="show-s"><b style="display:inline">' + money(p.price) + '</b>' + (discTags(sku) ? ' ' + discTags(sku) : '') + ' · ' + esc(p.size[lang]) + ' · ' + t("colStock") + ' ' + p.stock + '</span></span>' +
+        '<span class="hide-s">' + esc(p.size[lang]) + '</span><span class="hide-s">' + (discTags(sku) ? '<s class="old-price">' + money(p.price) + '</s> ' + discTags(sku) : money(p.price)) + (p.kg ? ' <span class="note">/ ' + esc(p.size[lang]) + '</span>' : '') + '</span>' +
         '<span class="hide-s">' + p.stock + '</span>' +
         '<span><button class="chans" data-go="#sale" title="' + t("openSaleList") + '" aria-label="' + t("openSaleList") + '">' + saleChip(p, "htgo") + saleChip(p, "gk") + '</button></span>' +
         '<button class="editbtn" data-edit="' + sku + '" title="' + t("edit") + '" aria-label="' + t("edit") + '">' + SVG.edit + '</button></div>';
@@ -2056,6 +2107,103 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     }
   }
 
+  // ======================= Discounts per channel =======================
+  // A branch can put products on sale in ONE channel: all products, a category, chosen products, or products whose
+  // best-before date (SKT / MHD) is close. Rules: at most 70 %, never below 0.01 €, one discount per product at a time
+  // (the biggest wins), new orders store the discounted price (US-14 price snapshot – later changes do not touch them).
+  var EXPIRY_DAYS = {"DRY-003":1, "BAK-003":1, "DRY-001":2, "PRD-001":2, "DRY-002":3, "PRD-008":4, "BEV-009":9, "FRZ-004":40};
+  function daysLeft(sku) { return EXPIRY_DAYS[sku] != null ? EXPIRY_DAYS[sku] : 120; }
+  var MHD_DAYS = 3, MAX_PCT = 70;
+  var UNIT_MS = {m:60000, h:3600000, d:86400000, w:604800000};
+  var t0 = Date.now(), discSeq = 3;
+  var DISCOUNTS = [
+    {id:"D1", ch:"htgo", scope:"MHD", type:"PCT", value:30, start:t0 - 40 * 60000, end:t0 + 5 * 3600000 + 20 * 60000},
+    {id:"D2", ch:"gk", scope:"CAT", cat:"SWT", type:"PCT", value:15, start:t0 - 3 * 3600000, end:t0 + 2 * 86400000}
+  ];
+  function discMatches(d, sku) {
+    if (d.scope === "ALL") return true;
+    if (d.scope === "CAT") return P[sku].cat === d.cat;
+    if (d.scope === "SKUS") return !!(d.skus && d.skus[sku]);
+    return daysLeft(sku) <= MHD_DAYS;
+  }
+  function discActive(d) { var n = Date.now(); return !d.stopped && d.start <= n && n < d.end; }
+  function discPrice(price, d) {
+    var v = d.type === "PCT" ? price * (1 - Math.min(d.value, MAX_PCT) / 100) : price - d.value;
+    return Math.max(.01, Math.round(Math.max(v, price * (1 - MAX_PCT / 100)) * 100) / 100);
+  }
+  function bestDiscount(sku, ch) {
+    var best = null, bp = P[sku].price;
+    DISCOUNTS.forEach(function (d) { if (d.ch !== ch || !discActive(d) || !discMatches(d, sku)) return; var np = discPrice(P[sku].price, d); if (np < bp) { bp = np; best = d; } });
+    return best ? {d:best, price:bp} : null;
+  }
+  function priceFor(sku, ch) { var b = DISC_LIVE ? bestDiscount(sku, ch) : null; return b ? b.price : P[sku].price; }
+  function fmtLeft(ms) {
+    var d = Math.floor(ms / 86400000), h = Math.floor(ms % 86400000 / 3600000), m = Math.max(1, Math.floor(ms % 3600000 / 60000));
+    var u = {tr:["g","sa","dk"], de:["T","Std.","Min."], en:["d","h","min"]}[lang];
+    return d ? d + " " + u[0] + " " + h + " " + u[1] : h ? h + " " + u[1] + " " + m + " " + u[2] : m + " " + u[2];
+  }
+  function fmtEnd(ms) { var x = new Date(ms); return x.toLocaleDateString(t("locale"), {day:"numeric", month:"short"}) + " " + String(x.getHours()).padStart(2, "0") + ":" + String(x.getMinutes()).padStart(2, "0"); }
+  function discLabel(d) {
+    var sc = d.scope === "CAT" ? t("scope_CAT") + ": " + CATS[d.cat][lang] : d.scope === "SKUS" ? t("discProductsCount").replace("{n}", Object.keys(d.skus || {}).length) : t("scope_" + d.scope);
+    return (d.type === "PCT" ? "−" + d.value + " %" : "−" + money(d.value)) + " · " + sc;
+  }
+  function discTags(sku) {
+    return ["htgo","gk"].map(function (ch) { var b = bestDiscount(sku, ch); return b ? '<span class="disc-tag ' + ch + '">' + (ch === "htgo" ? "HTGO" : "GK") + ' ' + money(b.price) + '</span>' : ''; }).join("");
+  }
+  // the form keeps its state per channel while you switch pages
+  var discForm = {htgo:null, gk:null}, discCh = "htgo";
+  function df(ch) { return discForm[ch] || (discForm[ch] = {scope:"MHD", cat:"DRY", skus:{}, type:"PCT", value:"30", unit:"h", amount:"2", q:""}); }
+  function formDisc(f) { return {scope:f.scope, cat:f.cat, skus:f.skus, type:f.type, value:parseNum(f.value) || 0}; }
+  function formTargets(f) { var fd = formDisc(f); return Object.keys(P).filter(function (s) { return P[s].stock > 0 && discMatches(fd, s); }); }
+  function pageDiscounts(ch) {
+    discCh = ch;
+    var f = df(ch), fd = formDisc(f), targets = formTargets(f), amount = parseInt(f.amount, 10) || 0;
+    var seg = function (attr, list, cur, label) { return '<div class="seg">' + list.map(function (v) { return '<button data-' + attr + '="' + v + '" aria-pressed="' + (cur === v) + '">' + label(v) + '</button>'; }).join("") + '</div>'; };
+    var html = '<div class="theme-' + ch + '"><div class="ch-head ' + ch + '">' + ICON[ch] + '<h1>' + CH[ch].name + ' · ' + t("discounts") + '</h1></div><div class="disc-grid"><div class="card disc-form"><h2>' + t("discNew") + '</h2>';
+    // 1) which products
+    html += '<div class="fld"><span class="fl">1 · ' + t("discScope") + '</span>' + seg("dscope", ["MHD","CAT","SKUS","ALL"], f.scope, function (v) { return t("scope_" + v); });
+    if (f.scope === "CAT") html += '<select id="discCat">' + Object.keys(CATS).map(function (k) { return '<option value="' + k + '"' + (k === f.cat ? ' selected' : '') + '>' + esc(CATS[k][lang]) + '</option>'; }).join("") + '</select>';
+    if (f.scope === "MHD") html += '<p class="note" style="margin:0">' + t("discMhdInfo").replace("{d}", MHD_DAYS) + '</p><div class="pick-list">' + targets.map(function (s) {
+        return '<div class="pick"><img src="' + photoOf(P[s]) + '" alt=""><span>' + esc(P[s][lang]) + '<small>' + esc(P[s].size[lang]) + ' · ' + money(P[s].price) + '</small></span><em class="mhd">' + t("discMhdLeft").replace("{d}", daysLeft(s)) + '</em></div>'; }).join("") + '</div>';
+    if (f.scope === "SKUS") {
+      var q = f.q.trim().toLowerCase();
+      html += '<input id="discQ" type="search" placeholder="' + t("discSearch") + '" value="' + esc(f.q) + '"><div class="pick-list">' + Object.keys(P).filter(function (s) { return productMatches(s, q); }).map(function (s) {
+        return '<label class="pick"><input type="checkbox" data-dsku="' + s + '"' + (f.skus[s] ? ' checked' : '') + '><img src="' + photoOf(P[s]) + '" alt=""><span>' + esc(P[s][lang]) + '<small>' + esc(P[s].size[lang]) + ' · ' + money(P[s].price) + '</small></span></label>'; }).join("") + '</div>';
+    }
+    html += '</div>';
+    // 2) how much
+    html += '<div class="fld"><span class="fl">2 · ' + t("discType") + '</span>' + seg("dtype", ["PCT","EUR"], f.type, function (v) { return t(v === "PCT" ? "discPct" : "discEur"); }) +
+      '<div class="row-in"><input id="discVal" inputmode="decimal" value="' + esc(f.value) + '" aria-label="' + t("discType") + '"><b>' + (f.type === "PCT" ? "%" : "€") + '</b>' +
+      (f.type === "PCT" ? [10,20,30,50].map(function (v) { return '<button class="chip-btn" data-dval="' + v + '">' + v + ' %</button>'; }).join("") : '') + '</div></div>';
+    // 3) how long
+    html += '<div class="fld"><span class="fl">3 · ' + t("discDuration") + '</span>' + seg("dunit", ["m","h","d","w"], f.unit, function (v) { return t("unit_" + v); }) +
+      '<div class="row-in"><input id="discAmt" inputmode="numeric" value="' + esc(f.amount) + '" aria-label="' + t("discDuration") + '"><b>' + t("unit_" + f.unit) + '</b></div>' +
+      (amount > 0 ? '<span class="note">' + t("discEnds").replace("{t}", fmtEnd(Date.now() + amount * UNIT_MS[f.unit])) + '</span>' : '') + '</div>';
+    // preview + start
+    var ex = targets[0];
+    html += '<div class="disc-preview"><b>' + t("discAffects").replace("{n}", targets.length) + '</b>' +
+      (ex && fd.value > 0 ? '<span>' + t("discExample").replace("{p}", esc(P[ex][lang])).replace("{o}", money(P[ex].price)).replace("{n}", money(discPrice(P[ex].price, fd))) + '</span>' : '') + '</div>' +
+      '<p class="note" style="margin:0">' + t("discRules") + '</p><button class="btn" data-dstart="' + ch + '">🏷️ ' + t("discStart") + '</button></div>';
+    // running discounts with a countdown
+    var act = DISCOUNTS.filter(function (d) { return d.ch === ch && discActive(d); });
+    var ended = DISCOUNTS.filter(function (d) { return d.ch === ch && !discActive(d); });
+    html += '<div class="card"><h2>' + t("discActive") + ' (' + act.length + ')</h2>';
+    if (!act.length) html += '<p class="note">' + t("discNone") + '</p>';
+    act.forEach(function (d) {
+      var n = Object.keys(P).filter(function (s) { return P[s].stock > 0 && discMatches(d, s); }).length;
+      html += '<div class="disc-item"><div><b>' + esc(discLabel(d)) + '</b><span class="note">' + t("discAffects").replace("{n}", n) + ' · ' + t("discEnds").replace("{t}", fmtEnd(d.end)) + '</span></div>' +
+        '<span class="disc-left">⏱ ' + t("discLeft").replace("{t}", fmtLeft(d.end - Date.now())) + '</span><button class="btn ghost" data-dstop="' + d.id + '">' + t("discStop") + '</button></div>';
+    });
+    if (ended.length) html += '<h2 class="sub-h" style="font-size:15px;margin:10px 0 0">' + t("discEnded") + '</h2>' + ended.map(function (d) { return '<div class="disc-item ended"><span>' + esc(discLabel(d)) + '</span><span class="note">' + t(d.stopped ? "discStoppedShort" : "discExpired") + '</span></div>'; }).join("");
+    return html + '</div></div></div>';
+  }
+  // countdowns stay fresh; an expired discount drops out by itself
+  setInterval(function () {
+    var a = document.activeElement;
+    if (currentUser && /^#discounts/.test(location.hash) && !(a && /INPUT|SELECT/.test(a.tagName))) render();
+  }, 30000);
+  var DISC_LIVE = true;   // from here on, new orders use the discounted price
+
   // ======================= Demo tour for visitors =======================
   // Shown once per device after the first login (remembered in local storage); can be restarted from the profile menu.
   var tourStep = -1, TOUR_STEPS = 6;
@@ -2159,6 +2307,7 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     else if (page === "orders") view.innerHTML = pageOrders(ch);
     else if (page === "products") view.innerHTML = pageProducts();
     else if (page === "sale") view.innerHTML = pageSale();
+    else if (page === "discounts") view.innerHTML = pageDiscounts(ch);
     else if (page === "alerts") view.innerHTML = pageAlerts();
     else if (page === "returns") view.innerHTML = pageReturns(ch);
     else if (page === "reviews") view.innerHTML = pageReviews(ch);
@@ -2328,6 +2477,21 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
       return;
     }
     if (d.saleFilter) { saleFilter = d.saleFilter; render(); return; }
+    if (d.dscope) { df(discCh).scope = d.dscope; render(); return; }
+    if (d.dtype) { var ft = df(discCh); ft.type = d.dtype; if (d.dtype === "EUR" && (parseNum(ft.value) || 0) > 5) ft.value = "1"; if (d.dtype === "PCT" && !parseNum(ft.value)) ft.value = "20"; render(); return; }
+    if (d.dunit) { df(discCh).unit = d.dunit; render(); return; }
+    if (d.dval) { df(discCh).value = d.dval; render(); return; }
+    if (d.dstart) {
+      var fs = df(d.dstart), dv = parseNum(fs.value) || 0, amt = parseInt(fs.amount, 10) || 0, tg = formTargets(fs);
+      if (dv <= 0 || (fs.type === "PCT" && dv > MAX_PCT) || amt <= 0) { toast(t("discErrValue").replace("{m}", MAX_PCT)); return; }
+      if (!tg.length) { toast(t("discErrNone")); return; }
+      var dskus = {}; Object.keys(fs.skus).forEach(function (k) { if (fs.skus[k]) dskus[k] = true; });
+      var nd = {id:"D" + (discSeq++), ch:d.dstart, scope:fs.scope, cat:fs.cat, skus:dskus, type:fs.type, value:dv, start:Date.now(), end:Date.now() + amt * UNIT_MS[fs.unit]};
+      DISCOUNTS.unshift(nd); render();
+      toast(t("discStarted").replace("{d}", discLabel(nd)).replace("{ch}", CH[d.dstart].name));
+      return;
+    }
+    if (d.dstop) { DISCOUNTS.forEach(function (x) { if (x.id === d.dstop) { x.stopped = true; x.end = Math.min(x.end, Date.now()); } }); render(); toast(t("discStopped")); return; }
     if (d.period) { reportPeriod[d.ch] = d.period; render(); return; }
     if (d.kpi) { reportList[d.ch] = reportList[d.ch] === d.kpi ? null : d.kpi; render(); var lst = document.querySelector(".kpi-list"); if (lst) lst.scrollIntoView({behavior:"smooth", block:"nearest"}); return; }
     if (d.reasonFilter != null) { var rch = location.hash.indexOf("gk") >= 0 ? "gk" : "htgo"; returnFilter[rch] = returnFilter[rch] === d.reasonFilter ? "" : d.reasonFilter; render(); return; }
@@ -2392,6 +2556,13 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     if (e.target.id === "cxReason" && openOrder) { openOrder.cxDraft = e.target.value; renderModal(); }
     if (e.target.id === "soundOn") soundOn = e.target.checked;
     if (e.target.dataset && e.target.dataset.hoCheck) { var hp = e.target.dataset.hoCheck.split("|"); hoChecked[hp[0]] = hoChecked[hp[0]] || {}; hoChecked[hp[0]][hp[1]] = e.target.checked; render(); }
+    if (e.target.id === "discVal" || e.target.id === "discAmt" || e.target.id === "discQ") {
+      var fk = {discVal:"value", discAmt:"amount", discQ:"q"}[e.target.id], dId = e.target.id, pos3 = e.target.selectionStart;
+      df(discCh)[fk] = e.target.value; render();
+      var el3 = document.getElementById(dId); if (el3) { el3.focus(); try { el3.setSelectionRange(pos3, pos3); } catch (er) {} }
+    }
+    if (e.target.id === "discCat") { df(discCh).cat = e.target.value; render(); }
+    if (e.target.dataset && e.target.dataset.dsku) { df(discCh).skus[e.target.dataset.dsku] = e.target.checked; render(); }
     if (e.target.id === "salesearch") {
       saleQuery = e.target.value; var pos2 = e.target.selectionStart; render();
       var s2 = document.getElementById("salesearch"); s2.focus(); s2.setSelectionRange(pos2, pos2);

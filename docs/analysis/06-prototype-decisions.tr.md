@@ -2,7 +2,7 @@
 
 🇬🇧 [English](06-prototype-decisions.md) · 🇩🇪 [Deutsch](06-prototype-decisions.de.md) · 🇹🇷 **Türkçe**
 
-Tıklanabilir prototip [prototype/panel.html](../../prototype/panel.html) (sürüm **v1.0.1**, örnek veriler), backend yazılmadan önce ekranları gerçek kullanıcılarla denemek için kullanıldı. Denerken birçok yeni iş kuralı ortaya çıktı. Bu belge hepsini tek yerde topluyor: **ne** karar verildi, **neden**, hangi kullanıcı hikâyelerini ve ekranları etkiliyor ve veritabanı için ne anlama geliyor. Yeni hikâyeler [03 – Kullanıcı Hikâyeleri](03-user-stories.tr.md) içinde US-40 – US-53, yeni ekranlar [05 – Ekranlar](05-screens.tr.md) içinde S-19 – S-23.
+Tıklanabilir prototip [prototype/panel.html](../../prototype/panel.html) (sürüm **v1.0.1**, örnek veriler), backend yazılmadan önce ekranları gerçek kullanıcılarla denemek için kullanıldı. Denerken birçok yeni iş kuralı ortaya çıktı. Bu belge hepsini tek yerde topluyor: **ne** karar verildi, **neden**, hangi kullanıcı hikâyelerini ve ekranları etkiliyor ve veritabanı için ne anlama geliyor. Yeni hikâyeler [03 – Kullanıcı Hikâyeleri](03-user-stories.tr.md) içinde US-40 – US-54, yeni ekranlar [05 – Ekranlar](05-screens.tr.md) içinde S-19 – S-24.
 
 ## 1. Genel bakış
 | ID | Karar | Hikâyeler | Ekran |
@@ -24,6 +24,7 @@ Tıklanabilir prototip [prototype/panel.html](../../prototype/panel.html) (sür�
 | PD-15 | Satış raporu **günlük, haftalık, aylık, yıllık;** günlük görünümde ayrıntı listeleri | US-52 | S-12 |
 | PD-16 | **Gündüz ve gece modu** | US-53 | tümü |
 | PD-17 | İlk ziyarette 6 adımlık **demo turu** (cihazda hatırlanır), profil menüsünden yeniden açılabilir | – | tümü |
+| PD-18 | **Kanal bazında süreli indirimler:** tüm, kategori, seçili ya da SKT'si yaklaşan ürünler; yüzde ya da tutar; dakikadan haftaya | US-54 | S-24 |
 
 ## 2. Tutar koruması (PD-06, PD-07)
 **Sorun:** Bir çalışan 1 kg muz yerine 15 kg yazar – müşterinin kartından çok fazla para çekilir.
@@ -100,6 +101,7 @@ flowchart LR
 - **Değerlendirmeler (PD-14):** HTGO 4,9 (2304 yorum), GK 4,7 (2026 yorum); her değerlendirmede servis, lezzet ve teslimat için 1 – 5 yıldız vardır. Panel sadece gösterir.
 - **Raporlar (PD-15):** Bugünün rakamları doğrudan sipariş satırlarından sayılır; bu yüzden ana sayfa, *Tümü* sekmesi ve günlük rapor hep aynıdır. Günlük görünümde *Sipariş, Ciro, İptaller, İadeler* kutuları rakamın arkasındaki listeyi açar. Pazar günleri kapalı (Almanya).
 - **Gündüz / gece modu (PD-16):** profilin yanında güneş / ay düğmesi; seçim cihazda hatırlanır.
+- **İndirimler (PD-18):** bir indirim **tek bir kanala** aittir ve belirli bir süre (dakika, saat, gün ya da hafta) geçerlidir. Son tüketim tarihine **3 gün veya daha az** kalan ürünler otomatik listelenir; böylece atılmak yerine satılır. Kurallar: en fazla **%70**, fiyat **0,01 €**'nun altına inmez, bir ürüne aynı anda tek indirim (en yüksek olan geçerli). Yeni sipariş indirimli fiyatı saklar (US-14); indirimi durdurmak verilmiş siparişleri değiştirmez. Örnek: tam yağlı süt 1,29 € − %30 = 0,90 €.
 
 ## 8. Yasal notlar
 - **Marka:** Entegrasyonu anlatmak için "WhatsApp" adı kullanılabilir; logo kullanılmaz ve ortaklık izlenimi verilmez.
@@ -119,6 +121,7 @@ flowchart LR
 | yeni `return_handovers (return_id, token, status, qr_created_at, received_at, courier)` ve para iadesi zamanı | QR ile teslim alma ve para iadesi (PD-11, PD-12) |
 | `users.phone`, `users.whatsapp_opt_in` + yeni `notification_log` | WhatsApp hatırlatmaları ve izin (PD-05) |
 | yeni `reviews (order_id, service, taste, delivery, comment)` | değerlendirmeler (PD-14) |
+| yeni `discounts (id, channel_id, scope, category, type, value, starts_at, ends_at, stopped_at)` + `discount_products` | süreli indirimler (PD-18) |
 
 ## 10. Açık sorular
 - 20 L sınırı kuryenin aracına göre mi değişmeli (bisiklet / araba)?
