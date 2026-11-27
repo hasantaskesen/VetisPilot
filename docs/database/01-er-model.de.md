@@ -237,5 +237,22 @@ docker compose up -d        # startet PostgreSQL (leere Datenbank)
 docker compose down -v      # löscht die Datenbank vollständig (für einen Neustart)
 ```
 
-## 6. Geplante Änderungen aus dem Prototyp
-Der Test des klickbaren Prototyps (v1.0.1) hat neue Regeln gebracht, die Schemaänderungen brauchen: Produktvolumen, Verkaufsstatus pro Kanal, geteilte Bestellungen, Zeitpunkt der Kundenzustimmung, neue Stornoregeln im Trigger, Retourengründe, QR-Übergabe und Erstattung, WhatsApp-Einwilligung, Bewertungen und zeitlich begrenzte Rabatte. Sie stehen in [06 – Prototyp-Entscheidungen §9](../analysis/06-prototype-decisions.de.md) und kommen als neue Flyway-Migration (`V2__…`) – `V1` wird nach dem Ausführen nie mehr geändert.
+## 6. V2 – Änderungen aus dem Prototyp
+Der Test des klickbaren Prototyps (v1.0.1) hat neue Regeln gebracht. Sie stehen in der zweiten Flyway-Migration [`V2__prototype_decisions.sql`](../../backend/src/main/resources/db/migration/V2__prototype_decisions.sql); `V1` wird nach dem Ausführen nie mehr geändert. Hintergrund: [06 – Prototyp-Entscheidungen](../analysis/06-prototype-decisions.de.md).
+
+| Änderung | Regel | Entscheidung |
+|---|---|---|
+| `products.volume_l` | ein Kurier trägt höchstens 20 L | PD-08 |
+| `branch_stock.best_before` | MHD der Ware in **einer** Filiale | PD-18 |
+| neu `product_channel_status (branch_id, product_id, channel_id, on_sale)` | Verkauf offen / geschlossen pro Filiale und Kanal; keine Zeile = offen | PD-02 |
+| `orders.split_parent_id`, `orders.split_part` | geteilte Bestellung: Teil 1 ist die ursprüngliche Zeile, Teile 2, 3 … zeigen auf sie und behalten die Kanalnummer; Berichte zählen nur Zeilen ohne Eltern | PD-08 |
+| eindeutiger Index `(channel_id, external_order_no, split_part)` | ersetzt den eindeutigen Schlüssel aus V1, damit die Idempotenz auch bei geteilten Bestellungen gilt | E2, PD-08 |
+| `orders.customer_ok_at`, `customer_ok_by` | Haken „Kunde informiert und einverstanden“ bei großem Minus oder fehlender Zeile | PD-07 |
+| neue Version des Triggers `orders_cancel_guard` + Check `orders_branch_reasons` | *Filiale überlastet* ohne Anrufe; *Kunde nicht erreichbar* 2 unbeantwortete Anrufe ≥ 2 Min. auseinander; *Artikel fehlt* 2 Anrufe oder Zustimmung; *falsche Adresse* und *Kunde storniert* nur vom Kanal | PD-09 |
+| `returns.reason_code`, `returns.refunded_at` | Retourengrund; Erstattung nur bei genehmigter Retoure | PD-12, PD-13 |
+| neu `return_handovers` + Trigger `return_handover_steps` | Kurierschritte ASSIGNING → ON_WAY → AT_STORE → QR_CREATED → RECEIVED oder REJECTED mit Grund; QR nur in der Filiale; gespeichert wird nur der SHA-256 des Einmalcodes | PD-11 |
+| `users.phone`, `whatsapp_opt_in`, `whatsapp_opt_in_at` + neu `notification_log` | WhatsApp nur mit Einwilligung der Mitarbeitenden (DSGVO) | PD-05 |
+| neu `reviews` | 1 – 5 Sterne für Service, Geschmack, Lieferung | PD-14 |
+| neu `discounts`, `discount_products`, `order_items.discount_id` | zeitlich begrenzte Rabatte pro Kanal, höchstens 70 %; die Bestellzeile speichert, welcher Rabatt ihren Preis ergab | PD-18 |
+
+Alle Regeln wurden mit Testdaten in einer zurückgerollten Transaktion geprüft (z. B. ein Anruf reicht zum Stornieren nicht, ein QR-Code wird abgelehnt, solange der Kurier unterwegs ist, ein Rabatt von 80 % wird abgelehnt).

@@ -237,5 +237,22 @@ docker compose up -d        # starts PostgreSQL (empty database)
 docker compose down -v      # deletes the database completely (for a fresh start)
 ```
 
-## 6. Planned changes from the prototype
-Testing the clickable prototype (v1.0.1) brought new rules that need schema changes: product volume, sale status per channel, split orders, customer approval time, new cancellation rules in the trigger, return reasons, QR handover and refund, WhatsApp consent, reviews and time-limited discounts. They are listed in [06 – Prototype decisions §9](../analysis/06-prototype-decisions.md) and will come as a new Flyway migration (`V2__…`) – `V1` is never changed after it has run.
+## 6. V2 – changes from the prototype
+Testing the clickable prototype (v1.0.1) brought new rules. They are in the second Flyway migration [`V2__prototype_decisions.sql`](../../backend/src/main/resources/db/migration/V2__prototype_decisions.sql); `V1` is never changed after it has run. Background: [06 – Prototype decisions](../analysis/06-prototype-decisions.md).
+
+| Change | Rule | Decision |
+|---|---|---|
+| `products.volume_l` | courier carries at most 20 L | PD-08 |
+| `branch_stock.best_before` | best-before date of the goods in **one** branch | PD-18 |
+| new `product_channel_status (branch_id, product_id, channel_id, on_sale)` | sale open / closed per branch and channel; no row = open | PD-02 |
+| `orders.split_parent_id`, `orders.split_part` | split order: part 1 is the original row, parts 2, 3 … point to it and keep the channel number; reports count only rows without a parent | PD-08 |
+| unique index `(channel_id, external_order_no, split_part)` | replaces the V1 unique key, so idempotency still works for split orders | E2, PD-08 |
+| `orders.customer_ok_at`, `customer_ok_by` | tick "customer informed and agreed" for a big drop or a missing line | PD-07 |
+| new trigger version `orders_cancel_guard` + check `orders_branch_reasons` | *branch overloaded* without calls; *customer unreachable* 2 unanswered calls ≥ 2 min apart; *item missing* 2 calls or consent; *wrong address* and *customer cancelled* only from the channel | PD-09 |
+| `returns.reason_code`, `returns.refunded_at` | return reason; refund only for an approved return | PD-12, PD-13 |
+| new `return_handovers` + trigger `return_handover_steps` | courier steps ASSIGNING → ON_WAY → AT_STORE → QR_CREATED → RECEIVED, or REJECTED with a reason; QR only at the store; only the SHA-256 of the one-time code is stored | PD-11 |
+| `users.phone`, `whatsapp_opt_in`, `whatsapp_opt_in_at` + new `notification_log` | WhatsApp only with the employee's consent (GDPR) | PD-05 |
+| new `reviews` | 1 – 5 stars for service, taste, delivery | PD-14 |
+| new `discounts`, `discount_products`, `order_items.discount_id` | time-limited discounts per channel, at most 70 %; the order line stores which discount gave its price | PD-18 |
+
+All rules were checked with test data in a rolled-back transaction (e.g. one call is not enough to cancel, a QR code is refused while the courier is on the way, an 80 % discount is refused).

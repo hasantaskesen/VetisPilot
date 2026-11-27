@@ -109,7 +109,8 @@ flowchart LR
 - **Çalışan temsilciliği (Betriebsrat):** "Kim ne kadar hızlı kabul etti" bilgisi çalışanları izlemek için kullanılabilir; bu yüzden kişi bazlı değerlendirmeden önce temsilciliğin onayı gerekir.
 - Hatırlatmalar sadece vardiyadaki personele gider (çalışma süresi yasası).
 
-## 9. Veritabanına etkisi (sonraki bir migration için planlandı)
+## 9. Veritabanına etkisi (V2 migration ile yapıldı)
+nSon sütunlar (ör. **şube** ve kanal bazında satış durumu, şube stoğunda son tüketim tarihi) [01 – ER modeli §6](../database/01-er-model.tr.md) içinde.
 | Değişiklik | Neden |
 |---|---|
 | `products.volume_l` | kurye kapasitesi (PD-08) |

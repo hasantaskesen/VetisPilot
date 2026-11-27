@@ -237,5 +237,22 @@ docker compose up -d        # PostgreSQL'i başlatır (boş veritabanı)
 docker compose down -v      # veritabanını tamamen siler (sıfırdan başlamak için)
 ```
 
-## 6. Prototipten gelen planlı değişiklikler
-Tıklanabilir prototipin (v1.0.1) testi, şema değişikliği gerektiren yeni kurallar getirdi: ürün hacmi, kanal başına satış durumu, bölünen siparişler, müşteri onayı zamanı, trigger'daki yeni iptal kuralları, iade nedenleri, QR ile teslim alma ve para iadesi, WhatsApp izni, değerlendirmeler ve süreli indirimler. Hepsi [06 – Prototip kararları §9](../analysis/06-prototype-decisions.tr.md) içinde listeleniyor ve yeni bir Flyway migration'ı (`V2__…`) olarak gelecek – `V1` bir kez çalıştıktan sonra asla değiştirilmez.
+## 6. V2 – prototipten gelen değişiklikler
+Tıklanabilir prototipin (v1.0.1) testi yeni kurallar getirdi. Bunlar ikinci Flyway migration'ı [`V2__prototype_decisions.sql`](../../backend/src/main/resources/db/migration/V2__prototype_decisions.sql) içinde; `V1` bir kez çalıştıktan sonra asla değiştirilmez. Arka plan: [06 – Prototip kararları](../analysis/06-prototype-decisions.tr.md).
+
+| Değişiklik | Kural | Karar |
+|---|---|---|
+| `products.volume_l` | bir kurye en fazla 20 L taşır | PD-08 |
+| `branch_stock.best_before` | **bir** şubedeki malın son tüketim tarihi | PD-18 |
+| yeni `product_channel_status (branch_id, product_id, channel_id, on_sale)` | şube ve kanal bazında satış açık / kapalı; satır yoksa açık | PD-02 |
+| `orders.split_parent_id`, `orders.split_part` | bölünen sipariş: 1. kısım asıl satırdır, 2., 3. … kısımlar ona bağlanır ve kanal numarasını korur; raporlar sadece üst satırı olmayanları sayar | PD-08 |
+| tekil indeks `(channel_id, external_order_no, split_part)` | V1'deki tekil anahtarın yerine geçer; bölünen siparişlerde de aynı sipariş iki kez kaydedilemez | E2, PD-08 |
+| `orders.customer_ok_at`, `customer_ok_by` | büyük düşüş ya da eksik satırda "müşteri bilgilendirildi ve onayladı" tiki | PD-07 |
+| `orders_cancel_guard` trigger'ının yeni sürümü + `orders_branch_reasons` kontrolü | *şube çok yoğun* aramasız; *müşteriye ulaşılamadı* en az 2 dk arayla 2 cevapsız arama; *ürün stokta yok* 2 arama ya da onay; *yanlış adres* ve *müşteri iptal etti* sadece kanaldan | PD-09 |
+| `returns.reason_code`, `returns.refunded_at` | iade nedeni; para iadesi sadece onaylanmış iadede | PD-12, PD-13 |
+| yeni `return_handovers` + `return_handover_steps` trigger'ı | kurye adımları ASSIGNING → ON_WAY → AT_STORE → QR_CREATED → RECEIVED ya da nedenli REJECTED; QR sadece kurye mağazadayken; tek kullanımlık kodun kendisi değil SHA-256'sı saklanır | PD-11 |
+| `users.phone`, `whatsapp_opt_in`, `whatsapp_opt_in_at` + yeni `notification_log` | WhatsApp sadece çalışanın izniyle (KVKK/DSGVO) | PD-05 |
+| yeni `reviews` | servis, lezzet, teslimat için 1 – 5 yıldız | PD-14 |
+| yeni `discounts`, `discount_products`, `order_items.discount_id` | kanal bazında süreli indirimler, en fazla %70; sipariş satırı fiyatını hangi indirimin verdiğini saklar | PD-18 |
+
+Bütün kurallar geri alınan bir transaction içinde deneme verisiyle test edildi (ör. iptal için tek arama yetmez, kurye yoldayken QR reddedilir, %80 indirim reddedilir).

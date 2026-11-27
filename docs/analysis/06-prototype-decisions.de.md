@@ -109,7 +109,8 @@ flowchart LR
 - **Betriebsrat:** „Wer hat wie schnell angenommen“ kann zur Leistungskontrolle dienen, deshalb muss der Betriebsrat zustimmen, bevor solche Daten pro Person ausgewertet werden.
 - Erinnerungen gehen nur an Mitarbeitende im Dienst (Arbeitszeitgesetz).
 
-## 9. Auswirkungen auf die Datenbank (für eine spätere Migration geplant)
+## 9. Auswirkungen auf die Datenbank (umgesetzt in Migration V2)
+nDie endgültigen Spalten (z. B. Verkaufsstatus pro **Filiale** und Kanal, MHD am Filialbestand) stehen in [01 – ER-Modell §6](../database/01-er-model.de.md).
 | Änderung | Grund |
 |---|---|
 | `products.volume_l` | Kurierkapazität (PD-08) |

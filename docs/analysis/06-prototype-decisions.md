@@ -109,7 +109,8 @@ flowchart LR
 - **Works council (Betriebsrat):** "who accepted how fast" can be used to monitor staff, so the works council must agree before such data is evaluated per person.
 - Reminders go only to staff on shift (working time law).
 
-## 9. Impact on the database (planned for a later migration)
+## 9. Impact on the database (done in migration V2)
+nThe final columns (e.g. sale status per **branch** and channel, best-before date on the branch stock) are in [01 – ER model §6](../database/01-er-model.md).
 | Change | Reason |
 |---|---|
 | `products.volume_l` | courier capacity (PD-08) |
