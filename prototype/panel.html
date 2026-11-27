@@ -110,7 +110,7 @@ body.dark .tour{background:var(--surf);color:var(--txt)} body.dark .tour p{color
 .disc-item{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:12px 0;border-top:1px solid var(--line)} .disc-item>div{flex:1 1 180px;min-width:0;display:flex;flex-direction:column}
 .disc-left{font-weight:800;color:#B91C1C;font-size:14px;white-space:nowrap} .disc-item .btn{padding:7px 14px} .disc-item.ended{opacity:.65;justify-content:space-between;font-size:14px}
 .disc-tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:2px 7px;margin:1px 2px 1px 0;white-space:nowrap;color:#fff} .disc-tag.htgo{background:var(--htgo)} .disc-tag.gk{background:var(--gk)}
-.old-price{color:var(--muted);font-weight:500}
+.old-price{color:var(--muted);font-weight:500} .pick small .stk{font-weight:700;color:inherit}
 @media (max-width:760px){.disc-grid{grid-template-columns:1fr}}
 body.dark :is(.seg button,.chip-btn,.row-in input,.disc-form select,.disc-form input[type=search]){background:var(--surf2);color:var(--txt);border-color:var(--line)}
 body.dark .theme-htgo .seg button[aria-pressed="true"]{background:#3B6FF0;border-color:#3B6FF0;color:#fff} body.dark .theme-gk .seg button[aria-pressed="true"]{background:#A56A36;border-color:#A56A36;color:#fff}
@@ -2164,11 +2164,11 @@ body.dark .ch-card .kv-active b,body.dark .ch-card .kv-returns b{color:#fff}
     html += '<div class="fld"><span class="fl">1 · ' + t("discScope") + '</span>' + seg("dscope", ["MHD","CAT","SKUS","ALL"], f.scope, function (v) { return t("scope_" + v); });
     if (f.scope === "CAT") html += '<select id="discCat">' + Object.keys(CATS).map(function (k) { return '<option value="' + k + '"' + (k === f.cat ? ' selected' : '') + '>' + esc(CATS[k][lang]) + '</option>'; }).join("") + '</select>';
     if (f.scope === "MHD") html += '<p class="note" style="margin:0">' + t("discMhdInfo").replace("{d}", MHD_DAYS) + '</p><div class="pick-list">' + targets.map(function (s) {
-        return '<div class="pick"><img src="' + photoOf(P[s]) + '" alt=""><span>' + esc(P[s][lang]) + '<small>' + esc(P[s].size[lang]) + ' · ' + money(P[s].price) + '</small></span><em class="mhd">' + t("discMhdLeft").replace("{d}", daysLeft(s)) + '</em></div>'; }).join("") + '</div>';
+        return '<div class="pick"><img src="' + photoOf(P[s]) + '" alt=""><span>' + esc(P[s][lang]) + '<small>' + esc(P[s].size[lang]) + ' · ' + money(P[s].price) + ' · <b class="stk">' + t("colStock") + ': ' + P[s].stock + '</b></small></span><em class="mhd">' + t("discMhdLeft").replace("{d}", daysLeft(s)) + '</em></div>'; }).join("") + '</div>';
     if (f.scope === "SKUS") {
       var q = f.q.trim().toLowerCase();
       html += '<input id="discQ" type="search" placeholder="' + t("discSearch") + '" value="' + esc(f.q) + '"><div class="pick-list">' + Object.keys(P).filter(function (s) { return productMatches(s, q); }).map(function (s) {
-        return '<label class="pick"><input type="checkbox" data-dsku="' + s + '"' + (f.skus[s] ? ' checked' : '') + '><img src="' + photoOf(P[s]) + '" alt=""><span>' + esc(P[s][lang]) + '<small>' + esc(P[s].size[lang]) + ' · ' + money(P[s].price) + '</small></span></label>'; }).join("") + '</div>';
+        return '<label class="pick"><input type="checkbox" data-dsku="' + s + '"' + (f.skus[s] ? ' checked' : '') + '><img src="' + photoOf(P[s]) + '" alt=""><span>' + esc(P[s][lang]) + '<small>' + esc(P[s].size[lang]) + ' · ' + money(P[s].price) + ' · <b class="stk">' + t("colStock") + ': ' + P[s].stock + '</b></small></span></label>'; }).join("") + '</div>';
     }
     html += '</div>';
     // 2) how much
