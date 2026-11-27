@@ -233,7 +233,7 @@ Regeln, die die Datenbank allein nicht prüfen kann (z. B. dass die Filiale eine
 ```powershell
 copy .env.example .env      # einmalig; danach in .env ein eigenes Passwort setzen
 docker compose up -d        # startet PostgreSQL (leere Datenbank)
-# danach das Backend starten (IntelliJ oder mvn spring-boot:run): Flyway legt alle Tabellen an
+# danach das Backend starten (IntelliJ oder cd backend && ./mvnw spring-boot:run): Flyway legt alle Tabellen an
 docker compose down -v      # löscht die Datenbank vollständig (für einen Neustart)
 ```
 

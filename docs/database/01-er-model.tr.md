@@ -233,7 +233,7 @@ Veritabanının tek başına kontrol edemediği kurallar (ör. bir çalışanın
 ```powershell
 copy .env.example .env      # bir kez; sonra .env içinde kendi şifreni belirle
 docker compose up -d        # PostgreSQL'i başlatır (boş veritabanı)
-# sonra backend'i başlat (IntelliJ ya da mvn spring-boot:run): tabloları Flyway oluşturur
+# sonra backend'i başlat (IntelliJ ya da cd backend && ./mvnw spring-boot:run): tabloları Flyway oluşturur
 docker compose down -v      # veritabanını tamamen siler (sıfırdan başlamak için)
 ```
 

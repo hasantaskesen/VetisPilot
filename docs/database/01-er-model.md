@@ -233,7 +233,7 @@ Rules that the database cannot check alone (e.g. an employee's branch must belon
 ```powershell
 copy .env.example .env      # once; then set your own password in .env
 docker compose up -d        # starts PostgreSQL (empty database)
-# then start the backend (IntelliJ or mvn spring-boot:run): Flyway creates all tables
+# then start the backend (IntelliJ or cd backend && ./mvnw spring-boot:run): Flyway creates all tables
 docker compose down -v      # deletes the database completely (for a fresh start)
 ```
 
